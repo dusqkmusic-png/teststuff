@@ -27,7 +27,7 @@ function bakeAreaTerrain(id) {
 function drawAreaTerrain() {
   const state = areaState();
   if (!state.terrain) bakeAreaTerrain(currentArea);
-  ctx.drawImage(state.terrain, 0, 0);
+  drawGroundCache(state.terrain);
   if (currentArea === "lake") drawLake();
 }
 function drawLake() {
@@ -65,5 +65,5 @@ function drawLake() {
         42,
       );
   }
-  sprite("village", 0, 3, p.x, p.y, p.w, p.h);
+  groundSprite("village", 0, 3, p.x, p.y, p.w, p.h);
 }

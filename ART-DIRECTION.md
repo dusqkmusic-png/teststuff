@@ -17,3 +17,5 @@ Keep the grass quiet, avoid glitter and star particles, and make depth through s
 Commission a character animator for idle/walk/run/attack in four directions, an environment artist for ground, water, trees, cliffs and buildings, a prop artist for landmarks and enemies, and a UI/portrait artist. An art director can unify scale, light and palette. Give them this file, assets/README.md and the current metadata tables. Agree in writing on usage rights, source-file delivery, credit, animation counts and commercial redistribution. Record authors, contracts and licenses alongside replacement assets. Familiar reference styles do not grant rights to reuse their characters or assets.
 
 The current images are AI-generated test assets; this document is a replacement checklist, not a claim of human authorship or copyright clearance.
+
+Version 13 establishes an oblique viewpoint: compressed floor depth, upright silhouettes, tall cottage fronts, foreground overlap and raised Highlands terraces. Future commissioned art should use this consistent camera rather than a strict diamond isometric grid.

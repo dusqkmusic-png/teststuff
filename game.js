@@ -65,7 +65,7 @@ for (let i = 0; i < GAME_SETTINGS.world.treeAttempts; i++) {
   let x = 32 + rand() * (MW * T - 64),
     y = 32 + rand() * (MH * T - 64);
   if (
-    !inTown(x, y, 55) &&
+    !inTown(x, y, 105) &&
     fieldAt(x, y, 28) < 0 &&
     !isPath(x, y) &&
     Math.abs(x - river(y)) > 100 &&
@@ -388,14 +388,18 @@ function render(dt) {
     movePlayer(dt);
     updateCombat(dt);
   }
-  const targetX = Math.max(0, Math.min(MW * T - W, player.x - W / 2)),
-    targetY = Math.max(0, Math.min(MH * T - H, player.y - H / 2));
+  const { x: targetX, y: targetY } = cameraTarget();
   const follow = 1 - Math.exp(-dt * 12);
   camera.x += (targetX - camera.x) * follow;
   camera.y += (targetY - camera.y) * follow;
   let dark = dayState().dark;
   ctx.save();
-  ctx.translate(-Math.round(camera.x), -Math.round(camera.y));
+  ctx.translate(
+    -Math.round(camera.x),
+    -Math.round(camera.y * VIEW.groundScale),
+  );
+  ctx.scale(1, VIEW.groundScale);
+  worldPass = true;
   drawTerrain();
   for (const d of dust) {
     let size = (0.35 - d.life) * 18 + 2;
@@ -408,12 +412,24 @@ function render(dt) {
     );
   }
   drawVillageDetails();
-  if (currentArea === "town") drawFieldSigns();
-  drawRoutes();
   const things = sceneObjects(dark);
   for (let o of things)
-    if (o.y > camera.y - 130 && o.y < camera.y + H + 130) o.fn();
+    if (o.y > camera.y - 220 && o.y < camera.y + visibleGroundHeight() + 220)
+      atElevation(o.y, () => {
+        // Fade foreground canopy/buildings only when they cover the traveler.
+        ctx.save();
+        if (
+          o.occludes &&
+          player.y < o.y &&
+          projectGroundY(o.y) - projectGroundY(player.y) < o.height - 10 &&
+          Math.abs(player.x - o.x) < o.width / 2
+        )
+          ctx.globalAlpha = 0.42;
+        o.fn();
+        ctx.restore();
+      });
   drawBattleEffects();
+  worldPass = false;
   ctx.restore();
   // Real clock lighting, with warm pools of light after dusk.
   if (dark > 0) {
@@ -430,7 +446,7 @@ function render(dt) {
         ]
       : []) {
       let x = l.x - camera.x,
-        y = l.y - camera.y,
+        y = screenPoint(l.x, l.y).y,
         g = ctx.createRadialGradient(x, y, 0, x, y, 60);
       g.addColorStop(0, `rgba(255,192,88,${dark * 0.8})`);
       g.addColorStop(1, "rgba(255,192,88,0)");
@@ -466,20 +482,29 @@ function render(dt) {
   );
   if (near) {
     ctx.fillStyle = "#152b27dd";
-    ctx.fillRect(player.x - camera.x - 23, player.y - camera.y - 54, 46, 17);
+    ctx.fillRect(
+      player.x - camera.x - 23,
+      screenPoint(player.x, player.y).y - 54,
+      46,
+      17,
+    );
     ctx.fillStyle = "#f2e6be";
     ctx.font = "10px monospace";
-    ctx.fillText("[E]", player.x - camera.x - 9, player.y - camera.y - 42);
+    ctx.fillText(
+      "[E]",
+      player.x - camera.x - 9,
+      screenPoint(player.x, player.y).y - 42,
+    );
   }
   const route = nearbyRoute();
   if (route) {
     const text = "[E] " + route.label;
-    ctx.font = "14px WillowPixel, monospace";
+    ctx.font = "14px WillowSerif, serif";
     const width = ctx.measureText(text).width + 18;
     ctx.fillStyle = "#17252ce8";
     ctx.fillRect(
       player.x - camera.x - width / 2,
-      player.y - camera.y - 78,
+      screenPoint(player.x, player.y).y - 78,
       width,
       24,
     );
@@ -487,7 +512,7 @@ function render(dt) {
     ctx.fillText(
       text,
       player.x - camera.x - width / 2 + 9,
-      player.y - camera.y - 61,
+      screenPoint(player.x, player.y).y - 61,
     );
   }
   document.querySelector("#place").textContent =
@@ -630,8 +655,7 @@ document.querySelector(".eyebrow").textContent =
   GAME_SETTINGS.weather.panelLabel.toUpperCase();
 document.querySelector("#weather-location").textContent =
   GAME_SETTINGS.weather.panelLabel.toUpperCase();
-camera.x = player.x - W / 2;
-camera.y = player.y - H / 2;
+snapCamera();
 updateClock();
 setInterval(updateClock, 1000);
 updateWeather();

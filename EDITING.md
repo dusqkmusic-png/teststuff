@@ -145,3 +145,9 @@ Enemies remain in the original two town-side fields. The three new areas are pea
 **Sideways movement:** the new right-facing walk and run sheets are mirrored for left-facing movement. Their foot baseline and head pivots stay consistent between frames. Horizontal animation now follows distance actually traveled; change `player.walkStridePixels` or `player.runStridePixels` in settings.js to adjust the distance covered per full cycle. Smaller values make the feet cycle faster. Vertical animation still uses the frame-rate settings.
 
 **Analog clocks:** both clock faces use hour, minute, and second hands in clock.js. The `clock.timeZone` setting still controls the time, including daylight saving. Accessible labels include the exact time even though the visible faces are analog.
+
+## Oblique perspective (version 13)
+
+Edit `projection.js` for the viewpoint: `VIEW.groundScale` compresses floor depth; it does not squash characters or buildings. Keep it between 0.5 and 0.85 for a similar view. `VIEW.buildingHeight` changes cottage art height without moving its footprint. World positions in the data files still use the same 1600 × 1216 coordinate system.
+
+`groundElevation(y, area)` defines Highlands terrace heights. `projectGroundY()` is shared by terrain, actors and the camera, so use it for new screen overlays. `sprite()` draws upright objects in a world render; `groundSprite()` draws floor objects such as bridges. Add tall props to `sceneObjects()` with a base `y` so actors can walk in front and behind. For canopy fading, supply `occludes`, `x`, `width` and `height`. Building collision uses its floor footprint rather than its roof silhouette. Keep raised terrain boundaries and ramps aligned with `area-data.js` ridges.

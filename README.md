@@ -1,6 +1,6 @@
-# Willowmere — version 12
+# Willowmere — version 13
 
-A Canvas RPG with a completely rebuilt painted storybook world. Rounded cottages, lush trees, sandy paths, sculpted scenery, a new traveler, and parchment menus replace the previous pixel artwork. Gameplay, maps, analog New York clocks, lighting schedule, and Flushing weather remain unchanged.
+A Canvas RPG with an oblique, pseudo-3D world. The ground is foreshortened while buildings, trees and characters stay upright. Taller cottages, depth-sorted props and transparent foreground obstructions give the village depth. The Highlands have two raised terraces with continuous ramps. Movement, sword combat, analog New York clocks and Flushing weather carry over.
 
 **Start editing with [EDITING.md](EDITING.md).** Visual direction: [ART-DIRECTION.md](ART-DIRECTION.md). Asset layout and provenance: [assets/README.md](assets/README.md). No installation or build step is needed.
 
@@ -36,3 +36,11 @@ Houses are exterior scenery. Wind effects are sprite movement rather than separa
 All graphics are in `assets/storybook/`. Three character sheets contain eight frames in four directions for walking, running, and attacking. Horizontal locomotion uses distance-based timing and mirrored east frames for west. `hero-frames.js` supplies character rectangles and foot pivots; `painted-frames.js` supplies scenery rectangles. Canvas uses smooth scaling, cached textured ground, depth sorting, contact shadows, swaying trees, and animated water.
 
 These are AI-generated prototype assets, separated for eventual replacement by commissioned art. See the art direction guide for the handoff list.
+
+## Oblique renderer — version 13
+
+`projection.js` separates floor coordinates from upright artwork. `VIEW.groundScale` controls the camera angle (default 0.66), and `VIEW.buildingHeight` controls cottage height. `groundElevation()` defines the Highlands’ two 46-pixel rises. Ground caches, actors, camera tracking and prompts use the same projection. The floor is not a tilted screenshot: upright art retains its proportions. No WebGL or build tools are required.
+
+Tall props, including the fountain, bench and signs, share one depth queue with actors. Houses and tree canopies fade when they cover the traveler. Collision stays in world coordinates at object bases. Ground placement is more open around town, and grass contrast is reduced.
+
+For browser regression checks, see [tests/README.md](tests/README.md).

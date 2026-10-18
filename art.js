@@ -31,8 +31,14 @@ function grain(x, y, s = 0) {
   return ((n ^ (n >>> 16)) >>> 0) / 4294967295;
 }
 function sprite(sheet, col, row, x, y, w, h) {
-  const [sx, sy, sw, sh] = PAINTED_RECTS[sheet][row][col];
-  ctx.drawImage(art[sheet], sx, sy, sw, sh, x, y, w, h);
+  if (!worldPass) {
+    groundSprite(sheet, col, row, x, y, w, h);
+    return;
+  }
+  // Plant the bottom edge on the projected floor, but never squash upright art.
+  uprightAt(x + w / 2, y + h, () =>
+    groundSprite(sheet, col, row, -w / 2, -h, w, h),
+  );
 }
 function windState() {
   const mph =
@@ -110,6 +116,8 @@ function smoothTrail(c, points, width) {
   c.stroke();
 }
 function paintedGround(id) {
+  const previousPass = worldPass;
+  worldPass = false;
   const ground = document.createElement("canvas");
   ground.width = 1600;
   ground.height = 1216;
@@ -120,7 +128,7 @@ function paintedGround(id) {
   ctx.fillStyle =
     id === "woods" ? "#63794b" : id === "highlands" ? "#93a568" : "#9ab267";
   ctx.fillRect(0, 0, 1600, 1216);
-  ctx.globalAlpha = id === "woods" ? 0.72 : 0.58;
+  ctx.globalAlpha = id === "woods" ? 0.4 : 0.27;
   ctx.fillStyle = paintedPattern("ground", kind % 2, Math.floor(kind / 2));
   ctx.fillRect(0, 0, 1600, 1216);
   ctx.globalAlpha = 1;
@@ -232,6 +240,7 @@ function paintedGround(id) {
       }
   }
   ctx = main;
+  worldPass = previousPass;
   return ground;
 }
 let terrainArt;
@@ -241,7 +250,7 @@ function drawTerrain() {
     return;
   }
   if (!terrainArt) terrainArt = paintedGround("town");
-  ctx.drawImage(terrainArt, 0, 0);
+  drawGroundCache(terrainArt);
   drawRiver();
   drawWindGrass();
 }
@@ -261,7 +270,18 @@ function drawTree(t) {
   ctx.restore();
 }
 function drawHouse(h, dark) {
-  sprite("town", houses.indexOf(h), 1, h.x - 18, h.y - 44, h.w + 36, h.h + 49);
+  const width = h.w + 64,
+    height = VIEW.buildingHeight;
+  softShadow(h.x + h.w / 2 + 15, h.y + h.h + 6, width * 0.6, 23, 0.26);
+  sprite(
+    "town",
+    houses.indexOf(h),
+    1,
+    h.x - 32,
+    h.y + h.h + 5 - height,
+    width,
+    height,
+  );
   if (dark > 0.12) {
     ctx.save();
     ctx.globalCompositeOperation = "screen";
@@ -316,6 +336,7 @@ function drawPlayer() {
   softShadow(player.x + 2, player.y + 2, 14, 5, 0.23);
   ctx.save();
   ctx.translate(player.x, player.y);
+  ctx.scale(1, 1 / VIEW.groundScale);
   if (action.flip) ctx.scale(-1, 1);
   ctx.drawImage(
     image,
@@ -341,32 +362,58 @@ function drawPlayer() {
     );
   }
 }
+// Only floor-level objects belong in this pass. Tall props join the depth queue.
 function drawVillageDetails() {
   if (currentArea !== "town") return;
   ctx.save();
   ctx.translate(1118, 650);
   ctx.rotate(Math.PI / 2);
-  sprite("village", 0, 3, -27, -93, 54, 186);
+  groundSprite("village", 0, 3, -27, -93, 54, 186);
   ctx.restore();
-  sprite("town", 0, 3, 646, 706, 59, 47);
-  sprite("town", 1, 3, 677, 614, 49, 48);
-  softShadow(866, 738, 43, 12, 0.18);
-  sprite("town", Math.floor(time * 3) % 4, 2, 819, 650, 94, 94);
-  for (let x = 534; x < 633; x += 36) sprite("town", 2, 0, x, 561, 36, 38);
-  for (let x = 850; x < 977; x += 36) sprite("town", 2, 0, x, 561, 36, 38);
+}
+function villageSceneObjects() {
+  const list = [
+    { y: 746, fn: () => sprite("town", 0, 3, 646, 699, 59, 47) },
+    { y: 662, fn: () => sprite("town", 1, 3, 677, 614, 49, 48) },
+    {
+      y: 737,
+      fn: () => {
+        softShadow(865, 736, 47, 14, 0.23);
+        sprite("town", Math.floor(time * 3) % 4, 2, 810, 627, 110, 110);
+      },
+    },
+  ];
+  for (const start of [534, 850])
+    for (let x = start; x < start + 128; x += 36)
+      list.push({ y: 598, fn: () => sprite("town", 2, 0, x, 560, 36, 38) });
   for (const h of houses) {
-    sprite("village", 2, 1, h.x + h.w - 8, h.y + h.h - 17, 33, 32);
-    sprite("village", 2, 3, h.x - 28, h.y + h.h - 8, 31, 26);
+    list.push({
+      y: h.y + h.h + 15,
+      fn: () => sprite("village", 2, 1, h.x + h.w - 8, h.y + h.h - 17, 33, 32),
+    });
+    list.push({
+      y: h.y + h.h + 18,
+      fn: () => sprite("village", 2, 3, h.x - 28, h.y + h.h - 8, 31, 26),
+    });
   }
+  return list;
 }
 function waterSurfacePath() {
   ctx.beginPath();
-  for (let y = camera.y - 12; y <= camera.y + H + 12; y += 6) {
+  for (
+    let y = camera.y - 12;
+    y <= camera.y + visibleGroundHeight() + 12;
+    y += 6
+  ) {
     const x = river(y) - 57;
     if (y === camera.y - 12) ctx.moveTo(x, y);
     else ctx.lineTo(x, y);
   }
-  for (let y = camera.y + H + 12; y >= camera.y - 12; y -= 6)
+  for (
+    let y = camera.y + visibleGroundHeight() + 12;
+    y >= camera.y - 12;
+    y -= 6
+  )
     ctx.lineTo(river(y) + 57, y);
   ctx.closePath();
 }
@@ -391,11 +438,14 @@ function drawRiver() {
   ctx.stroke();
   ctx.save();
   ctx.clip();
-  fillPaintedWater({ x: 1000, y: camera.y - 20, w: 260, h: H + 40 }, 8);
+  fillPaintedWater(
+    { x: 1000, y: camera.y - 20, w: 260, h: visibleGroundHeight() + 40 },
+    8,
+  );
   for (let i = 0; i < 32; i++) {
     const y = (i * 43 + time * (15 + grain(i, 13) * 8)) % (MH * T),
       x = river(y) + (grain(i, 44) * 2 - 1) * 44;
-    if (y < camera.y || y > camera.y + H) continue;
+    if (y < camera.y || y > camera.y + visibleGroundHeight()) continue;
     ctx.strokeStyle = "#e0edcc40";
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -407,7 +457,11 @@ function drawRiver() {
   ctx.restore();
 }
 function drawWindGrass() {
-  for (let y = Math.floor(camera.y / 100) * 100; y < camera.y + H; y += 100)
+  for (
+    let y = Math.floor(camera.y / 100) * 100;
+    y < camera.y + visibleGroundHeight();
+    y += 100
+  )
     for (const side of [-1, 1]) {
       const x = river(y) + side * 75;
       ctx.save();

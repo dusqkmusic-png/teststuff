@@ -138,8 +138,7 @@ function enterArea(id, arrival) {
   battle.invulnerable = 1;
   dust.length = 0;
   sparks.length = 0;
-  camera.x = Math.max(0, Math.min(MW * T - W, player.x - W / 2));
-  camera.y = Math.max(0, Math.min(MH * T - H, player.y - H / 2));
+  snapCamera();
   if (mapDialog.open) mapDialog.close();
   syncBattleHud();
   msg(
@@ -174,28 +173,62 @@ function drawRegionProp(o) {
   regionSprite(o.col, o.row, o.x, o.y, o.w, o.h);
 }
 function sceneObjects(dark) {
+  const markers = AREA_ROUTES.filter((r) => r.from === currentArea).map(
+    (r) => ({
+      y: r.y,
+      fn: () => regionSprite(1, 3, r.x - 27, r.y - 47, 30, 47),
+    }),
+  );
   if (currentArea !== "town") {
     const state = areaState();
     return state.trees
-      .map((t) => ({ y: t.y, fn: () => drawNatureTree(t) }))
+      .map((t) => ({
+        y: t.y,
+        x: t.x,
+        width: 125,
+        height: 150,
+        occludes: true,
+        fn: () => drawNatureTree(t),
+      }))
       .concat(
         state.rocks.map((r) => ({
           y: r.y,
           fn: () => regionSprite(3, 1, r.x - 22, r.y - 32, 44, 38),
         })),
         state.props.map((o) => ({ y: o.y + o.h, fn: () => drawRegionProp(o) })),
+        markers,
         [{ y: player.y, fn: drawBattlePlayer }],
       )
       .sort((a, b) => a.y - b.y);
   }
   return trees
-    .map((t) => ({ y: t.y, fn: () => drawTree(t) }))
+    .map((t) => ({
+      y: t.y,
+      x: t.x,
+      width: 130,
+      height: 155,
+      occludes: true,
+      fn: () => drawTree(t),
+    }))
     .concat(
-      houses.map((h) => ({ y: h.y + h.h, fn: () => drawHouse(h, dark) })),
+      villageSceneObjects(),
+      fields.map((f) => ({
+        y: 903,
+        fn: () => sprite("village", 2, 2, f.x + f.w / 2 - 21, 865, 42, 38),
+      })),
+      houses.map((h) => ({
+        y: h.y + h.h,
+        x: h.x + h.w / 2,
+        width: h.w + 64,
+        height: VIEW.buildingHeight,
+        occludes: true,
+        fn: () => drawHouse(h, dark),
+      })),
       townScenery.map((o) => ({ y: o.y + o.h, fn: () => drawTownObject(o) })),
       enemies
         .filter((e) => e.active)
         .map((e) => ({ y: e.y, fn: () => drawEnemy(e) })),
+      markers,
       [{ y: player.y, fn: drawBattlePlayer }],
     )
     .sort((a, b) => a.y - b.y);
