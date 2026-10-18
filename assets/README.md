@@ -13,3 +13,5 @@ Canvas draws atlas rectangles with smoothing disabled. The terrain cache is buil
 Keep the complete assets directory when copying or downloading the game. Asset load failures appear in the game rather than silently displaying missing sprites.
 
 - `combat.png`: four columns by four rows; green slime frames, purple slime frames, hit-effect frames, and directional sword icons. The sword swing uses a tight source crop around the upward sword, rotated around the player.
+
+- `grass.png`: a separate 2×2 atlas of muted, low-detail meadow tiles, introduced in version 7. It replaces the busy grass row in terrain.png; dirt, water, and cliff tiles still use terrain.png.

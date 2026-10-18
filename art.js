@@ -1,16 +1,16 @@
 'use strict';
 // Pixel artwork is loaded from local PNG atlases; Canvas only places tiles and sprite frames.
 const art = {};
-function loadArt(){return Promise.all(['terrain','adventurer','village','combat'].map(name=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>{art[name]=image;resolve();};image.onerror=()=>reject(new Error(`Could not load assets/${name}.png. Keep the assets folder with index.html.`));image.src=`assets/${name}.png`;})));}
+function loadArt(){return Promise.all(['terrain','adventurer','village','combat','grass'].map(name=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>{art[name]=image;resolve();};image.onerror=()=>reject(new Error(`Could not load assets/${name}.png. Keep the assets folder with index.html.`));image.src=`assets/${name}.png`;})));}
 function grain(x,y,s=0){let n=Math.imul(x+173+s*43,374761393)^Math.imul(y+937,668265263);n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967295;}
-function sprite(sheet,col,row,x,y,w,h){const image=art[sheet],sw=image.width/4,sh=image.height/4;const inset=sheet==='terrain'?2:0;ctx.drawImage(image,col*sw+inset,row*sh+inset,sw-inset*2,sh-inset*2,Math.round(x),Math.round(y),w,h);}
+function sprite(sheet,col,row,x,y,w,h){const image=art[sheet],sw=image.width/(sheet==='grass'?2:4),sh=image.height/(sheet==='grass'?2:4);const inset=sheet==='terrain'||sheet==='grass'?2:0;ctx.drawImage(image,col*sw+inset,row*sh+inset,sw-inset*2,sh-inset*2,Math.round(x),Math.round(y),w,h);}
 function windState(){const mph=weather.live&&Number.isFinite(weather.wind)?Math.max(0,Math.min(75,weather.wind)):4;const gust=.72+.18*Math.sin(time*.47)+.1*Math.sin(time*1.13);return {mph,strength:Math.min(1.8,mph/12)*gust};}
 let terrainArt;
 function bakeTerrain(){terrainArt=document.createElement('canvas');terrainArt.width=MW*T;terrainArt.height=MH*T;const main=ctx;ctx=terrainArt.getContext('2d');ctx.imageSmoothingEnabled=false;
- for(let y=0;y<MH*T;y+=32)for(let x=0;x<MW*T;x+=32){const variant=Math.floor(grain(x,y)*4);sprite('terrain',variant,0,x,y,32,32);if(isPath(x+16,y+16))sprite('terrain',variant,1,x,y,32,32);}
+ for(let y=0;y<MH*T;y+=32)for(let x=0;x<MW*T;x+=32){const variant=Math.floor(grain(x,y)*4);sprite('grass',variant%2,Math.floor(variant/2),x,y,32,32);if(isPath(x+16,y+16))sprite('terrain',variant,1,x,y,32,32);}
  for(let [start,end,base,height] of [[40,430,294,56],[80,660,920,50]])for(let x=start;x<end;x+=16){let y=base+Math.floor(Math.sin(x/(base===294?85:90))*2)*4;sprite('terrain',Math.floor(grain(x,base)*4),3,x,y-8,16,height+8);}
  for(const r of rocks){if(isPath(r.x,r.y)||Math.abs(r.x-river(r.y))<90)continue;sprite('village',0,2,r.x-14,r.y-23,28,28);}
- for(let i=0;i<flowers.length;i+=14){const f=flowers[i];if(!isPath(f.x,f.y)&&Math.abs(f.x-river(f.y))>90)sprite('village',2,3,f.x-8,f.y-7,16,16);}
+ for(let i=0;i<flowers.length;i+=56){const f=flowers[i];if(!isPath(f.x,f.y)&&Math.abs(f.x-river(f.y))>90)sprite('village',2,3,f.x-8,f.y-7,16,16);}
  ctx=main;
 }
 function drawTerrain(){if(!terrainArt)bakeTerrain();ctx.drawImage(terrainArt,0,0);drawRiver();drawWindGrass();}

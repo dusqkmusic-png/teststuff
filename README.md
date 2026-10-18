@@ -1,4 +1,4 @@
-# Willowmere — version 6
+# Willowmere — version 7
 
 A peaceful Canvas RPG world with local pixel-art PNG sprite sheets and terrain tiles. No package installation or build step.
 
@@ -18,9 +18,10 @@ For a local server, run `python3 -m http.server 8000 --bind 0.0.0.0` from this d
 
 ## Pixel art
 
-Four bundled image files supply all terrain, scenery, and character artwork:
+Five bundled image files supply all terrain, scenery, and character artwork:
 
-- `assets/terrain.png`: grass, dirt, water animation tiles, and cliffs.
+- `assets/grass.png`: quiet, muted grass tiles with sparse blade details.
+- `assets/terrain.png`: dirt, water animation tiles, and cliffs.
 - `assets/adventurer.png`: sixteen walk frames across four facing directions.
 - `assets/village.png`: trees, houses, bridge, well, garden, rocks, and props.
 - `assets/combat.png`: green/purple slimes, hit effects, and swords.
@@ -38,3 +39,5 @@ All art loads locally; only weather and optional Google Fonts require Internet a
 Westwind Fields lie west of the village; Eastbank Fields are across the river bridge to the east. Each field contains four slimes. They roam, chase nearby players, and stay in their own field. Two sword hits defeat a slime; defeated slimes return after nine seconds, away from the player. You have five hearts, brief protection after taking damage, and recover in the village if defeated. Resting at the bench with E also restores health. The counter tracks defeats during the current session; reloading resets progress.
 
 Houses are exterior scenery. Wind effects are sprite movement rather than separately rigged hair animation.
+
+Version 7 calms the meadow with a separate muted grass atlas and fewer scattered flower patches. Village gardens, trees, weather, nighttime lighting, and field combat remain.
