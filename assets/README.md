@@ -21,3 +21,9 @@ Canvas draws image source rectangles with smoothing disabled. Ground is cached; 
 `fonts/VT323-Regular.ttf` is the VT323 typeface from https://github.com/google/fonts/tree/main/ofl/vt323, distributed under the included SIL Open Font License 1.1 in `fonts/OFL.txt`.
 
 Keep this entire folder with the game when downloading. Missing required images produce a visible loading error.
+
+## Version 11
+
+`hero-side-walk.png` and `hero-side-run.png` each contain eight right-facing phases in a single row. West-facing motion is mirrored at render time. The frames use fixed ground baselines and hair/head pivots recorded in hero-frames.js. They replace the east/west rows during ordinary movement; the existing attack sheet is unchanged. Horizontal gait timing follows traveled distance.
+
+`regions.png` supplies the new maps: four forest/highland ground tiles, pine/oak/reeds/boulder sprites, four lake-water frames, and ruin/sign/bench/cliff cells. Source bounds are in region-art.js. Objects have transparency and ground is tiled into per-area terrain caches. The artwork was generated specifically for these original maps.

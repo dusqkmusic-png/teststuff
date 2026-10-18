@@ -95,6 +95,9 @@ const townObstacles = [
 // Replace art using the same filenames/layout, or change these paths.
 // Atlas frame rectangles remain in art.js and hero-frames.js (see assets/README.md).
 const ART_FILES = {
+  regions: "assets/regions.png",
+  "hero-side-walk": "assets/hero-side-walk.png",
+  "hero-side-run": "assets/hero-side-run.png",
   terrain: "assets/terrain.png",
   village: "assets/village.png",
   combat: "assets/combat.png",

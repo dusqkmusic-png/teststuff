@@ -123,3 +123,25 @@ You can replace the local PNG files without changing the gameplay. Give an artis
 ## A quick check after editing
 
 Open the game, walk and run, swing the sword, visit both fields, and try fullscreen. Check the time/weather panels. If you changed art, check all four facing directions. If you changed dialogue or healing spots, walk near them and press E.
+
+## Separate exploration areas (version 11)
+
+Press **M** or click **World map** to travel to town, the Woods, the Lake, or the Highlands. You can also walk up to a trail sign and press **E**. Town's trailheads are north for Highlands, south for Woods, and across the east bridge for Lake. Every new map has a return sign at its southern entrance. The map menu pauses gameplay while open.
+
+**area-data.js** is the editable description of those maps. Each is a separate 1600 × 1216 space:
+
+- `name` and `subtitle`: labels used in the game and travel menu.
+- `spawn`: where you arrive. Keep this on an open trail.
+- `paths`: lists of `[x, y]` points joined into walking trails. Scenery stays clear of them.
+- `clearings`: circular areas where trees and rocks are not placed.
+- `treeSpacing`: larger numbers leave more space between trees. Try values from 70 to 220.
+- `interactions`: E-key messages, with optional `heals: true`.
+- Lake's `water` and `pier`: the lake outline and walkable dock. Open water blocks walking.
+- Highlands' `ridges`: cliff strips with `gapX` and `gapWidth` for walkable ramps. Keep a trail through each gap.
+- `AREA_ROUTES`: trail signs and the destination they lead to. An `arrival` point overrides the normal spawn when returning to town.
+
+Enemies remain in the original two town-side fields. The three new areas are peaceful exploration maps. Leaving town preserves the enemy state for when you return. The new art lives in `assets/regions.png`; rendering and collision are in `region-art.js` and `areas.js`.
+
+**Sideways movement:** the new right-facing walk and run sheets are mirrored for left-facing movement. Their foot baseline and head pivots stay consistent between frames. Horizontal animation now follows distance actually traveled; change `player.walkStridePixels` or `player.runStridePixels` in settings.js to adjust the distance covered per full cycle. Smaller values make the feet cycle faster. Vertical animation still uses the frame-rate settings.
+
+**Analog clocks:** both clock faces use hour, minute, and second hands in clock.js. The `clock.timeZone` setting still controls the time, including daylight saving. Accessible labels include the exact time even though the visible faces are analog.

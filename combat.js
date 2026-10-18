@@ -3,6 +3,7 @@
 // Enemy behavior and combat. Edit settings.js for difficulty and world-data.js for fields.
 
 function fieldAt(x, y, margin = 0) {
+  if (currentArea !== "town") return -1;
   return fields.findIndex(
     (f) =>
       x >= f.x - margin &&
@@ -78,11 +79,13 @@ function syncBattleHud() {
     .setAttribute("aria-label", `${battle.hp} of ${battle.maxHp} health`);
   document.querySelector("#kills").textContent = String(battle.kills);
   document.querySelector("#zone-status").textContent =
-    fieldAt(player.x, player.y) >= 0
-      ? GAME_SETTINGS.enemies.enabled
-        ? "ENEMY FIELD · J / Z TO SWING"
-        : "PEACEFUL FIELD"
-      : "VILLAGE · SAFE HAVEN";
+    currentArea !== "town"
+      ? "EXPLORING · M FOR MAP"
+      : fieldAt(player.x, player.y) >= 0
+        ? GAME_SETTINGS.enemies.enabled
+          ? "ENEMY FIELD · J / Z TO SWING"
+          : "PEACEFUL FIELD"
+        : "VILLAGE · SAFE HAVEN";
 }
 function updateCombat(dt) {
   battle.cooldown = Math.max(0, battle.cooldown - dt);
@@ -101,6 +104,14 @@ function updateCombat(dt) {
     [0, -1],
     [-1, 0],
   ][battle.dir];
+  if (currentArea !== "town") {
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      sparks[i].life -= dt;
+      if (sparks[i].life <= 0) sparks.splice(i, 1);
+    }
+    syncBattleHud();
+    return;
+  }
   for (const e of enemies) {
     if (!e.active) {
       e.respawn -= dt;

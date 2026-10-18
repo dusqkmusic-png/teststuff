@@ -15,6 +15,8 @@ const GAME_SETTINGS = {
     damageProtectionSeconds: 1.15,
     walkFramesPerSecond: 10,
     runFramesPerSecond: 20,
+    walkStridePixels: 64, // Horizontal cycle distance. Lower = quicker footsteps.
+    runStridePixels: 100,
   },
 
   sword: {
@@ -75,7 +77,7 @@ const GAME_SETTINGS = {
     headline: "Somewhere to simply be.",
     description: "A quiet village. A winding river. A sky that follows yours.",
     welcome:
-      "Village is safe. Explore the fields west or east · J / Z swings your sword.",
+      "Press M for the world map · Woods south, Highlands north, Lake across the bridge.",
     recovery: "Back at the village. Your health is restored.",
     healed: " Your health is restored.",
     idleInteraction: "The breeze brushes past. There’s nowhere you need to be.",
@@ -111,6 +113,8 @@ function validateSettings() {
     ["player", "damageProtectionSeconds", 0.1, 10],
     ["player", "walkFramesPerSecond", 1, 40],
     ["player", "runFramesPerSecond", 1, 60],
+    ["player", "walkStridePixels", 24, 180],
+    ["player", "runStridePixels", 40, 250],
     ["sword", "damage", 1, 100, true],
     ["sword", "reach", 15, 150],
     ["sword", "swingSeconds", 0.15, 3],

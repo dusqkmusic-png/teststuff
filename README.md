@@ -1,4 +1,4 @@
-# Willowmere — version 10
+# Willowmere — version 11
 
 A peaceful Canvas RPG world with local pixel-art PNG sprite sheets and terrain tiles. No package installation or build step.
 
@@ -14,16 +14,20 @@ For a local server, run `python3 -m http.server 8000 --bind 0.0.0.0` from this d
 - Shift / Space: hold to charge a straight-line dash; release to stop.
 - J / Z or click the game: swing your sword. Touch devices have a sword button.
 - E: interact with nearby scenery; the village bench restores health.
+- M / World map button: visit town, the Woods, the Lake, or the Highlands. Trail signs also work with E.
 - F / Fullscreen button: enter or leave fullscreen. Escape also exits.
 - Sound button: optional synthesized wind ambience.
 - Touch controls include direction, dash, and interaction.
 
 ## Pixel art
 
-Eight bundled image files supply all terrain, scenery, and character artwork:
+Eleven bundled image files supply all terrain, scenery, and character artwork:
 
 - `assets/grass.png`: quiet, muted grass tiles with sparse blade details.
 - `assets/terrain.png`: dirt, water animation tiles, and cliffs.
+- `assets/regions.png`: forest floor, nature props, lake water, and highland cliffs.
+- `assets/hero-side-walk.png`: corrected right-facing walk cycle (mirrored for west).
+- `assets/hero-side-run.png`: corrected right-facing run cycle (mirrored for west).
 - `assets/hero-walk.png`: eight walking frames in each of four directions.
 - `assets/hero-run.png`: eight running frames in each of four directions.
 - `assets/hero-attack.png`: eight sword-swing frames in each of four directions.
@@ -59,4 +63,10 @@ Time and weather use dark textured menu windows, beveled gray borders, white pix
 
 The engine is formatted for reading. Common difficulty, movement, clock, lighting, weather, scenery-count, and message settings are grouped in settings.js. World names, dialogue, fields, buildings, props, footprints, and image paths are in world-data.js. theme.css exposes UI color variables. No new runtime dependencies are required. Invalid common settings and syntax errors produce visible help. Defaults retain the version 9 gameplay and artwork.
 
-Files load in this order: startup.js → settings.js → world-data.js → hero-frames.js → art.js → combat.js → game.js. The engine validates settings before starting. See EDITING.md for examples, limitations, and troubleshooting.
+Files load in this order: startup.js → settings.js → world-data.js → area-data.js → hero-frames.js → art.js → region-art.js → clock.js → areas.js → combat.js → game.js. The engine validates settings before starting. See EDITING.md for examples, limitations, and troubleshooting.
+
+## Version 11 — new trails, side cycles and analog clocks
+
+Three separate exploration maps are available through M / World map or E at a trail sign. The Woods have winding forest trails, a resting clearing and old ruins. The Lake has an animated shoreline, reeds and a walkable pier. The Highlands have rocky ridges, two climbable ramps and a viewpoint. Each map has its own scenery, terrain cache and collision. Town and the original two enemy fields remain available; enemy simulation stays in town.
+
+The horizontal walk and run cycles now have fixed ground baselines, consistent pivots, and distance-driven timing to reduce sliding and jitter. West uses the mirrored east cycle so both directions match. Hour/minute/second hands replace the two digital clocks, still following America/New_York with EST/EDT support. Area names, trails, entry points and messages are editable in area-data.js.

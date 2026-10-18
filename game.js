@@ -25,6 +25,7 @@ const keys = new Set(),
     y: GAME_SETTINGS.player.startY,
     dir: 0,
     walk: 0,
+    sideDistance: 0,
     moving: false,
     charge: 0,
     dashing: false,
@@ -135,14 +136,7 @@ function dayState() {
   return { hour, dark, phase };
 }
 function updateClock() {
-  document.querySelector("#clock").textContent = new Intl.DateTimeFormat(
-    "en-US",
-    {
-      timeZone: GAME_SETTINGS.clock.timeZone,
-      hour: "numeric",
-      minute: "2-digit",
-    },
-  ).format(new Date());
+  updateAnalogClocks();
   document.querySelector("#date").textContent = new Intl.DateTimeFormat(
     "en-US",
     {
@@ -156,8 +150,6 @@ function updateClock() {
     .toUpperCase();
   document.querySelector("#phase").textContent =
     dayState().phase + " · " + GAME_SETTINGS.clock.locationLabel;
-  document.querySelector("#game-clock").textContent =
-    document.querySelector("#clock").textContent;
   document.querySelector("#game-date").textContent =
     document.querySelector("#date").textContent +
     " · " +
@@ -279,6 +271,7 @@ async function updateWeather() {
   }
 }
 function blocked(x, y) {
+  if (currentArea !== "town") return areaBlocked(x, y);
   return (
     townObstacles.some(
       (o) =>
@@ -364,6 +357,7 @@ function movePlayer(dt) {
   }
   player.moving = Math.hypot(player.x - oldX, player.y - oldY) > 0.01;
   if (player.moving) {
+    player.sideDistance += Math.hypot(player.x - oldX, player.y - oldY);
     player.walk +=
       dt *
       (player.dashing
@@ -371,7 +365,10 @@ function movePlayer(dt) {
         : GAME_SETTINGS.player.walkFramesPerSecond);
     if (player.dashing && Math.random() < 0.6)
       dust.push({ x: player.x, y: player.y, life: 0.35 });
-  } else player.walk = 0;
+  } else {
+    player.walk = 0;
+    player.sideDistance = 0;
+  }
   if (player.dashing && hit) {
     player.dashing = false;
     player.dashBlocked = true;
@@ -384,9 +381,13 @@ function movePlayer(dt) {
   }
 }
 function render(dt) {
+  const paused = mapDialog.open;
+  if (paused) dt = 0;
   time += dt;
-  movePlayer(dt);
-  updateCombat(dt);
+  if (!paused) {
+    movePlayer(dt);
+    updateCombat(dt);
+  }
   const targetX = Math.max(0, Math.min(MW * T - W, player.x - W / 2)),
     targetY = Math.max(0, Math.min(MH * T - H, player.y - H / 2));
   const follow = 1 - Math.exp(-dt * 12);
@@ -407,18 +408,9 @@ function render(dt) {
     );
   }
   drawVillageDetails();
-  drawFieldSigns();
-  let things = trees
-    .map((t) => ({ y: t.y, fn: () => drawTree(t) }))
-    .concat(
-      houses.map((h) => ({ y: h.y + h.h, fn: () => drawHouse(h, dark) })),
-      townScenery.map((o) => ({ y: o.y + o.h, fn: () => drawTownObject(o) })),
-      enemies
-        .filter((e) => e.active)
-        .map((e) => ({ y: e.y, fn: () => drawEnemy(e) })),
-      [{ y: player.y, fn: drawBattlePlayer }],
-    )
-    .sort((a, b) => a.y - b.y);
+  if (currentArea === "town") drawFieldSigns();
+  drawRoutes();
+  const things = sceneObjects(dark);
   for (let o of things)
     if (o.y > camera.y - 130 && o.y < camera.y + H + 130) o.fn();
   drawBattleEffects();
@@ -431,10 +423,12 @@ function render(dt) {
     ctx.restore();
     ctx.save();
     ctx.globalCompositeOperation = "screen";
-    for (const l of [
-      { x: 704, y: 616 },
-      ...houses.map((h) => ({ x: h.x + 55, y: h.y + 75 })),
-    ]) {
+    for (const l of currentArea === "town"
+      ? [
+          { x: 704, y: 616 },
+          ...houses.map((h) => ({ x: h.x + 55, y: h.y + 75 })),
+        ]
+      : []) {
       let x = l.x - camera.x,
         y = l.y - camera.y,
         g = ctx.createRadialGradient(x, y, 0, x, y, 60);
@@ -467,7 +461,7 @@ function render(dt) {
       rect(x, y, 2, 2, "#ecf2e5bb");
     }
   }
-  let near = objects.find(
+  let near = currentInteractions().find(
     (o) => Math.hypot(o.x - player.x, o.y - player.y) < 55,
   );
   if (near) {
@@ -477,16 +471,37 @@ function render(dt) {
     ctx.font = "10px monospace";
     ctx.fillText("[E]", player.x - camera.x - 9, player.y - camera.y - 42);
   }
+  const route = nearbyRoute();
+  if (route) {
+    const text = "[E] " + route.label;
+    ctx.font = "14px WillowPixel, monospace";
+    const width = ctx.measureText(text).width + 18;
+    ctx.fillStyle = "#17252ce8";
+    ctx.fillRect(
+      player.x - camera.x - width / 2,
+      player.y - camera.y - 78,
+      width,
+      24,
+    );
+    ctx.fillStyle = "#f5e7c7";
+    ctx.fillText(
+      text,
+      player.x - camera.x - width / 2 + 9,
+      player.y - camera.y - 61,
+    );
+  }
   document.querySelector("#place").textContent =
-    fieldAt(player.x, player.y) >= 0
-      ? fields[fieldAt(player.x, player.y)].name
-      : player.x > 1000
-        ? AREA_NAMES.river
-        : player.y < 410
-          ? AREA_NAMES.garden
-          : inTown(player.x, player.y)
-            ? AREA_NAMES.town
-            : AREA_NAMES.meadow;
+    currentArea !== "town"
+      ? AREA_DATA[currentArea].name
+      : fieldAt(player.x, player.y) >= 0
+        ? fields[fieldAt(player.x, player.y)].name
+        : player.x > 1000
+          ? AREA_NAMES.river
+          : player.y < 410
+            ? AREA_NAMES.garden
+            : inTown(player.x, player.y)
+              ? AREA_NAMES.town
+              : AREA_NAMES.meadow;
 }
 function frame(t) {
   let dt = Math.min((t - last) / 1000, 0.05);
@@ -495,6 +510,7 @@ function frame(t) {
   requestAnimationFrame(frame);
 }
 window.addEventListener("keydown", (e) => {
+  if (mapDialog.open) return;
   let k = e.key.toLowerCase();
   if (
     [
@@ -518,10 +534,11 @@ window.addEventListener("keydown", (e) => {
   }
   if ((k === "j" || k === "z") && !e.repeat) attack();
   if (k === "e" && !e.repeat) {
-    let o = objects.find(
+    if (handleAreaInteract()) return;
+    let o = currentInteractions().find(
       (o) => Math.hypot(o.x - player.x, o.y - player.y) < 55,
     );
-    let h = houses.find(
+    let h = (currentArea === "town" ? houses : []).find(
       (h) => Math.hypot(h.x + h.w / 2 - player.x, h.y + h.h - player.y) < 45,
     );
     if (o && o.heals) {
@@ -623,6 +640,7 @@ msg("Loading pixel-art sprites…");
 loadArt()
   .then(() => {
     initCombat();
+    initAreas();
     last = performance.now();
     requestAnimationFrame(frame);
     msg(GAME_SETTINGS.text.welcome);

@@ -888,3 +888,216 @@ canvas {
     bottom: 66px;
   }
 }
+/* v11 — traditional clocks, world map and travel controls. */
+.clock svg {
+  display: block;
+  width: 88px;
+  height: 88px;
+  margin: auto;
+}
+.clock-line {
+  justify-content: center;
+}
+.clock-line svg {
+  display: block;
+  width: 92px;
+  height: 92px;
+  flex-shrink: 0;
+}
+.world-status .game-time small {
+  text-align: center;
+}
+.clock {
+  min-width: 112px;
+}
+.clock #date {
+  font-size: 13px;
+  white-space: nowrap;
+}
+#map-button {
+  position: absolute;
+  bottom: 104px;
+  right: 20px;
+  padding: 10px 12px;
+  background: #26343bec;
+  color: #eee7d3;
+  border: 1px solid #aeb8ae80;
+  font:
+    17px WillowPixel,
+    monospace;
+  cursor: pointer;
+}
+#world-map {
+  width: min(540px, calc(100vw - 32px));
+  padding: 22px;
+  color: #f4ecd6;
+}
+#world-map::backdrop {
+  background: #071017b8;
+}
+.map-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.map-heading h2 {
+  font:
+    34px WillowPixel,
+    monospace;
+  margin: 0;
+}
+.map-heading button {
+  font:
+    28px WillowPixel,
+    monospace;
+  color: #eee7d3;
+  background: transparent;
+  border: 1px solid #a2b0ac66;
+  padding: 0 9px;
+  cursor: pointer;
+}
+#world-map p {
+  font:
+    20px WillowPixel,
+    monospace;
+  color: #c8d0c5;
+  margin: 10px 0 16px;
+}
+#area-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+#area-choices button {
+  text-align: left;
+  color: #f5ecd5;
+  background: linear-gradient(135deg, #45554d, #243139);
+  border: 2px solid;
+  border-color: #9ba99b #3a474a #3a474a #9ba99b;
+  padding: 14px;
+  cursor: pointer;
+}
+#area-choices strong {
+  display: block;
+  font:
+    25px WillowPixel,
+    monospace;
+}
+#area-choices small {
+  display: block;
+  margin-top: 5px;
+  font:
+    16px WillowPixel,
+    monospace;
+  color: #c8d1c1;
+}
+#world-map > small {
+  display: block;
+  margin-top: 16px;
+  font:
+    16px WillowPixel,
+    monospace;
+  color: #b8c9bf;
+}
+#area-choices button:focus-visible,
+#map-button:focus-visible {
+  outline: 2px solid #e8cb88;
+  outline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .clock svg {
+    width: 65px;
+    height: 65px;
+  }
+  .clock {
+    min-width: 94px;
+  }
+  .clock #date {
+    font-size: 11px;
+  }
+  .clock-line svg {
+    width: 57px;
+    height: 57px;
+  }
+  #map-button {
+    bottom: 91px;
+    right: 10px;
+    padding: 6px 9px;
+    font-size: 14px;
+  }
+  .world-status .game-time small {
+    font-size: 10px;
+  }
+  #area-choices {
+    gap: 6px;
+  }
+  #area-choices button {
+    padding: 10px;
+  }
+  #area-choices strong {
+    font-size: 22px;
+  }
+  #area-choices small {
+    font-size: 14px;
+  }
+}
+@media (max-height: 480px) and (orientation: landscape) {
+  .clock-line svg {
+    width: 58px;
+    height: 58px;
+  }
+  .world-status .game-time small {
+    font-size: 10px;
+  }
+}
+@media (max-width: 700px) {
+  #map-button {
+    bottom: 12px;
+    right: 10px;
+    min-height: 30px;
+    width: 78px;
+    padding: 6px 4px;
+    z-index: 4;
+  }
+  #fullscreen {
+    bottom: 12px;
+    right: 96px;
+    width: 32px;
+    min-height: 30px;
+    padding: 4px;
+    font-size: 0;
+    z-index: 4;
+  }
+  #fullscreen::after {
+    content: "⛶";
+    font: 20px monospace;
+  }
+  #sound {
+    bottom: 12px;
+    right: 136px;
+    width: 32px;
+    height: 30px;
+    padding: 4px;
+    z-index: 4;
+  }
+  #sound span {
+    display: none;
+  }
+  .world-status #weather-detail {
+    display: none;
+  }
+  .world-status .conditions {
+    padding: 6px 9px;
+  }
+  .world-status .conditions strong {
+    font-size: 15px;
+  }
+  .world-status .conditions small {
+    font-size: 11px;
+  }
+  .clock-line svg {
+    width: 50px;
+    height: 50px;
+  }
+}

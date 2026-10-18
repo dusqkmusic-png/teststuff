@@ -23,7 +23,14 @@
           <p>A quiet village. A winding river. A sky that follows yours.</p>
         </div>
         <div class="clock">
-          <strong id="clock">--:--</strong><span id="date">NEW YORK TIME</span>
+          <svg
+            id="clock"
+            data-analog-clock
+            viewBox="0 0 120 120"
+            role="img"
+            aria-label="New York clock"
+          ></svg
+          ><span id="date">NEW YORK TIME</span>
         </div>
       </section>
       <section class="game-shell">
@@ -48,7 +55,13 @@
             </div>
             <div class="clock-line">
               <span id="time-icon" aria-hidden="true">☾</span
-              ><strong id="game-clock">--:--</strong>
+              ><svg
+                id="game-clock"
+                data-analog-clock
+                viewBox="0 0 120 120"
+                role="img"
+                aria-label="New York clock"
+              ></svg>
             </div>
             <small id="game-date">NEW YORK</small>
           </section>
@@ -65,7 +78,8 @@
             ><small id="wind-detail">Awaiting live wind</small>
           </section>
         </aside>
-        <button
+        <button id="map-button" title="World map (M)">⌖ World map</button
+        ><button
           id="fullscreen"
           aria-pressed="false"
           title="Toggle fullscreen (F)"
@@ -102,16 +116,32 @@
       </footer>
       <div class="note">
         <span>01 — THE MEADOW</span>
-        <p>A safe village to call home. Two wild fields to explore.</p>
+        <p>A village to call home. Woods, water, and highland trails beyond.</p>
         <span>MADE FOR WANDERING ↗</span>
       </div>
     </main>
+    <dialog id="world-map" class="rpg-panel">
+      <div class="map-heading">
+        <h2>Choose a trail</h2>
+        <button id="close-map" aria-label="Close world map">×</button>
+      </div>
+      <p>Four places. One sky. Choose somewhere to explore.</p>
+      <div id="area-choices"></div>
+      <small
+        >Walk up to a trail sign and press E, or use this map. M opens and
+        closes it.</small
+      >
+    </dialog>
     <p id="startup-error" role="alert" hidden></p>
     <script src="startup.js"></script>
     <script src="settings.js"></script>
     <script src="world-data.js"></script>
+    <script src="area-data.js"></script>
     <script src="hero-frames.js"></script>
     <script src="art.js"></script>
+    <script src="region-art.js"></script>
+    <script src="clock.js"></script>
+    <script src="areas.js"></script>
     <script src="combat.js"></script>
     <script src="game.js"></script>
   </body>

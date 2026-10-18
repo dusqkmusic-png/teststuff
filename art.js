@@ -136,6 +136,10 @@ function bakeTerrain() {
   ctx = main;
 }
 function drawTerrain() {
+  if (currentArea !== "town") {
+    drawAreaTerrain();
+    return;
+  }
   if (!terrainArt) bakeTerrain();
   ctx.drawImage(terrainArt, 0, 0);
   drawRiver();
@@ -196,6 +200,20 @@ function playerAnimation() {
       dir: battle.dir,
       frame: Math.min(7, Math.floor((1 - battle.swing / ATTACK_DURATION) * 8)),
     };
+  if (player.dir === 1 || player.dir === 3) {
+    const running = player.moving && player.dashing,
+      stride = running
+        ? GAME_SETTINGS.player.runStridePixels
+        : GAME_SETTINGS.player.walkStridePixels;
+    return {
+      sheet: running ? "hero-side-run" : "hero-side-walk",
+      dir: 0,
+      frame: player.moving
+        ? Math.floor((player.sideDistance / stride) * 8) % 8
+        : 2,
+      flip: player.dir === 3,
+    };
+  }
   return {
     sheet: player.moving && player.dashing ? "hero-run" : "hero-walk",
     dir: player.dir,
@@ -213,7 +231,23 @@ function drawPlayer() {
     x = Math.round(player.x - (anchorX - sx) * scale),
     y = Math.round(player.y - (anchorY - sy) * scale);
   // Attack frames already include the held sword, torso rotation and follow-through.
-  if (action.sheet === "hero-attack") {
+  if (action.sheet.startsWith("hero-side")) {
+    ctx.save();
+    ctx.translate(Math.round(player.x), Math.round(player.y));
+    if (action.flip) ctx.scale(-1, 1);
+    ctx.drawImage(
+      image,
+      sx,
+      sy,
+      sw,
+      sh,
+      Math.round(-(anchorX - sx) * scale),
+      Math.round(-(anchorY - sy) * scale),
+      dw,
+      dh,
+    );
+    ctx.restore();
+  } else if (action.sheet === "hero-attack") {
     ctx.drawImage(image, sx, sy, sw, sh, x, y, dw, dh);
   } else {
     const w = windState(),
@@ -245,6 +279,7 @@ function drawPlayer() {
   }
 }
 function drawVillageDetails() {
+  if (currentArea !== "town") return;
   // Bridge uses an opaque plank tile, painted over the moving river.
   for (let x = 1028; x < 1210; x += 30) sprite("village", 0, 3, x, 626, 30, 50);
   sprite("town", 0, 3, 649, 708, 54, 44);
