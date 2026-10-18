@@ -1,4 +1,4 @@
-# Willowmere — version 7
+# Willowmere — version 8
 
 A peaceful Canvas RPG world with local pixel-art PNG sprite sheets and terrain tiles. No package installation or build step.
 
@@ -18,11 +18,12 @@ For a local server, run `python3 -m http.server 8000 --bind 0.0.0.0` from this d
 
 ## Pixel art
 
-Five bundled image files supply all terrain, scenery, and character artwork:
+Six bundled image files supply all terrain, scenery, and character artwork:
 
 - `assets/grass.png`: quiet, muted grass tiles with sparse blade details.
 - `assets/terrain.png`: dirt, water animation tiles, and cliffs.
-- `assets/adventurer.png`: sixteen walk frames across four facing directions.
+- `assets/traveler.png`: sixteen frames for a taller auburn-haired, teal-clad traveler.
+- `assets/town.png`: cobblestones, bell arch, banners, buildings, flower beds, fountain, and stonework.
 - `assets/village.png`: trees, houses, bridge, well, garden, rocks, and props.
 - `assets/combat.png`: green/purple slimes, hit effects, and swords.
 
@@ -41,3 +42,5 @@ Westwind Fields lie west of the village; Eastbank Fields are across the river br
 Houses are exterior scenery. Wind effects are sprite movement rather than separately rigged hair animation.
 
 Version 7 calms the meadow with a separate muted grass atlas and fewer scattered flower patches. Village gardens, trees, weather, nighttime lighting, and field combat remain.
+
+Version 8 uses the supplied Chrono Trigger town-square screenshot as visual inspiration for original art. Willowmere Bell Square has warm cobblestones, cream stonework, scarlet banners that move with wind, flower beds, market buildings, a fountain, and a central bell arch. Larger town objects are sorted by depth with the player. Bell columns, planters, stone rails, fountain, and bench have collision footprints while the main walking routes remain open. The surrounding meadows retain their quiet grass tiles. Town and traveler source rectangles are defined in art.js to align the generated sheets.
