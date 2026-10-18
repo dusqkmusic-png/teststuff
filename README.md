@@ -14,6 +14,12 @@ Weather is fetched on load and every ten minutes from Open-Meteo for Flushing, Q
 
 The optional Google Fonts request has system-font fallbacks. All game art is drawn locally with Canvas. No external image assets.
 
-## Visual and movement update
+## Movement
 
-Original outlined pixel artwork draws inspiration from 16-bit top-down adventures: layered tree canopies, stone cottages, tiled roofs, grass fringes, riverbanks, rocks, and cliff faces. Rendering uses a 480×270 internal pixel canvas. Walking starts and stops immediately, diagonal speed is normalized, collision is resolved in small steps with sliding, and four-direction animation follows facing. Dash charges for 0.32 seconds, locks direction, and stops at obstacles. It is an inspired approximation, not a frame-exact recreation. External video/wiki research was blocked by the cloud network during this update.
+Rendering now uses a 960×540 internal pixel canvas. Walking starts and stops immediately, diagonal speed is normalized, collision is resolved in small steps with sliding, and four-direction animation follows facing. Dash charges for 0.32 seconds, locks direction, and stops at obstacles. It is an inspired approximation, not a frame-exact recreation. External video/wiki research was blocked by the cloud network during this update.
+
+## Version 3 — art and display
+
+Press **F** or click **Fullscreen** for a distraction-free view; press F, Escape, or the exit button to return. Fullscreen uses the browser API, with a theater layout fallback where unavailable. The New York clock, date, and weather remain inside the game view. Night is a subtle dark tint (maximum 32% overlay); floating night particles are removed. Rain and snow still follow weather.
+
+The scenery and traveler have been redrawn with original pixel artwork inspired by the detailed environments of Zelda 3 and Chrono Trigger: clustered foliage, bark, layered stone walls, individual shingles, window boxes, river reeds, textured cliffs, bridge hardware, and a traveler with a scarf and satchel. Static terrain and tree sprites are cached for performance. All art is generated locally in `art.js`; keep this file alongside `game.js`, `index.html`, and `style.css`.
