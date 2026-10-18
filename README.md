@@ -1,10 +1,12 @@
-# Willowmere — version 9
+# Willowmere — version 10
 
 A peaceful Canvas RPG world with local pixel-art PNG sprite sheets and terrain tiles. No package installation or build step.
 
+**Want to edit the game? Start with [EDITING.md](EDITING.md).** Common numbers and messages are in **settings.js**, names and dialogue are in **world-data.js**, and UI colors are in **theme.css**. Save a change and refresh the browser.
+
 ## Play
 
-Extract the entire ZIP, keeping `assets/` beside `index.html`, `game.js`, `combat.js`, `hero-frames.js`, `art.js`, and `style.css`. Open `index.html` in a browser.
+Extract the entire ZIP and keep all files and the assets folder together. Open `index.html` in a browser. Do not remove the settings, world-data, startup, or theme files; they are part of the game.
 
 For a local server, run `python3 -m http.server 8000 --bind 0.0.0.0` from this directory and open the server in your browser.
 
@@ -52,3 +54,9 @@ Version 8 uses the supplied Chrono Trigger town-square screenshot as visual insp
 The traveler now has 96 distinct source frames: 8 frames × 4 directions × 3 actions. Walking plays at 10 frames per second; charged running at 20. Attacks play eight frames over 0.48 seconds, hold the character in place, and lock the facing direction. Damage occurs during the middle 25–75% of the swing, once per enemy, followed by recovery before another attack. The sword is drawn into the attack frames, replacing the previous detached rotating sword.
 
 Time and weather use dark textured menu windows, beveled gray borders, white pixel lettering, and explicit LIVE/STALE/OFFLINE weather badges, inspired by the supplied UI reference. The bundled VT323 typeface works offline; its SIL Open Font License is in assets/fonts/OFL.txt. Time continues to follow New York's EST/EDT, and weather continues to use Flushing conditions.
+
+## Version 10 — editable prototype
+
+The engine is formatted for reading. Common difficulty, movement, clock, lighting, weather, scenery-count, and message settings are grouped in settings.js. World names, dialogue, fields, buildings, props, footprints, and image paths are in world-data.js. theme.css exposes UI color variables. No new runtime dependencies are required. Invalid common settings and syntax errors produce visible help. Defaults retain the version 9 gameplay and artwork.
+
+Files load in this order: startup.js → settings.js → world-data.js → hero-frames.js → art.js → combat.js → game.js. The engine validates settings before starting. See EDITING.md for examples, limitations, and troubleshooting.

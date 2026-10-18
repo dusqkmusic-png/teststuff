@@ -1,0 +1,50 @@
+/* DUSQK'S COLORS
+   Edit these color codes, save, then refresh. #ffffff is white; #000000 is black.
+   This file loads last, so you can customize the look without editing style.css.
+   The actual game artwork is in assets/. Night shading is in settings.js. */
+:root {
+  --page-background: #111b19;
+  --page-text: #e7e9d9;
+  --panel-top: #4c545b;
+  --panel-bottom: #172028;
+  --panel-border-light: #b4b9b4;
+  --panel-border-dark: #454e54;
+  --panel-text: #fff9e4;
+  --heart-color: #ef9c8a;
+}
+
+/* Normally you only edit the colors above. These rules apply those colors. */
+body {
+  background-color: var(--page-background);
+  color: var(--page-text);
+}
+.rpg-panel {
+  background:
+    repeating-linear-gradient(132deg, #ffffff03 0 1px, transparent 1px 4px),
+    linear-gradient(145deg, var(--panel-top), var(--panel-bottom));
+  border-color: var(--panel-border-light) var(--panel-border-dark)
+    var(--panel-border-dark) var(--panel-border-light);
+}
+.world-status .game-time strong,
+.world-status .conditions strong {
+  color: var(--panel-text);
+}
+.battle-hud strong {
+  color: var(--heart-color);
+}
+
+/* A plain error panel helps explain problems in hand-edited files. */
+#startup-error {
+  position: fixed;
+  inset: auto 20px 20px;
+  z-index: 2000;
+  max-height: 50vh;
+  overflow: auto;
+  padding: 20px;
+  margin: 0;
+  background: #251b20;
+  color: #fff3d5;
+  border: 2px solid #d8a279;
+  font: 16px/1.5 monospace;
+  white-space: pre-wrap;
+}

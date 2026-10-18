@@ -1,22 +1,890 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Caslon+Display&display=swap');
-:root{color-scheme:dark;font-family:'DM Sans',sans-serif;background:#111b19;color:#e7e9d9}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 15%,#23342c55,transparent 65%)}main{max-width:1240px;margin:auto;padding:0 42px}header{height:92px;display:flex;align-items:center;gap:26px;border-bottom:1px solid #ffffff15}.brand{font-size:17px;letter-spacing:4px;color:#e3e4c8;text-decoration:none;font-weight:600}.crest{color:#cbaf6a;font-size:27px;margin-right:9px}.subtitle,.live,.eyebrow,.tiny,.note>span{font-size:10px;letter-spacing:2px;color:#92a397}.live{margin-left:auto;font-size:9px;display:flex;align-items:center;gap:8px}.live i{height:6px;width:6px;background:#9ebf86;border-radius:50%;box-shadow:0 0 10px #9ebf8666}.intro{display:flex;justify-content:space-between;align-items:center;padding:38px 0 28px}.eyebrow{font-size:9px;color:#b8aa7a;margin:0 0 12px}h1{font:48px 'Libre Caslon Display',Georgia,serif;letter-spacing:-1px;margin:0 0 10px}.intro p:not(.eyebrow){font-size:13px;color:#96a69b;margin:0}.clock{text-align:right}.clock strong{font:32px Georgia,serif;font-weight:400;display:block}.clock span{font-size:9px;letter-spacing:1.5px;color:#9aaa9d;display:block;margin-top:9px}.game-shell{position:relative;border:1px solid #73847355;border-radius:5px;overflow:hidden;background:#284c35;box-shadow:0 25px 70px #0004}canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;image-rendering:pixelated;outline:none}.place{position:absolute;left:24px;top:23px;text-shadow:0 2px 4px #000}.tiny{font-size:8px;color:#e0e9cc99;display:block;margin-bottom:7px}.place strong{font:21px Georgia,serif;color:#faf4d6}.conditions{position:absolute;right:20px;top:20px;padding:11px 15px;background:#152b27d9;display:flex;align-items:center;gap:12px;border:1px solid #e8e8ca22;border-radius:3px}#weather-icon{font-size:25px;color:#dec98b}.conditions strong{display:block;font-size:11px;font-weight:500}.conditions small{display:block;color:#a6b8a9;font-size:9px;margin-top:5px}#sound{position:absolute;bottom:20px;right:20px;background:#192d27dd;border:1px solid #c2ccaa33;border-radius:3px;padding:9px 12px;color:#d1dbc6;cursor:pointer}#sound span{font-size:10px;margin-left:5px}.message{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);background:#182b26dc;padding:11px 19px;border:1px solid #c9cda633;border-radius:3px;font:13px Georgia,serif;text-align:center;transition:opacity 1s;pointer-events:none}footer{display:flex;align-items:center;justify-content:space-between;padding:19px 0;color:#93a396;font-size:10px}footer>div{display:flex;align-items:center;gap:5px}.key{border:1px solid #91a18c44;border-bottom-width:2px;border-radius:3px;font-size:9px;width:21px;height:22px;display:inline-flex;align-items:center;justify-content:center;color:#d5ddcb}.or{margin-left:7px}.separator{margin:0 12px;color:#697a6c}#phase{color:#b9b58b}.note{border-top:1px solid #ffffff12;margin-top:13px;padding:22px 0;display:flex;justify-content:space-between;align-items:center;gap:20px}.note>span{font-size:8px;white-space:nowrap}.note p{font:13px Georgia,serif;color:#8b9b8d}.touch{display:none;position:absolute;bottom:18px;left:15px;text-align:center}.touch button{width:38px;height:36px;background:#172e28b0;color:white;border:1px solid #ffffff40;border-radius:4px;touch-action:none}@media(pointer:coarse){.touch{display:block}.message{bottom:110px}}@media(max-width:700px){main{padding:0 15px}header{height:70px}.subtitle{display:none}.brand{font-size:12px;letter-spacing:2px}.intro{padding:26px 0}h1{font-size:30px}.intro p:not(.eyebrow){max-width:220px;font-size:11px}.eyebrow{font-size:7px}.clock strong{font-size:23px}.clock span{font-size:7px}.place{top:12px;left:12px}.place strong{font-size:15px}.conditions{top:50px;right:10px;padding:7px}.conditions small{font-size:7px}.conditions strong{font-size:9px}canvas{aspect-ratio:4/3}.note{display:block}.note>span:last-child{display:none}footer{font-size:8px}#phase{max-width:90px;text-align:right}.separator{margin:0 3px}.or{margin-left:2px}.message{font-size:10px;padding:8px;max-width:60%}}
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Caslon+Display&display=swap");
+:root {
+  color-scheme: dark;
+  font-family: "DM Sans", sans-serif;
+  background: #111b19;
+  color: #e7e9d9;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: radial-gradient(ellipse at 50% 15%, #23342c55, transparent 65%);
+}
+main {
+  max-width: 1240px;
+  margin: auto;
+  padding: 0 42px;
+}
+header {
+  height: 92px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  border-bottom: 1px solid #ffffff15;
+}
+.brand {
+  font-size: 17px;
+  letter-spacing: 4px;
+  color: #e3e4c8;
+  text-decoration: none;
+  font-weight: 600;
+}
+.crest {
+  color: #cbaf6a;
+  font-size: 27px;
+  margin-right: 9px;
+}
+.subtitle,
+.live,
+.eyebrow,
+.tiny,
+.note > span {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #92a397;
+}
+.live {
+  margin-left: auto;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.live i {
+  height: 6px;
+  width: 6px;
+  background: #9ebf86;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #9ebf8666;
+}
+.intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 38px 0 28px;
+}
+.eyebrow {
+  font-size: 9px;
+  color: #b8aa7a;
+  margin: 0 0 12px;
+}
+h1 {
+  font:
+    48px "Libre Caslon Display",
+    Georgia,
+    serif;
+  letter-spacing: -1px;
+  margin: 0 0 10px;
+}
+.intro p:not(.eyebrow) {
+  font-size: 13px;
+  color: #96a69b;
+  margin: 0;
+}
+.clock {
+  text-align: right;
+}
+.clock strong {
+  font:
+    32px Georgia,
+    serif;
+  font-weight: 400;
+  display: block;
+}
+.clock span {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: #9aaa9d;
+  display: block;
+  margin-top: 9px;
+}
+.game-shell {
+  position: relative;
+  border: 1px solid #73847355;
+  border-radius: 5px;
+  overflow: hidden;
+  background: #284c35;
+  box-shadow: 0 25px 70px #0004;
+}
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+  image-rendering: pixelated;
+  outline: none;
+}
+.place {
+  position: absolute;
+  left: 24px;
+  top: 23px;
+  text-shadow: 0 2px 4px #000;
+}
+.tiny {
+  font-size: 8px;
+  color: #e0e9cc99;
+  display: block;
+  margin-bottom: 7px;
+}
+.place strong {
+  font:
+    21px Georgia,
+    serif;
+  color: #faf4d6;
+}
+.conditions {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  padding: 11px 15px;
+  background: #152b27d9;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #e8e8ca22;
+  border-radius: 3px;
+}
+#weather-icon {
+  font-size: 25px;
+  color: #dec98b;
+}
+.conditions strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+}
+.conditions small {
+  display: block;
+  color: #a6b8a9;
+  font-size: 9px;
+  margin-top: 5px;
+}
+#sound {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: #192d27dd;
+  border: 1px solid #c2ccaa33;
+  border-radius: 3px;
+  padding: 9px 12px;
+  color: #d1dbc6;
+  cursor: pointer;
+}
+#sound span {
+  font-size: 10px;
+  margin-left: 5px;
+}
+.message {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #182b26dc;
+  padding: 11px 19px;
+  border: 1px solid #c9cda633;
+  border-radius: 3px;
+  font:
+    13px Georgia,
+    serif;
+  text-align: center;
+  transition: opacity 1s;
+  pointer-events: none;
+}
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 19px 0;
+  color: #93a396;
+  font-size: 10px;
+}
+footer > div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.key {
+  border: 1px solid #91a18c44;
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  font-size: 9px;
+  width: 21px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #d5ddcb;
+}
+.or {
+  margin-left: 7px;
+}
+.separator {
+  margin: 0 12px;
+  color: #697a6c;
+}
+#phase {
+  color: #b9b58b;
+}
+.note {
+  border-top: 1px solid #ffffff12;
+  margin-top: 13px;
+  padding: 22px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.note > span {
+  font-size: 8px;
+  white-space: nowrap;
+}
+.note p {
+  font:
+    13px Georgia,
+    serif;
+  color: #8b9b8d;
+}
+.touch {
+  display: none;
+  position: absolute;
+  bottom: 18px;
+  left: 15px;
+  text-align: center;
+}
+.touch button {
+  width: 38px;
+  height: 36px;
+  background: #172e28b0;
+  color: white;
+  border: 1px solid #ffffff40;
+  border-radius: 4px;
+  touch-action: none;
+}
+@media (pointer: coarse) {
+  .touch {
+    display: block;
+  }
+  .message {
+    bottom: 110px;
+  }
+}
+@media (max-width: 700px) {
+  main {
+    padding: 0 15px;
+  }
+  header {
+    height: 70px;
+  }
+  .subtitle {
+    display: none;
+  }
+  .brand {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+  .intro {
+    padding: 26px 0;
+  }
+  h1 {
+    font-size: 30px;
+  }
+  .intro p:not(.eyebrow) {
+    max-width: 220px;
+    font-size: 11px;
+  }
+  .eyebrow {
+    font-size: 7px;
+  }
+  .clock strong {
+    font-size: 23px;
+  }
+  .clock span {
+    font-size: 7px;
+  }
+  .place {
+    top: 12px;
+    left: 12px;
+  }
+  .place strong {
+    font-size: 15px;
+  }
+  .conditions {
+    top: 50px;
+    right: 10px;
+    padding: 7px;
+  }
+  .conditions small {
+    font-size: 7px;
+  }
+  .conditions strong {
+    font-size: 9px;
+  }
+  canvas {
+    aspect-ratio: 4/3;
+  }
+  .note {
+    display: block;
+  }
+  .note > span:last-child {
+    display: none;
+  }
+  footer {
+    font-size: 8px;
+  }
+  #phase {
+    max-width: 90px;
+    text-align: right;
+  }
+  .separator {
+    margin: 0 3px;
+  }
+  .or {
+    margin-left: 2px;
+  }
+  .message {
+    font-size: 10px;
+    padding: 8px;
+    max-width: 60%;
+  }
+}
 
 /* Keep the pixel scene crisp and the controls usable at small widths. */
-@media(max-width:700px){footer>div{flex-wrap:wrap;max-width:270px;row-gap:6px}footer{gap:8px}.touch button{width:32px;height:29px}.message{bottom:120px}}
+@media (max-width: 700px) {
+  footer > div {
+    flex-wrap: wrap;
+    max-width: 270px;
+    row-gap: 6px;
+  }
+  footer {
+    gap: 8px;
+  }
+  .touch button {
+    width: 32px;
+    height: 29px;
+  }
+  .message {
+    bottom: 120px;
+  }
+}
 /* v3 — in-world clock and distraction-free fullscreen. */
-.game-time{position:absolute;left:24px;bottom:22px;background:#15241edb;border:1px solid #c6c3a23d;padding:12px 16px;border-radius:4px;box-shadow:0 4px 14px #0003;pointer-events:none}.game-time strong{font:24px Georgia,serif;display:block;color:#f2e6c9;font-variant-numeric:tabular-nums}.game-time .tiny{font-size:7px;margin-bottom:5px}.game-time small{display:block;font-size:8px;letter-spacing:1px;color:#b3bda5;margin-top:5px}#fullscreen{position:absolute;bottom:62px;right:20px;background:#192d27ed;border:1px solid #c2ccaa55;border-radius:3px;padding:10px 12px;color:#e3e5cb;cursor:pointer;font:11px 'DM Sans',sans-serif}#fullscreen:focus-visible,#sound:focus-visible{outline:2px solid #dfc28c;outline-offset:3px}.game-shell:fullscreen,.game-shell.theater{width:100vw;height:100dvh;border:0;border-radius:0;background:#0b110f;display:flex;align-items:center;justify-content:center}.game-shell.theater{position:fixed;inset:0;z-index:1000}.game-shell:fullscreen canvas,.game-shell.theater canvas{width:min(100vw,177.7778dvh);height:min(100dvh,56.25vw);aspect-ratio:16/9;object-fit:contain}.game-shell:fullscreen .place,.game-shell.theater .place{top:24px;left:24px}.game-shell:fullscreen .game-time,.game-shell.theater .game-time{bottom:24px}.game-shell:fullscreen .conditions,.game-shell.theater .conditions{top:24px}canvas{image-rendering:pixelated}@media(pointer:coarse){.game-time{bottom:auto;top:100px;left:12px;padding:8px 10px}.game-time strong{font-size:18px}.game-time .tiny{display:none}}@media(max-width:700px){.game-time{left:12px;padding:7px 9px;bottom:12px}.game-time strong{font-size:17px}.game-time small{font-size:6px}.game-time .tiny{display:none}#fullscreen{bottom:52px;right:10px;font-size:9px;padding:8px}#sound{right:10px;bottom:12px}.message{max-width:48%}.game-shell:fullscreen .conditions,.game-shell.theater .conditions{top:55px}.game-shell:fullscreen .game-time,.game-shell.theater .game-time{left:12px;bottom:auto;top:100px}.game-shell:fullscreen .place,.game-shell.theater .place{left:12px;top:16px}}@media(pointer:coarse) and (max-width:700px){.game-time{top:100px;bottom:auto}}
+.game-time {
+  position: absolute;
+  left: 24px;
+  bottom: 22px;
+  background: #15241edb;
+  border: 1px solid #c6c3a23d;
+  padding: 12px 16px;
+  border-radius: 4px;
+  box-shadow: 0 4px 14px #0003;
+  pointer-events: none;
+}
+.game-time strong {
+  font:
+    24px Georgia,
+    serif;
+  display: block;
+  color: #f2e6c9;
+  font-variant-numeric: tabular-nums;
+}
+.game-time .tiny {
+  font-size: 7px;
+  margin-bottom: 5px;
+}
+.game-time small {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: #b3bda5;
+  margin-top: 5px;
+}
+#fullscreen {
+  position: absolute;
+  bottom: 62px;
+  right: 20px;
+  background: #192d27ed;
+  border: 1px solid #c2ccaa55;
+  border-radius: 3px;
+  padding: 10px 12px;
+  color: #e3e5cb;
+  cursor: pointer;
+  font:
+    11px "DM Sans",
+    sans-serif;
+}
+#fullscreen:focus-visible,
+#sound:focus-visible {
+  outline: 2px solid #dfc28c;
+  outline-offset: 3px;
+}
+.game-shell:fullscreen,
+.game-shell.theater {
+  width: 100vw;
+  height: 100dvh;
+  border: 0;
+  border-radius: 0;
+  background: #0b110f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.game-shell.theater {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+.game-shell:fullscreen canvas,
+.game-shell.theater canvas {
+  width: min(100vw, 177.7778dvh);
+  height: min(100dvh, 56.25vw);
+  aspect-ratio: 16/9;
+  object-fit: contain;
+}
+.game-shell:fullscreen .place,
+.game-shell.theater .place {
+  top: 24px;
+  left: 24px;
+}
+.game-shell:fullscreen .game-time,
+.game-shell.theater .game-time {
+  bottom: 24px;
+}
+.game-shell:fullscreen .conditions,
+.game-shell.theater .conditions {
+  top: 24px;
+}
+canvas {
+  image-rendering: pixelated;
+}
+@media (pointer: coarse) {
+  .game-time {
+    bottom: auto;
+    top: 100px;
+    left: 12px;
+    padding: 8px 10px;
+  }
+  .game-time strong {
+    font-size: 18px;
+  }
+  .game-time .tiny {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .game-time {
+    left: 12px;
+    padding: 7px 9px;
+    bottom: 12px;
+  }
+  .game-time strong {
+    font-size: 17px;
+  }
+  .game-time small {
+    font-size: 6px;
+  }
+  .game-time .tiny {
+    display: none;
+  }
+  #fullscreen {
+    bottom: 52px;
+    right: 10px;
+    font-size: 9px;
+    padding: 8px;
+  }
+  #sound {
+    right: 10px;
+    bottom: 12px;
+  }
+  .message {
+    max-width: 48%;
+  }
+  .game-shell:fullscreen .conditions,
+  .game-shell.theater .conditions {
+    top: 55px;
+  }
+  .game-shell:fullscreen .game-time,
+  .game-shell.theater .game-time {
+    left: 12px;
+    bottom: auto;
+    top: 100px;
+  }
+  .game-shell:fullscreen .place,
+  .game-shell.theater .place {
+    left: 12px;
+    top: 16px;
+  }
+}
+@media (pointer: coarse) and (max-width: 700px) {
+  .game-time {
+    top: 100px;
+    bottom: auto;
+  }
+}
 
 /* The live-wind line stays clear of the clock on touch screens. */
-@media(pointer:coarse){.game-time{top:135px}}@media(max-width:700px){.game-shell:fullscreen .game-time,.game-shell.theater .game-time{top:135px}}
-.battle-hud{position:absolute;left:24px;top:88px;display:flex;flex-direction:column;gap:5px;padding:10px 13px;background:#15241edb;border:1px solid #c6c3a23d;border-radius:4px;pointer-events:none}.battle-hud strong{font-size:20px;color:#ef9c8a;letter-spacing:3px;text-shadow:0 2px #4a3033}.battle-hud span{font-size:10px;color:#e0d8bc}.battle-hud small{font-size:7px;letter-spacing:1px;color:#b9c7ab}@media(max-width:700px){.battle-hud{left:12px;top:53px;padding:6px 8px}.battle-hud strong{font-size:15px}.battle-hud small{font-size:6px}.conditions{max-width:180px}.game-time{bottom:12px}.touch{bottom:15px}.message{bottom:110px}}@media(pointer:coarse){.game-time{top:auto;bottom:15px;left:140px}}@media(max-width:700px){.game-shell:fullscreen .game-time,.game-shell.theater .game-time{top:auto;bottom:15px;left:140px}}
+@media (pointer: coarse) {
+  .game-time {
+    top: 135px;
+  }
+}
+@media (max-width: 700px) {
+  .game-shell:fullscreen .game-time,
+  .game-shell.theater .game-time {
+    top: 135px;
+  }
+}
+.battle-hud {
+  position: absolute;
+  left: 24px;
+  top: 88px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px 13px;
+  background: #15241edb;
+  border: 1px solid #c6c3a23d;
+  border-radius: 4px;
+  pointer-events: none;
+}
+.battle-hud strong {
+  font-size: 20px;
+  color: #ef9c8a;
+  letter-spacing: 3px;
+  text-shadow: 0 2px #4a3033;
+}
+.battle-hud span {
+  font-size: 10px;
+  color: #e0d8bc;
+}
+.battle-hud small {
+  font-size: 7px;
+  letter-spacing: 1px;
+  color: #b9c7ab;
+}
+@media (max-width: 700px) {
+  .battle-hud {
+    left: 12px;
+    top: 53px;
+    padding: 6px 8px;
+  }
+  .battle-hud strong {
+    font-size: 15px;
+  }
+  .battle-hud small {
+    font-size: 6px;
+  }
+  .conditions {
+    max-width: 180px;
+  }
+  .game-time {
+    bottom: 12px;
+  }
+  .touch {
+    bottom: 15px;
+  }
+  .message {
+    bottom: 110px;
+  }
+}
+@media (pointer: coarse) {
+  .game-time {
+    top: auto;
+    bottom: 15px;
+    left: 140px;
+  }
+}
+@media (max-width: 700px) {
+  .game-shell:fullscreen .game-time,
+  .game-shell.theater .game-time {
+    top: auto;
+    bottom: 15px;
+    left: 140px;
+  }
+}
 /* v9 — local pixel font and beveled 16-bit status windows. */
-@font-face{font-family:WillowPixel;src:url('assets/fonts/VT323-Regular.ttf') format('truetype');font-display:swap}
-.world-status{position:absolute;top:20px;right:20px;width:246px;display:grid;gap:7px;pointer-events:none;z-index:2}
-.rpg-panel{font-family:WillowPixel,monospace;color:#f0f2e9;text-shadow:2px 2px 0 #11151e;background:repeating-linear-gradient(132deg,#ffffff03 0 1px,transparent 1px 4px),linear-gradient(145deg,#4c545b,#242e36 55%,#172028);border:3px solid;border-color:#b4b9b4 #565e61 #454e54 #c2c5b9;border-radius:0;box-shadow:inset 0 0 0 2px #171f27,inset 0 0 0 3px #7d898b,0 0 0 1px #10161d,2px 3px 0 #11182099}
-.world-status .game-time,.world-status .conditions{position:relative;inset:auto;width:auto;max-width:none;display:block;padding:11px 13px;box-sizing:border-box;letter-spacing:0}
-.panel-title{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:17px;line-height:1;letter-spacing:.5px;color:#d5d9cc;border-bottom:1px solid #b3bab433;padding-bottom:6px;margin-bottom:6px}
-.panel-title span:last-child{font-size:15px;color:#b9c6c8}.clock-line{display:flex;align-items:center;gap:12px}.clock-line #time-icon{font-family:monospace;font-size:24px;color:#d8e1dc}.world-status .game-time strong{font-family:WillowPixel,monospace;font-size:37px;line-height:1;color:#fff9e4;font-weight:400}.world-status .game-time small,.world-status .conditions small{font:16px/1.05 WillowPixel,monospace;letter-spacing:0;color:#d0d9d4;margin-top:5px;display:block}.weather-main{display:flex;gap:9px;align-items:center;min-height:28px}.world-status #weather-icon{font-size:23px;color:#e6e5c9;flex-shrink:0}.world-status .conditions strong{font:22px/1 WillowPixel,monospace;color:#fff9e4}.world-status #wind-detail{color:#b6c6cc}.clock{padding:9px 13px;background:linear-gradient(145deg,#424b51,#1c272d);border:2px solid;border-color:#aab3ac #4b565a #404b50 #b6bdb1;box-shadow:inset 0 0 0 2px #182028}.clock strong{font-family:WillowPixel,monospace;font-size:34px}.clock span{font-family:WillowPixel,monospace;font-size:15px;letter-spacing:.5px}.game-shell .place strong{font-family:WillowPixel,monospace;font-size:26px}.battle-hud,.message{border-radius:0;font-family:WillowPixel,monospace}.message{font-size:20px}.battle-hud span{font-size:16px}.battle-hud small{font-family:WillowPixel,monospace;font-size:12px;letter-spacing:.3px}
-.game-shell:fullscreen .world-status,.game-shell.theater .world-status{top:20px;right:20px}.game-shell:fullscreen .world-status .game-time,.game-shell.theater .world-status .game-time,.game-shell:fullscreen .world-status .conditions,.game-shell.theater .world-status .conditions{position:relative;inset:auto}
-@media(max-width:700px){.world-status{top:12px;right:9px;width:154px;gap:5px}.world-status .game-time,.world-status .conditions{padding:7px 9px;border-width:2px}.panel-title{font-size:12px;letter-spacing:0;gap:3px;margin-bottom:4px;padding-bottom:4px}.panel-title span:last-child{font-size:11px}.world-status .game-time strong{font-size:26px}.clock-line{gap:6px}.clock-line #time-icon{font-size:19px}.world-status .game-time small,.world-status .conditions small{font-size:12px}.world-status .conditions strong{font-size:16px}.weather-main{gap:5px}.world-status #weather-icon{font-size:17px}.game-shell .place strong{font-size:18px;max-width:160px;display:block}.game-shell .place{max-width:165px}.place .tiny{font-size:6px}.message{font-size:15px;bottom:76px}.battle-hud small{font-size:9px}.battle-hud span{font-size:13px}.clock strong{font-size:27px}.clock span{font-size:12px}.game-shell:fullscreen .world-status,.game-shell.theater .world-status{top:12px;right:9px}}
-@media(max-height:480px) and (orientation:landscape){.game-shell:fullscreen .world-status,.game-shell.theater .world-status{width:340px;display:grid;grid-template-columns:1fr 1fr;gap:6px}.world-status .game-time strong{font-size:28px}.world-status .game-time small,.world-status .conditions small{font-size:12px}.panel-title{font-size:12px}.panel-title span:last-child{font-size:11px}.world-status .conditions strong{font-size:17px}}
-.clock{flex-shrink:0}.clock strong{white-space:nowrap}.intro>div:first-child{min-width:0}@media(max-width:700px){.clock{padding:8px 9px}.clock strong{font-size:25px}.intro{gap:12px}.world-status #weather-detail{font-size:11px}.game-shell .message{z-index:3;max-width:52%;font-size:13px;bottom:66px}}
+@font-face {
+  font-family: WillowPixel;
+  src: url("assets/fonts/VT323-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+.world-status {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 246px;
+  display: grid;
+  gap: 7px;
+  pointer-events: none;
+  z-index: 2;
+}
+.rpg-panel {
+  font-family: WillowPixel, monospace;
+  color: #f0f2e9;
+  text-shadow: 2px 2px 0 #11151e;
+  background:
+    repeating-linear-gradient(132deg, #ffffff03 0 1px, transparent 1px 4px),
+    linear-gradient(145deg, #4c545b, #242e36 55%, #172028);
+  border: 3px solid;
+  border-color: #b4b9b4 #565e61 #454e54 #c2c5b9;
+  border-radius: 0;
+  box-shadow:
+    inset 0 0 0 2px #171f27,
+    inset 0 0 0 3px #7d898b,
+    0 0 0 1px #10161d,
+    2px 3px 0 #11182099;
+}
+.world-status .game-time,
+.world-status .conditions {
+  position: relative;
+  inset: auto;
+  width: auto;
+  max-width: none;
+  display: block;
+  padding: 11px 13px;
+  box-sizing: border-box;
+  letter-spacing: 0;
+}
+.panel-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  line-height: 1;
+  letter-spacing: 0.5px;
+  color: #d5d9cc;
+  border-bottom: 1px solid #b3bab433;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+}
+.panel-title span:last-child {
+  font-size: 15px;
+  color: #b9c6c8;
+}
+.clock-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.clock-line #time-icon {
+  font-family: monospace;
+  font-size: 24px;
+  color: #d8e1dc;
+}
+.world-status .game-time strong {
+  font-family: WillowPixel, monospace;
+  font-size: 37px;
+  line-height: 1;
+  color: #fff9e4;
+  font-weight: 400;
+}
+.world-status .game-time small,
+.world-status .conditions small {
+  font:
+    16px/1.05 WillowPixel,
+    monospace;
+  letter-spacing: 0;
+  color: #d0d9d4;
+  margin-top: 5px;
+  display: block;
+}
+.weather-main {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  min-height: 28px;
+}
+.world-status #weather-icon {
+  font-size: 23px;
+  color: #e6e5c9;
+  flex-shrink: 0;
+}
+.world-status .conditions strong {
+  font:
+    22px/1 WillowPixel,
+    monospace;
+  color: #fff9e4;
+}
+.world-status #wind-detail {
+  color: #b6c6cc;
+}
+.clock {
+  padding: 9px 13px;
+  background: linear-gradient(145deg, #424b51, #1c272d);
+  border: 2px solid;
+  border-color: #aab3ac #4b565a #404b50 #b6bdb1;
+  box-shadow: inset 0 0 0 2px #182028;
+}
+.clock strong {
+  font-family: WillowPixel, monospace;
+  font-size: 34px;
+}
+.clock span {
+  font-family: WillowPixel, monospace;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+.game-shell .place strong {
+  font-family: WillowPixel, monospace;
+  font-size: 26px;
+}
+.battle-hud,
+.message {
+  border-radius: 0;
+  font-family: WillowPixel, monospace;
+}
+.message {
+  font-size: 20px;
+}
+.battle-hud span {
+  font-size: 16px;
+}
+.battle-hud small {
+  font-family: WillowPixel, monospace;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+.game-shell:fullscreen .world-status,
+.game-shell.theater .world-status {
+  top: 20px;
+  right: 20px;
+}
+.game-shell:fullscreen .world-status .game-time,
+.game-shell.theater .world-status .game-time,
+.game-shell:fullscreen .world-status .conditions,
+.game-shell.theater .world-status .conditions {
+  position: relative;
+  inset: auto;
+}
+@media (max-width: 700px) {
+  .world-status {
+    top: 12px;
+    right: 9px;
+    width: 154px;
+    gap: 5px;
+  }
+  .world-status .game-time,
+  .world-status .conditions {
+    padding: 7px 9px;
+    border-width: 2px;
+  }
+  .panel-title {
+    font-size: 12px;
+    letter-spacing: 0;
+    gap: 3px;
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+  }
+  .panel-title span:last-child {
+    font-size: 11px;
+  }
+  .world-status .game-time strong {
+    font-size: 26px;
+  }
+  .clock-line {
+    gap: 6px;
+  }
+  .clock-line #time-icon {
+    font-size: 19px;
+  }
+  .world-status .game-time small,
+  .world-status .conditions small {
+    font-size: 12px;
+  }
+  .world-status .conditions strong {
+    font-size: 16px;
+  }
+  .weather-main {
+    gap: 5px;
+  }
+  .world-status #weather-icon {
+    font-size: 17px;
+  }
+  .game-shell .place strong {
+    font-size: 18px;
+    max-width: 160px;
+    display: block;
+  }
+  .game-shell .place {
+    max-width: 165px;
+  }
+  .place .tiny {
+    font-size: 6px;
+  }
+  .message {
+    font-size: 15px;
+    bottom: 76px;
+  }
+  .battle-hud small {
+    font-size: 9px;
+  }
+  .battle-hud span {
+    font-size: 13px;
+  }
+  .clock strong {
+    font-size: 27px;
+  }
+  .clock span {
+    font-size: 12px;
+  }
+  .game-shell:fullscreen .world-status,
+  .game-shell.theater .world-status {
+    top: 12px;
+    right: 9px;
+  }
+}
+@media (max-height: 480px) and (orientation: landscape) {
+  .game-shell:fullscreen .world-status,
+  .game-shell.theater .world-status {
+    width: 340px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .world-status .game-time strong {
+    font-size: 28px;
+  }
+  .world-status .game-time small,
+  .world-status .conditions small {
+    font-size: 12px;
+  }
+  .panel-title {
+    font-size: 12px;
+  }
+  .panel-title span:last-child {
+    font-size: 11px;
+  }
+  .world-status .conditions strong {
+    font-size: 17px;
+  }
+}
+.clock {
+  flex-shrink: 0;
+}
+.clock strong {
+  white-space: nowrap;
+}
+.intro > div:first-child {
+  min-width: 0;
+}
+@media (max-width: 700px) {
+  .clock {
+    padding: 8px 9px;
+  }
+  .clock strong {
+    font-size: 25px;
+  }
+  .intro {
+    gap: 12px;
+  }
+  .world-status #weather-detail {
+    font-size: 11px;
+  }
+  .game-shell .message {
+    z-index: 3;
+    max-width: 52%;
+    font-size: 13px;
+    bottom: 66px;
+  }
+}
