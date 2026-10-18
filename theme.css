@@ -1,39 +1,37 @@
-/* DUSQK'S COLORS
-   Edit these color codes, save, then refresh. #ffffff is white; #000000 is black.
-   This file loads last, so you can customize the look without editing style.css.
-   The actual game artwork is in assets/. Night shading is in settings.js. */
+/* DUSQK'S COLORS — the storybook skin, kept separate from gameplay. */
 :root {
-  --page-background: #111b19;
-  --page-text: #e7e9d9;
-  --panel-top: #4c545b;
-  --panel-bottom: #172028;
-  --panel-border-light: #b4b9b4;
-  --panel-border-dark: #454e54;
-  --panel-text: #fff9e4;
-  --heart-color: #ef9c8a;
+  --page-background: #eee7cf;
+  --page-text: #354838;
+  --panel-top: #f6e9bb;
+  --panel-bottom: #dfc98a;
+  --panel-border-light: #e8d6a3;
+  --panel-border-dark: #89774a;
+  --panel-text: #514b33;
+  --heart-color: #e8ad88;
 }
-
-/* Normally you only edit the colors above. These rules apply those colors. */
 body {
   background-color: var(--page-background);
   color: var(--page-text);
 }
 .rpg-panel {
   background:
-    repeating-linear-gradient(132deg, #ffffff03 0 1px, transparent 1px 4px),
-    linear-gradient(145deg, var(--panel-top), var(--panel-bottom));
-  border-color: var(--panel-border-light) var(--panel-border-dark)
-    var(--panel-border-dark) var(--panel-border-light);
-}
-.world-status .game-time strong,
-.world-status .conditions strong {
+    repeating-linear-gradient(8deg, #a2925b07 0 1px, transparent 1px 5px),
+    linear-gradient(
+      120deg,
+      var(--panel-bottom),
+      var(--panel-top) 45%,
+      var(--panel-bottom)
+    );
+  border-color: var(--panel-border-dark);
+  box-shadow:
+    inset 0 0 0 2px var(--panel-border-light),
+    inset 0 0 16px #a47f3c35,
+    0 2px 8px #293c3159;
   color: var(--panel-text);
 }
 .battle-hud strong {
   color: var(--heart-color);
 }
-
-/* A plain error panel helps explain problems in hand-edited files. */
 #startup-error {
   position: fixed;
   inset: auto 20px 20px;
@@ -42,9 +40,10 @@ body {
   overflow: auto;
   padding: 20px;
   margin: 0;
-  background: #251b20;
-  color: #fff3d5;
-  border: 2px solid #d8a279;
+  background: #fff1cd;
+  color: #754b32;
+  border: 2px solid #a48451;
+  border-radius: 8px;
   font: 16px/1.5 monospace;
   white-space: pre-wrap;
 }

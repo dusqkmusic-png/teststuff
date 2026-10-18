@@ -1,204 +1,386 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Caslon+Display&display=swap");
-:root {
-  color-scheme: dark;
-  font-family: "DM Sans", sans-serif;
-  background: #111b19;
-  color: #e7e9d9;
+/* Willowmere · Storybook edition. Theme colors live in theme.css. */
+@font-face {
+  font-family: WillowSerif;
+  src: url("assets/fonts/Alegreya.ttf") format("truetype");
+  font-display: swap;
 }
 * {
   box-sizing: border-box;
 }
+:root {
+  color-scheme: light;
+  font-family: WillowSerif, Georgia, serif;
+  background: #263e32;
+  color: #354838;
+}
 body {
   margin: 0;
-  background: radial-gradient(ellipse at 50% 15%, #23342c55, transparent 65%);
+  background:
+    linear-gradient(#f4edd8f2, #e5dec4f2),
+    url("assets/storybook/ground.png") center/1100px;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  font: inherit;
 }
 main {
-  max-width: 1240px;
+  max-width: 1280px;
+  padding: 0 36px;
   margin: auto;
-  padding: 0 42px;
 }
 header {
-  height: 92px;
+  height: 78px;
   display: flex;
   align-items: center;
-  gap: 26px;
-  border-bottom: 1px solid #ffffff15;
+  gap: 22px;
+  border-bottom: 1px solid #80906b55;
 }
 .brand {
-  font-size: 17px;
-  letter-spacing: 4px;
-  color: #e3e4c8;
+  display: flex;
+  align-items: center;
+  gap: 11px;
   text-decoration: none;
-  font-weight: 600;
+  color: #355440;
+  font-size: 22px;
+  letter-spacing: 3px;
+  font-weight: 700;
 }
 .crest {
-  color: #cbaf6a;
-  font-size: 27px;
-  margin-right: 9px;
+  font-size: 30px;
+  color: #a48445;
 }
-.subtitle,
-.live,
-.eyebrow,
-.tiny,
-.note > span {
+.subtitle {
   font-size: 10px;
   letter-spacing: 2px;
-  color: #92a397;
+  color: #6f7e62;
 }
 .live {
   margin-left: auto;
-  font-size: 9px;
   display: flex;
   align-items: center;
   gap: 8px;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: #5b7456;
 }
 .live i {
-  height: 6px;
-  width: 6px;
-  background: #9ebf86;
-  border-radius: 50%;
-  box-shadow: 0 0 10px #9ebf8666;
+  width: 7px;
+  height: 7px;
+  border-radius: 100%;
+  background: #729058;
+  box-shadow: 0 0 0 4px #87a3711a;
 }
 .intro {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 38px 0 28px;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 26px 0;
 }
 .eyebrow {
-  font-size: 9px;
-  color: #b8aa7a;
-  margin: 0 0 12px;
+  margin: 0 0 8px;
+  color: #8a794d;
+  font-size: 11px;
+  letter-spacing: 2px;
 }
 h1 {
-  font:
-    48px "Libre Caslon Display",
-    Georgia,
-    serif;
-  letter-spacing: -1px;
-  margin: 0 0 10px;
+  font-size: 48px;
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -1.5px;
+  margin: 0 0 9px;
 }
 .intro p:not(.eyebrow) {
-  font-size: 13px;
-  color: #96a69b;
   margin: 0;
+  color: #718067;
+  font-size: 16px;
 }
 .clock {
-  text-align: right;
+  padding: 9px 16px;
+  min-width: 112px;
+  text-align: center;
+  border: 1px solid #ac9b6b88;
+  border-radius: 50% 50% 10px 10px;
+  background: #faf3dd99;
+  box-shadow:
+    inset 0 0 0 4px #faf6e880,
+    0 3px 12px #51663b0d;
 }
-.clock strong {
-  font:
-    32px Georgia,
-    serif;
-  font-weight: 400;
+.clock svg {
   display: block;
+  width: 76px;
+  height: 76px;
+  margin: auto;
 }
-.clock span {
-  font-size: 9px;
-  letter-spacing: 1.5px;
-  color: #9aaa9d;
+.clock #date {
   display: block;
-  margin-top: 9px;
+  font-size: 11px;
+  color: #727958;
+  white-space: nowrap;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
 }
 .game-shell {
   position: relative;
-  border: 1px solid #73847355;
-  border-radius: 5px;
   overflow: hidden;
-  background: #284c35;
-  box-shadow: 0 25px 70px #0004;
+  border: 7px solid #675d40;
+  border-radius: 14px;
+  outline: 1px solid #b8a56c;
+  box-shadow:
+    inset 0 0 0 2px #e4d19c,
+    0 14px 40px #384a332a;
+  background: #213b32;
 }
-canvas {
+canvas#world {
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 16/9;
-  image-rendering: pixelated;
+  image-rendering: auto;
   outline: none;
 }
 .place {
   position: absolute;
-  left: 24px;
-  top: 23px;
-  text-shadow: 0 2px 4px #000;
+  top: 21px;
+  left: 23px;
+  color: #fff5d7;
+  text-shadow: 0 2px 5px #223323b0;
+  padding: 8px 15px 9px;
+  background: linear-gradient(90deg, #294e39b5, #294e3900);
+  border-left: 2px solid #e6d29f99;
+  max-width: 50%;
 }
 .tiny {
-  font-size: 8px;
-  color: #e0e9cc99;
   display: block;
-  margin-bottom: 7px;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: #f2ead0b0;
+  margin-bottom: 3px;
 }
 .place strong {
-  font:
-    21px Georgia,
-    serif;
-  color: #faf4d6;
+  font-size: 23px;
+  font-weight: 500;
+  line-height: 1.1;
 }
-.conditions {
+.world-status {
   position: absolute;
-  right: 20px;
-  top: 20px;
-  padding: 11px 15px;
-  background: #152b27d9;
+  top: 18px;
+  right: 18px;
+  width: 210px;
+  display: grid;
+  gap: 8px;
+  pointer-events: none;
+}
+.rpg-panel {
+  color: #514b33;
+  background:
+    radial-gradient(ellipse at 20% 0%, #fff9db88, transparent 70%),
+    repeating-linear-gradient(8deg, #a2925b07 0 1px, transparent 1px 5px),
+    linear-gradient(120deg, #e8d59b, #f6e9bb 45%, #e1ca88);
+  border: 2px solid #89774a;
+  border-radius: 9px;
+  box-shadow:
+    inset 0 0 0 2px #f2dfa7,
+    inset 0 0 16px #a47f3c35,
+    0 2px 8px #293c3159;
+}
+.world-status .rpg-panel {
+  padding: 9px 13px;
+}
+.panel-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid #9b8e5a4d;
+  padding-bottom: 5px;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  color: #6c6f48;
+}
+.panel-title span:last-child {
+  font-size: 9px;
+  letter-spacing: 0.6px;
+}
+.clock-line {
   display: flex;
   align-items: center;
-  gap: 12px;
-  border: 1px solid #e8e8ca22;
-  border-radius: 3px;
+  justify-content: center;
+  gap: 10px;
+  padding: 3px 0;
 }
-#weather-icon {
-  font-size: 25px;
-  color: #dec98b;
+.clock-line svg {
+  width: 70px;
+  height: 70px;
 }
-.conditions strong {
+.clock-line #time-icon {
+  font:
+    22px Georgia,
+    serif;
+  color: #887746;
+}
+.game-time small {
   display: block;
-  font-size: 11px;
+  text-align: center;
+  font-size: 10px;
+  color: #797552;
+  line-height: 1.3;
+}
+.weather-main {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  padding-top: 7px;
+}
+.weather-main #weather-icon {
+  font:
+    24px Georgia,
+    serif;
+  color: #807748;
+}
+.weather-main strong {
+  font-size: 19px;
   font-weight: 500;
+  line-height: 1;
 }
 .conditions small {
   display: block;
-  color: #a6b8a9;
-  font-size: 9px;
   margin-top: 5px;
+  font-size: 11px;
+  color: #797552;
+  line-height: 1.2;
 }
-#sound {
+.battle-hud {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background: #192d27dd;
-  border: 1px solid #c2ccaa33;
-  border-radius: 3px;
-  padding: 9px 12px;
-  color: #d1dbc6;
-  cursor: pointer;
+  left: 23px;
+  top: 94px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 9px 13px;
+  background: linear-gradient(120deg, #33583de6, #243d30d9);
+  color: #e9e5be;
+  border: 1px solid #c2b47b80;
+  border-radius: 7px;
+  box-shadow: 0 3px 10px #243a2d26;
 }
-#sound span {
-  font-size: 10px;
-  margin-left: 5px;
+.battle-hud strong {
+  font:
+    19px Georgia,
+    serif;
+  letter-spacing: 3px;
+  color: #e8ad88;
+  text-shadow: 0 1px #483428;
+}
+.battle-hud span {
+  font-size: 12px;
+}
+.battle-hud small {
+  font-size: 8px;
+  letter-spacing: 1px;
 }
 .message {
   position: absolute;
-  bottom: 24px;
+  bottom: 22px;
   left: 50%;
   transform: translateX(-50%);
-  background: #182b26dc;
-  padding: 11px 19px;
-  border: 1px solid #c9cda633;
-  border-radius: 3px;
-  font:
-    13px Georgia,
-    serif;
-  text-align: center;
-  transition: opacity 1s;
+  width: min(640px, calc(100% - 90px));
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  min-height: 110px;
+  padding: 11px 13px 11px 23px;
+  color: #4c472b;
+  background:
+    radial-gradient(ellipse at top, #fff5c888, transparent 70%),
+    repeating-linear-gradient(4deg, #91773d08 0 1px, transparent 1px 4px),
+    linear-gradient(105deg, #e0cb85, #f4e6b1 35%, #efdda1 75%, #cfb575);
+  border: 3px solid #8b7949;
+  border-radius: 13px;
+  box-shadow:
+    inset 0 0 0 2px #eedba0,
+    inset 0 0 19px #8d6b2e45,
+    0 3px 10px #213e3559;
+  transition: opacity 0.7s;
   pointer-events: none;
+  z-index: 3;
+}
+.dialogue-copy {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.dialogue-name {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #7e8250;
+  margin-bottom: 4px;
+}
+#message-text {
+  font-size: 21px;
+  line-height: 1.2;
+}
+.dialogue-next {
+  align-self: center;
+  font-size: 10px;
+  color: #978344;
+  margin-top: 7px;
+}
+.dialogue-portrait {
+  width: 86px;
+  height: 86px;
+  object-fit: cover;
+  border: 2px solid #a78e54;
+  border-radius: 6px;
+  box-shadow: 0 0 0 2px #e8d69a;
+  flex-shrink: 0;
+}
+#fullscreen,
+#sound,
+#map-button {
+  position: absolute;
+  right: 17px;
+  padding: 8px 11px;
+  border: 1px solid #b6a6779c;
+  background: linear-gradient(120deg, #31523fe6, #263e34ed);
+  border-radius: 6px;
+  color: #f0e7c3;
+  box-shadow:
+    inset 0 1px #f6e9c71a,
+    0 2px 7px #253b2926;
+  cursor: pointer;
+  font-size: 13px;
+}
+#fullscreen {
+  bottom: 56px;
+}
+#sound {
+  bottom: 17px;
+}
+#map-button {
+  bottom: 95px;
+}
+#sound span {
+  margin-left: 5px;
+  font-size: 12px;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #e6b76c;
+  outline-offset: 3px;
 }
 footer {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  gap: 16px;
+  align-items: center;
   padding: 19px 0;
-  color: #93a396;
-  font-size: 10px;
+  color: #768365;
+  font-size: 11px;
 }
 footer > div {
   display: flex;
@@ -206,217 +388,65 @@ footer > div {
   gap: 5px;
 }
 .key {
-  border: 1px solid #91a18c44;
+  height: 23px;
+  min-width: 23px;
+  border: 1px solid #a3ab8a;
   border-bottom-width: 2px;
-  border-radius: 3px;
-  font-size: 9px;
-  width: 21px;
-  height: 22px;
+  border-radius: 5px;
+  color: #6a7859;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #d5ddcb;
+  font: 10px monospace;
+  background: #f9f4e650;
 }
 .or {
-  margin-left: 7px;
+  margin-left: 3px;
 }
 .separator {
-  margin: 0 12px;
-  color: #697a6c;
+  margin: 0 10px;
+  color: #acaf92;
 }
 #phase {
-  color: #b9b58b;
+  text-align: right;
+  color: #8a865d;
 }
 .note {
-  border-top: 1px solid #ffffff12;
-  margin-top: 13px;
-  padding: 22px 0;
+  border-top: 1px solid #9eaa8059;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   gap: 20px;
+  padding: 17px 0 23px;
 }
 .note > span {
-  font-size: 8px;
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  color: #899775;
   white-space: nowrap;
 }
 .note p {
-  font:
-    13px Georgia,
-    serif;
-  color: #8b9b8d;
+  margin: 0;
+  color: #7c896d;
+  font-size: 14px;
 }
 .touch {
   display: none;
   position: absolute;
-  bottom: 18px;
+  bottom: 15px;
   left: 15px;
   text-align: center;
+  z-index: 4;
 }
 .touch button {
-  width: 38px;
-  height: 36px;
-  background: #172e28b0;
-  color: white;
-  border: 1px solid #ffffff40;
-  border-radius: 4px;
+  width: 36px;
+  height: 32px;
+  margin: 1px;
+  background: #2d503bd9;
+  color: #f2e4b7;
+  border: 1px solid #c4ad71aa;
+  border-radius: 7px;
   touch-action: none;
-}
-@media (pointer: coarse) {
-  .touch {
-    display: block;
-  }
-  .message {
-    bottom: 110px;
-  }
-}
-@media (max-width: 700px) {
-  main {
-    padding: 0 15px;
-  }
-  header {
-    height: 70px;
-  }
-  .subtitle {
-    display: none;
-  }
-  .brand {
-    font-size: 12px;
-    letter-spacing: 2px;
-  }
-  .intro {
-    padding: 26px 0;
-  }
-  h1 {
-    font-size: 30px;
-  }
-  .intro p:not(.eyebrow) {
-    max-width: 220px;
-    font-size: 11px;
-  }
-  .eyebrow {
-    font-size: 7px;
-  }
-  .clock strong {
-    font-size: 23px;
-  }
-  .clock span {
-    font-size: 7px;
-  }
-  .place {
-    top: 12px;
-    left: 12px;
-  }
-  .place strong {
-    font-size: 15px;
-  }
-  .conditions {
-    top: 50px;
-    right: 10px;
-    padding: 7px;
-  }
-  .conditions small {
-    font-size: 7px;
-  }
-  .conditions strong {
-    font-size: 9px;
-  }
-  canvas {
-    aspect-ratio: 4/3;
-  }
-  .note {
-    display: block;
-  }
-  .note > span:last-child {
-    display: none;
-  }
-  footer {
-    font-size: 8px;
-  }
-  #phase {
-    max-width: 90px;
-    text-align: right;
-  }
-  .separator {
-    margin: 0 3px;
-  }
-  .or {
-    margin-left: 2px;
-  }
-  .message {
-    font-size: 10px;
-    padding: 8px;
-    max-width: 60%;
-  }
-}
-
-/* Keep the pixel scene crisp and the controls usable at small widths. */
-@media (max-width: 700px) {
-  footer > div {
-    flex-wrap: wrap;
-    max-width: 270px;
-    row-gap: 6px;
-  }
-  footer {
-    gap: 8px;
-  }
-  .touch button {
-    width: 32px;
-    height: 29px;
-  }
-  .message {
-    bottom: 120px;
-  }
-}
-/* v3 — in-world clock and distraction-free fullscreen. */
-.game-time {
-  position: absolute;
-  left: 24px;
-  bottom: 22px;
-  background: #15241edb;
-  border: 1px solid #c6c3a23d;
-  padding: 12px 16px;
-  border-radius: 4px;
-  box-shadow: 0 4px 14px #0003;
-  pointer-events: none;
-}
-.game-time strong {
-  font:
-    24px Georgia,
-    serif;
-  display: block;
-  color: #f2e6c9;
-  font-variant-numeric: tabular-nums;
-}
-.game-time .tiny {
-  font-size: 7px;
-  margin-bottom: 5px;
-}
-.game-time small {
-  display: block;
-  font-size: 8px;
-  letter-spacing: 1px;
-  color: #b3bda5;
-  margin-top: 5px;
-}
-#fullscreen {
-  position: absolute;
-  bottom: 62px;
-  right: 20px;
-  background: #192d27ed;
-  border: 1px solid #c2ccaa55;
-  border-radius: 3px;
-  padding: 10px 12px;
-  color: #e3e5cb;
-  cursor: pointer;
-  font:
-    11px "DM Sans",
-    sans-serif;
-}
-#fullscreen:focus-visible,
-#sound:focus-visible {
-  outline: 2px solid #dfc28c;
-  outline-offset: 3px;
 }
 .game-shell:fullscreen,
 .game-shell.theater {
@@ -424,516 +454,33 @@ footer > div {
   height: 100dvh;
   border: 0;
   border-radius: 0;
-  background: #0b110f;
+  outline: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #1e322a;
 }
 .game-shell.theater {
   position: fixed;
   inset: 0;
   z-index: 1000;
 }
-.game-shell:fullscreen canvas,
-.game-shell.theater canvas {
+.game-shell:fullscreen canvas#world,
+.game-shell.theater canvas#world {
   width: min(100vw, 177.7778dvh);
   height: min(100dvh, 56.25vw);
   aspect-ratio: 16/9;
   object-fit: contain;
 }
-.game-shell:fullscreen .place,
-.game-shell.theater .place {
-  top: 24px;
-  left: 24px;
-}
-.game-shell:fullscreen .game-time,
-.game-shell.theater .game-time {
-  bottom: 24px;
-}
-.game-shell:fullscreen .conditions,
-.game-shell.theater .conditions {
-  top: 24px;
-}
-canvas {
-  image-rendering: pixelated;
-}
-@media (pointer: coarse) {
-  .game-time {
-    bottom: auto;
-    top: 100px;
-    left: 12px;
-    padding: 8px 10px;
-  }
-  .game-time strong {
-    font-size: 18px;
-  }
-  .game-time .tiny {
-    display: none;
-  }
-}
-@media (max-width: 700px) {
-  .game-time {
-    left: 12px;
-    padding: 7px 9px;
-    bottom: 12px;
-  }
-  .game-time strong {
-    font-size: 17px;
-  }
-  .game-time small {
-    font-size: 6px;
-  }
-  .game-time .tiny {
-    display: none;
-  }
-  #fullscreen {
-    bottom: 52px;
-    right: 10px;
-    font-size: 9px;
-    padding: 8px;
-  }
-  #sound {
-    right: 10px;
-    bottom: 12px;
-  }
-  .message {
-    max-width: 48%;
-  }
-  .game-shell:fullscreen .conditions,
-  .game-shell.theater .conditions {
-    top: 55px;
-  }
-  .game-shell:fullscreen .game-time,
-  .game-shell.theater .game-time {
-    left: 12px;
-    bottom: auto;
-    top: 100px;
-  }
-  .game-shell:fullscreen .place,
-  .game-shell.theater .place {
-    left: 12px;
-    top: 16px;
-  }
-}
-@media (pointer: coarse) and (max-width: 700px) {
-  .game-time {
-    top: 100px;
-    bottom: auto;
-  }
-}
-
-/* The live-wind line stays clear of the clock on touch screens. */
-@media (pointer: coarse) {
-  .game-time {
-    top: 135px;
-  }
-}
-@media (max-width: 700px) {
-  .game-shell:fullscreen .game-time,
-  .game-shell.theater .game-time {
-    top: 135px;
-  }
-}
-.battle-hud {
-  position: absolute;
-  left: 24px;
-  top: 88px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 10px 13px;
-  background: #15241edb;
-  border: 1px solid #c6c3a23d;
-  border-radius: 4px;
-  pointer-events: none;
-}
-.battle-hud strong {
-  font-size: 20px;
-  color: #ef9c8a;
-  letter-spacing: 3px;
-  text-shadow: 0 2px #4a3033;
-}
-.battle-hud span {
-  font-size: 10px;
-  color: #e0d8bc;
-}
-.battle-hud small {
-  font-size: 7px;
-  letter-spacing: 1px;
-  color: #b9c7ab;
-}
-@media (max-width: 700px) {
-  .battle-hud {
-    left: 12px;
-    top: 53px;
-    padding: 6px 8px;
-  }
-  .battle-hud strong {
-    font-size: 15px;
-  }
-  .battle-hud small {
-    font-size: 6px;
-  }
-  .conditions {
-    max-width: 180px;
-  }
-  .game-time {
-    bottom: 12px;
-  }
-  .touch {
-    bottom: 15px;
-  }
-  .message {
-    bottom: 110px;
-  }
-}
-@media (pointer: coarse) {
-  .game-time {
-    top: auto;
-    bottom: 15px;
-    left: 140px;
-  }
-}
-@media (max-width: 700px) {
-  .game-shell:fullscreen .game-time,
-  .game-shell.theater .game-time {
-    top: auto;
-    bottom: 15px;
-    left: 140px;
-  }
-}
-/* v9 — local pixel font and beveled 16-bit status windows. */
-@font-face {
-  font-family: WillowPixel;
-  src: url("assets/fonts/VT323-Regular.ttf") format("truetype");
-  font-display: swap;
-}
-.world-status {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 246px;
-  display: grid;
-  gap: 7px;
-  pointer-events: none;
-  z-index: 2;
-}
-.rpg-panel {
-  font-family: WillowPixel, monospace;
-  color: #f0f2e9;
-  text-shadow: 2px 2px 0 #11151e;
-  background:
-    repeating-linear-gradient(132deg, #ffffff03 0 1px, transparent 1px 4px),
-    linear-gradient(145deg, #4c545b, #242e36 55%, #172028);
-  border: 3px solid;
-  border-color: #b4b9b4 #565e61 #454e54 #c2c5b9;
-  border-radius: 0;
-  box-shadow:
-    inset 0 0 0 2px #171f27,
-    inset 0 0 0 3px #7d898b,
-    0 0 0 1px #10161d,
-    2px 3px 0 #11182099;
-}
-.world-status .game-time,
-.world-status .conditions {
-  position: relative;
-  inset: auto;
-  width: auto;
-  max-width: none;
-  display: block;
-  padding: 11px 13px;
-  box-sizing: border-box;
-  letter-spacing: 0;
-}
-.panel-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  font-size: 17px;
-  line-height: 1;
-  letter-spacing: 0.5px;
-  color: #d5d9cc;
-  border-bottom: 1px solid #b3bab433;
-  padding-bottom: 6px;
-  margin-bottom: 6px;
-}
-.panel-title span:last-child {
-  font-size: 15px;
-  color: #b9c6c8;
-}
-.clock-line {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.clock-line #time-icon {
-  font-family: monospace;
-  font-size: 24px;
-  color: #d8e1dc;
-}
-.world-status .game-time strong {
-  font-family: WillowPixel, monospace;
-  font-size: 37px;
-  line-height: 1;
-  color: #fff9e4;
-  font-weight: 400;
-}
-.world-status .game-time small,
-.world-status .conditions small {
-  font:
-    16px/1.05 WillowPixel,
-    monospace;
-  letter-spacing: 0;
-  color: #d0d9d4;
-  margin-top: 5px;
-  display: block;
-}
-.weather-main {
-  display: flex;
-  gap: 9px;
-  align-items: center;
-  min-height: 28px;
-}
-.world-status #weather-icon {
-  font-size: 23px;
-  color: #e6e5c9;
-  flex-shrink: 0;
-}
-.world-status .conditions strong {
-  font:
-    22px/1 WillowPixel,
-    monospace;
-  color: #fff9e4;
-}
-.world-status #wind-detail {
-  color: #b6c6cc;
-}
-.clock {
-  padding: 9px 13px;
-  background: linear-gradient(145deg, #424b51, #1c272d);
-  border: 2px solid;
-  border-color: #aab3ac #4b565a #404b50 #b6bdb1;
-  box-shadow: inset 0 0 0 2px #182028;
-}
-.clock strong {
-  font-family: WillowPixel, monospace;
-  font-size: 34px;
-}
-.clock span {
-  font-family: WillowPixel, monospace;
-  font-size: 15px;
-  letter-spacing: 0.5px;
-}
-.game-shell .place strong {
-  font-family: WillowPixel, monospace;
-  font-size: 26px;
-}
-.battle-hud,
-.message {
-  border-radius: 0;
-  font-family: WillowPixel, monospace;
-}
-.message {
-  font-size: 20px;
-}
-.battle-hud span {
-  font-size: 16px;
-}
-.battle-hud small {
-  font-family: WillowPixel, monospace;
-  font-size: 12px;
-  letter-spacing: 0.3px;
-}
-.game-shell:fullscreen .world-status,
-.game-shell.theater .world-status {
-  top: 20px;
-  right: 20px;
-}
-.game-shell:fullscreen .world-status .game-time,
-.game-shell.theater .world-status .game-time,
-.game-shell:fullscreen .world-status .conditions,
-.game-shell.theater .world-status .conditions {
-  position: relative;
-  inset: auto;
-}
-@media (max-width: 700px) {
-  .world-status {
-    top: 12px;
-    right: 9px;
-    width: 154px;
-    gap: 5px;
-  }
-  .world-status .game-time,
-  .world-status .conditions {
-    padding: 7px 9px;
-    border-width: 2px;
-  }
-  .panel-title {
-    font-size: 12px;
-    letter-spacing: 0;
-    gap: 3px;
-    margin-bottom: 4px;
-    padding-bottom: 4px;
-  }
-  .panel-title span:last-child {
-    font-size: 11px;
-  }
-  .world-status .game-time strong {
-    font-size: 26px;
-  }
-  .clock-line {
-    gap: 6px;
-  }
-  .clock-line #time-icon {
-    font-size: 19px;
-  }
-  .world-status .game-time small,
-  .world-status .conditions small {
-    font-size: 12px;
-  }
-  .world-status .conditions strong {
-    font-size: 16px;
-  }
-  .weather-main {
-    gap: 5px;
-  }
-  .world-status #weather-icon {
-    font-size: 17px;
-  }
-  .game-shell .place strong {
-    font-size: 18px;
-    max-width: 160px;
-    display: block;
-  }
-  .game-shell .place {
-    max-width: 165px;
-  }
-  .place .tiny {
-    font-size: 6px;
-  }
-  .message {
-    font-size: 15px;
-    bottom: 76px;
-  }
-  .battle-hud small {
-    font-size: 9px;
-  }
-  .battle-hud span {
-    font-size: 13px;
-  }
-  .clock strong {
-    font-size: 27px;
-  }
-  .clock span {
-    font-size: 12px;
-  }
-  .game-shell:fullscreen .world-status,
-  .game-shell.theater .world-status {
-    top: 12px;
-    right: 9px;
-  }
-}
-@media (max-height: 480px) and (orientation: landscape) {
-  .game-shell:fullscreen .world-status,
-  .game-shell.theater .world-status {
-    width: 340px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-  }
-  .world-status .game-time strong {
-    font-size: 28px;
-  }
-  .world-status .game-time small,
-  .world-status .conditions small {
-    font-size: 12px;
-  }
-  .panel-title {
-    font-size: 12px;
-  }
-  .panel-title span:last-child {
-    font-size: 11px;
-  }
-  .world-status .conditions strong {
-    font-size: 17px;
-  }
-}
-.clock {
-  flex-shrink: 0;
-}
-.clock strong {
-  white-space: nowrap;
-}
-.intro > div:first-child {
-  min-width: 0;
-}
-@media (max-width: 700px) {
-  .clock {
-    padding: 8px 9px;
-  }
-  .clock strong {
-    font-size: 25px;
-  }
-  .intro {
-    gap: 12px;
-  }
-  .world-status #weather-detail {
-    font-size: 11px;
-  }
-  .game-shell .message {
-    z-index: 3;
-    max-width: 52%;
-    font-size: 13px;
-    bottom: 66px;
-  }
-}
-/* v11 — traditional clocks, world map and travel controls. */
-.clock svg {
-  display: block;
-  width: 88px;
-  height: 88px;
-  margin: auto;
-}
-.clock-line {
-  justify-content: center;
-}
-.clock-line svg {
-  display: block;
-  width: 92px;
-  height: 92px;
-  flex-shrink: 0;
-}
-.world-status .game-time small {
-  text-align: center;
-}
-.clock {
-  min-width: 112px;
-}
-.clock #date {
-  font-size: 13px;
-  white-space: nowrap;
-}
-#map-button {
-  position: absolute;
-  bottom: 104px;
-  right: 20px;
-  padding: 10px 12px;
-  background: #26343bec;
-  color: #eee7d3;
-  border: 1px solid #aeb8ae80;
-  font:
-    17px WillowPixel,
-    monospace;
-  cursor: pointer;
-}
 #world-map {
-  width: min(540px, calc(100vw - 32px));
-  padding: 22px;
-  color: #f4ecd6;
+  width: min(550px, calc(100vw - 32px));
+  max-height: 85dvh;
+  overflow: auto;
+  padding: 24px;
 }
 #world-map::backdrop {
-  background: #071017b8;
+  background: #18362bc2;
+  backdrop-filter: blur(4px);
 }
 .map-heading {
   display: flex;
@@ -942,162 +489,366 @@ canvas {
   gap: 20px;
 }
 .map-heading h2 {
-  font:
-    34px WillowPixel,
-    monospace;
+  font-size: 35px;
+  font-weight: 500;
   margin: 0;
+  color: #53633b;
 }
 .map-heading button {
-  font:
-    28px WillowPixel,
-    monospace;
-  color: #eee7d3;
   background: transparent;
-  border: 1px solid #a2b0ac66;
-  padding: 0 9px;
+  border: 1px solid #a28b52;
+  color: #827341;
+  border-radius: 4px;
+  font-size: 25px;
+  padding: 0 10px;
   cursor: pointer;
 }
 #world-map p {
-  font:
-    20px WillowPixel,
-    monospace;
-  color: #c8d0c5;
-  margin: 10px 0 16px;
+  font-size: 17px;
+  color: #837a50;
+  margin: 9px 0 18px;
 }
 #area-choices {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
 }
 #area-choices button {
+  padding: 17px;
   text-align: left;
-  color: #f5ecd5;
-  background: linear-gradient(135deg, #45554d, #243139);
-  border: 2px solid;
-  border-color: #9ba99b #3a474a #3a474a #9ba99b;
-  padding: 14px;
+  border: 1px solid #a49c62;
+  border-radius: 8px;
+  background: linear-gradient(125deg, #fcf3ce, #e8d99e);
+  box-shadow: inset 0 0 0 2px #f9efcd;
+  color: #61714b;
   cursor: pointer;
 }
 #area-choices strong {
   display: block;
-  font:
-    25px WillowPixel,
-    monospace;
+  font-size: 25px;
+  font-weight: 500;
 }
 #area-choices small {
   display: block;
+  font-size: 13px;
+  line-height: 1.3;
+  color: #8c875b;
   margin-top: 5px;
-  font:
-    16px WillowPixel,
-    monospace;
-  color: #c8d1c1;
 }
 #world-map > small {
   display: block;
-  margin-top: 16px;
-  font:
-    16px WillowPixel,
-    monospace;
-  color: #b8c9bf;
+  margin-top: 17px;
+  font-size: 12px;
+  color: #8a8357;
 }
-#area-choices button:focus-visible,
-#map-button:focus-visible {
-  outline: 2px solid #e8cb88;
-  outline-offset: 3px;
+@media (pointer: coarse) {
+  .touch {
+    display: block;
+  }
+  .message {
+    bottom: 115px;
+  }
 }
 @media (max-width: 700px) {
-  .clock svg {
-    width: 65px;
+  main {
+    padding: 0 13px;
+  }
+  header {
     height: 65px;
+    gap: 10px;
+  }
+  .brand {
+    font-size: 15px;
+    letter-spacing: 1.8px;
+    gap: 5px;
+  }
+  .crest {
+    font-size: 23px;
+  }
+  .subtitle {
+    display: none;
+  }
+  .live {
+    font-size: 8px;
+    letter-spacing: 0.6px;
+  }
+  .intro {
+    padding: 21px 0;
+    gap: 15px;
+  }
+  h1 {
+    font-size: 33px;
+    letter-spacing: -0.7px;
+  }
+  .intro p:not(.eyebrow) {
+    font-size: 13px;
+  }
+  .eyebrow {
+    font-size: 9px;
+    letter-spacing: 1px;
   }
   .clock {
-    min-width: 94px;
+    min-width: 87px;
+    padding: 7px 9px;
   }
-  .clock #date {
-    font-size: 11px;
-  }
-  .clock-line svg {
-    width: 57px;
-    height: 57px;
-  }
-  #map-button {
-    bottom: 91px;
-    right: 10px;
-    padding: 6px 9px;
-    font-size: 14px;
-  }
-  .world-status .game-time small {
-    font-size: 10px;
-  }
-  #area-choices {
-    gap: 6px;
-  }
-  #area-choices button {
-    padding: 10px;
-  }
-  #area-choices strong {
-    font-size: 22px;
-  }
-  #area-choices small {
-    font-size: 14px;
-  }
-}
-@media (max-height: 480px) and (orientation: landscape) {
-  .clock-line svg {
+  .clock svg {
     width: 58px;
     height: 58px;
   }
-  .world-status .game-time small {
+  .clock #date {
+    font-size: 8px;
+  }
+  .game-shell {
+    height: 370px;
+    border-width: 4px;
+    border-radius: 10px;
+  }
+  canvas#world {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .place {
+    left: 11px;
+    top: 12px;
+    padding: 6px 9px;
+    max-width: 54%;
+  }
+  .place strong {
+    font-size: 18px;
+  }
+  .tiny {
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+  .battle-hud {
+    left: 11px;
+    top: 78px;
+    padding: 7px 9px;
+    max-width: 150px;
+  }
+  .battle-hud strong {
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
+  .battle-hud span {
     font-size: 10px;
   }
-}
-@media (max-width: 700px) {
-  #map-button {
-    bottom: 12px;
+  .battle-hud small {
+    font-size: 6px;
+    letter-spacing: 0.5px;
+  }
+  .world-status {
     right: 10px;
-    min-height: 30px;
-    width: 78px;
-    padding: 6px 4px;
+    top: 12px;
+    width: 128px;
+    gap: 6px;
+  }
+  .world-status .rpg-panel {
+    padding: 7px 8px;
+    border-radius: 6px;
+  }
+  .panel-title {
+    font-size: 7px;
+    letter-spacing: 0.3px;
+    gap: 4px;
+  }
+  .panel-title span:last-child {
+    font-size: 7px;
+    letter-spacing: 0;
+  }
+  .clock-line {
+    gap: 3px;
+    padding: 3px 0;
+  }
+  .clock-line svg {
+    width: 51px;
+    height: 51px;
+  }
+  .clock-line #time-icon {
+    font-size: 15px;
+  }
+  .game-time small {
+    font-size: 8px;
+  }
+  .weather-main {
+    gap: 5px;
+    padding-top: 5px;
+  }
+  .weather-main strong {
+    font-size: 14px;
+  }
+  .weather-main #weather-icon {
+    font-size: 16px;
+  }
+  .conditions small {
+    font-size: 8px;
+    line-height: 1.2;
+  }
+  .conditions #weather-detail {
+    display: none;
+  }
+  .message {
+    width: calc(100% - 26px);
+    bottom: 69px;
+    padding: 9px 10px 9px 13px;
+    min-height: 82px;
+    gap: 10px;
+    border-radius: 10px;
+  }
+  #message-text {
+    font-size: 15px;
+  }
+  .dialogue-name {
+    font-size: 7px;
+  }
+  .dialogue-portrait {
+    width: 58px;
+    height: 58px;
+  }
+  .dialogue-next {
+    font-size: 7px;
+    margin-top: 4px;
+  }
+  #map-button,
+  #sound,
+  #fullscreen {
+    bottom: 13px;
     z-index: 4;
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+  #map-button {
+    right: 10px;
+    width: 71px;
+    height: 30px;
   }
   #fullscreen {
-    bottom: 12px;
-    right: 96px;
-    width: 32px;
-    min-height: 30px;
-    padding: 4px;
+    right: 88px;
+    width: 30px;
+    height: 30px;
     font-size: 0;
-    z-index: 4;
   }
   #fullscreen::after {
     content: "⛶";
-    font: 20px monospace;
+    font: 18px monospace;
   }
   #sound {
-    bottom: 12px;
-    right: 136px;
-    width: 32px;
+    right: 125px;
+    width: 30px;
     height: 30px;
-    padding: 4px;
-    z-index: 4;
   }
   #sound span {
     display: none;
   }
-  .world-status #weather-detail {
+  footer {
+    font-size: 9px;
+    padding: 15px 0;
+    gap: 10px;
+  }
+  footer > div {
+    flex-wrap: wrap;
+    row-gap: 6px;
+    max-width: 270px;
+  }
+  .key {
+    min-width: 19px;
+    height: 20px;
+    font-size: 9px;
+  }
+  .separator {
+    margin: 0 3px;
+  }
+  #phase {
+    max-width: 78px;
+    font-size: 8px;
+  }
+  .note {
+    display: block;
+    padding: 17px 0;
+  }
+  .note > span {
+    font-size: 8px;
+  }
+  .note > span:last-child {
     display: none;
   }
-  .world-status .conditions {
-    padding: 6px 9px;
+  .note p {
+    font-size: 13px;
+    margin-top: 8px;
   }
-  .world-status .conditions strong {
-    font-size: 15px;
+  .touch {
+    left: 9px;
+    bottom: 12px;
   }
-  .world-status .conditions small {
-    font-size: 11px;
+  .touch button {
+    width: 30px;
+    height: 29px;
+  }
+  .game-shell:fullscreen,
+  .game-shell.theater {
+    height: 100dvh;
+  }
+  .game-shell:fullscreen canvas#world,
+  .game-shell.theater canvas#world {
+    width: min(100vw, 177.7778dvh);
+    height: min(100dvh, 56.25vw);
+    object-fit: contain;
+  }
+  #world-map {
+    padding: 19px;
+  }
+  .map-heading h2 {
+    font-size: 29px;
+  }
+  #area-choices {
+    gap: 8px;
+  }
+  #area-choices button {
+    padding: 12px;
+  }
+  #area-choices strong {
+    font-size: 22px;
+  }
+}
+@media (max-height: 480px) and (orientation: landscape) {
+  .game-shell:fullscreen .world-status,
+  .game-shell.theater .world-status {
+    width: 330px;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    top: 12px;
+    right: 12px;
   }
   .clock-line svg {
-    width: 50px;
-    height: 50px;
+    width: 49px;
+    height: 49px;
+  }
+  .world-status .rpg-panel {
+    padding: 7px 10px;
+  }
+  .game-time small {
+    font-size: 8px;
+  }
+  .panel-title {
+    font-size: 8px;
+  }
+  .weather-main strong {
+    font-size: 16px;
+  }
+  .conditions small {
+    font-size: 9px;
+  }
+  .message {
+    bottom: 16px;
+    min-height: 80px;
+    width: min(570px, 60%);
+  }
+  .dialogue-portrait {
+    width: 60px;
+    height: 60px;
+  }
+  #message-text {
+    font-size: 17px;
   }
 }

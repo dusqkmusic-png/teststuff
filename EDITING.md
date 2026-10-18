@@ -118,7 +118,7 @@ Keep the main east/west route at `y = 650` and the central north/south route at 
 
 ## Replacing art with human commissions
 
-You can replace the local PNG files without changing the gameplay. Give an artist `assets/README.md`, the current image sheets, and the intended display sizes. Matching filenames, layout, padding and foot pivots is the easiest swap. A new layout requires updating the source rectangles in art.js or hero-frames.js. Keep licenses and credits alongside the new files.
+You can replace the local PNG files without changing the gameplay. Give an artist `assets/README.md`, the current image sheets, and the intended display sizes. Matching filenames, layout, padding and foot pivots is the easiest swap. A new layout requires updating the source rectangles in painted-frames.js or hero-frames.js. Keep licenses and credits alongside the new files.
 
 ## A quick check after editing
 
@@ -140,7 +140,7 @@ Press **M** or click **World map** to travel to town, the Woods, the Lake, or th
 - Highlands' `ridges`: cliff strips with `gapX` and `gapWidth` for walkable ramps. Keep a trail through each gap.
 - `AREA_ROUTES`: trail signs and the destination they lead to. An `arrival` point overrides the normal spawn when returning to town.
 
-Enemies remain in the original two town-side fields. The three new areas are peaceful exploration maps. Leaving town preserves the enemy state for when you return. The new art lives in `assets/regions.png`; rendering and collision are in `region-art.js` and `areas.js`.
+Enemies remain in the original two town-side fields. The three new areas are peaceful exploration maps. Leaving town preserves the enemy state for when you return. The new art lives in `assets/storybook/regions.png`; rendering and collision are in `region-art.js` and `areas.js`.
 
 **Sideways movement:** the new right-facing walk and run sheets are mirrored for left-facing movement. Their foot baseline and head pivots stay consistent between frames. Horizontal animation now follows distance actually traveled; change `player.walkStridePixels` or `player.runStridePixels` in settings.js to adjust the distance covered per full cycle. Smaller values make the feet cycle faster. Vertical animation still uses the frame-rate settings.
 

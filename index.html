@@ -88,7 +88,18 @@
         ><button id="sound" title="Toggle ambient sound">
           ♫ <span>Sound off</span>
         </button>
-        <div class="message" id="message">Welcome home. Take your time.</div>
+        <div class="message" id="message">
+          <div class="dialogue-copy">
+            <span class="dialogue-name">Willowmere</span
+            ><span id="message-text">Welcome home. Take your time.</span
+            ><span class="dialogue-next" aria-hidden="true">◆</span>
+          </div>
+          <img
+            src="assets/storybook/portrait.png"
+            alt="Traveler portrait"
+            class="dialogue-portrait"
+          />
+        </div>
         <div class="touch">
           <button id="touch-attack" aria-label="Swing sword">⚔</button
           ><button id="touch-interact" aria-label="Interact">E</button
@@ -138,6 +149,7 @@
     <script src="world-data.js"></script>
     <script src="area-data.js"></script>
     <script src="hero-frames.js"></script>
+    <script src="painted-frames.js"></script>
     <script src="art.js"></script>
     <script src="region-art.js"></script>
     <script src="clock.js"></script>

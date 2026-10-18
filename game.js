@@ -8,7 +8,7 @@ const canvas = document.querySelector("#world");
 let ctx = canvas.getContext("2d");
 canvas.width = 960;
 canvas.height = 540;
-ctx.imageSmoothingEnabled = false;
+ctx.imageSmoothingEnabled = true;
 const W = 960,
   H = 540,
   T = 16,
@@ -94,7 +94,7 @@ function rect(x, y, w, h, c) {
   ctx.fillRect(Math.round(x), Math.round(y), w, h);
 }
 function msg(s) {
-  document.querySelector("#message").textContent = s;
+  document.querySelector("#message-text").textContent = s;
   document.querySelector("#message").style.opacity = 1;
   clearTimeout(noticeTimer);
   noticeTimer = setTimeout(
