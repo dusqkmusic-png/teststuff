@@ -1,19 +1,20 @@
 'use strict';
-// Willowmere v3: original, deterministic pixel artwork, drawn locally with no assets.
+// Willowmere v4: original, deterministic pixel artwork, drawn locally with no assets.
 function grain(x,y,s=0){let n=Math.imul(x+173+s*43,374761393)^Math.imul(y+937,668265263);n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967295;}
 function oval(x,y,rx,ry,c){ctx.fillStyle=c;ctx.beginPath();ctx.ellipse(Math.round(x),Math.round(y),rx,ry,0,0,Math.PI*2);ctx.fill();}
 function leafCluster(x,y,r,variant){
- const palette=variant?['#203f38','#295646','#356b4c','#488052','#609559','#87ad68']:['#203d32','#2b5139','#386b43','#4c8150','#69965b','#96b36e'];
- // Stepped silhouettes rather than smooth circles preserve the sprite language.
- poly([[x-r,y-3],[x-r+3,y-r*.5],[x-r*.55,y-r*.85],[x-3,y-r],[x+r*.5,y-r*.8],[x+r-2,y-r*.35],[x+r,y+2],[x+r*.7,y+r*.5],[x+r*.2,y+r*.65],[x-r*.45,y+r*.6],[x-r+2,y+r*.2]],palette[0]);
- for(let layer=0;layer<4;layer++){let rr=r-layer*2.4;poly([[x-rr+2,y-3],[x-rr+4,y-rr*.6],[x-3,y-rr*.87],[x+rr*.5,y-rr*.6],[x+rr-1,y-1],[x+rr*.55,y+rr*.4],[x-rr*.45,y+rr*.36]],palette[layer+1]);}
- for(let i=0;i<17;i++){let a=grain(i,Math.floor(x),Math.floor(y))*6.28,rr=grain(i,22,Math.floor(y))*r*.8,xx=x+Math.cos(a)*rr,yy=y+Math.sin(a)*rr*.6-4;rect(xx,yy,3,1,palette[i%3+2]);rect(xx+1,yy-1,2,1,palette[i%3+2]);}
- rect(x-r*.4,y-r*.55,4,1,palette[5]);rect(x-r*.4-1,y-r*.55+1,3,1,palette[5]);
+ const p=variant?['#193c32','#26513b','#336744','#487c4c','#659659','#8cb16a']:['#243c30','#31543a','#426e43','#5b8750','#7a9d59','#a7b970'];
+ poly([[x-r,y-3],[x-r+2,y-r*.5],[x-r*.6,y-r*.8],[x-4,y-r],[x+r*.3,y-r*.9],[x+r*.7,y-r*.65],[x+r,y-r*.2],[x+r-1,y+4],[x+r*.6,y+r*.5],[x+2,y+r*.67],[x-r*.6,y+r*.5],[x-r,y+r*.15]],p[0]);
+ poly([[x-r+3,y-4],[x-r*.5,y-r*.7],[x+1,y-r*.85],[x+r*.65,y-r*.5],[x+r-3,y],[x+r*.4,y+r*.45],[x-r*.5,y+r*.35]],p[1]);
+ // Irregular overlapping leaf fans, lit from the upper left. No concentric shading.
+ for(let i=0;i<48;i++){const gx=grain(i,Math.floor(x),Math.floor(y)),gy=grain(i+80,Math.floor(y),Math.floor(x)),xx=x+(gx*2-1)*(r-4),yy=y+(gy*1.4-.9)*(r-3);if((xx-x)**2/(r*r)+(yy-y+3)**2/(r*r*.7)>.8)continue;const bright=yy<y-4?3:2,c=p[Math.min(5,bright+(i%3===0?1:0))];
+ poly([[xx-3,yy+1],[xx-4,yy-1],[xx-1,yy-3],[xx+2,yy-2],[xx+4,yy],[xx+1,yy+2]],p[1]);rect(xx-2,yy-2,3,1,c);rect(xx-3,yy-1,5,1,c);rect(xx-1,yy,3,1,p[Math.max(1,bright-1)]);if(i%4===0)rect(xx-1,yy-3,2,1,p[5]);}
+ for(let i=0;i<5;i++){let xx=x-r*.6+i*r*.27,yy=y+Math.sin(i*1.8)*r*.2;rect(xx,yy,3,1,p[0]);rect(xx+1,yy+1,1,1,p[0]);}
 }
 function paintTree(t){let x=Math.round(t.x),y=Math.round(t.y),v=grain(x,y)>.55?1:0;
  ctx.save();ctx.translate(x,y);oval(7,4,32,9,'#1d352b38');
  poly([[-12,3],[-7,-39],[6,-41],[11,2],[20,7],[9,8],[2,3],[-7,8],[-19,7]],'#353c2b');
- poly([[-8,-33],[1,-39],[7,-31],[7,1],[12,5],[4,4],[-1,-4],[-6,5],[-12,5]],'#8f7044');rect(-5,-30,3,28,'#b39558');rect(2,-35,2,32,'#5d5135');rect(-3,-13,3,3,'#493f2e');
+ poly([[-8,-33],[1,-39],[7,-31],[7,1],[12,5],[4,4],[-1,-4],[-6,5],[-12,5]],'#8f7044');rect(-5,-30,3,28,'#b39558');rect(2,-35,2,32,'#5d5135');rect(-3,-13,3,3,'#493f2e');poly([[-3,-17],[-17,-38],[-14,-42],[1,-25],[14,-41],[17,-38],[5,-17]],'#685738');rect(-5,-27,2,12,'#c19d5f');for(let k=0;k<8;k++){rect(-6+(k%3)*4,-32+k*4,1,3,'#4d4931');}rect(-8,-2,5,2,'#839251');
  let clusters=[[-22,-40,22],[22,-43,23],[-26,-61,22],[23,-65,24],[0,-43,25],[0,-73,27],[-13,-83,20],[15,-84,18],[-4,-59,24]];
  if(v)clusters=clusters.map(([a,b,r])=>[a*.87,b-6,r*.95]);for(let [a,b,r] of clusters)leafCluster(a,b,r,v);
  // Sparse trailing leaves and moss at the roots.
@@ -33,16 +34,24 @@ function drawHouse(h,dark){let {x,y,w,h:hh}=h;const roof=h.roof==='#6b8191'?['#3
  rect(x+w-28,y-29,14,28,'#77796a');for(let yy=y-26;yy<y-3;yy+=6){rect(x+w-27,yy,12,1,'#b5b09a');rect(x+w-22+(yy%2)*3,yy+1,1,4,'#515c51');}rect(x+w-30,y-32,18,5,'#b1ac94');rect(x+w-27,y-32,12,2,'#3c4b43');
  rect(door-18,y+hh+2,36,5,'#c5baa0');rect(door-22,y+hh+7,44,5,'#827f68');rect(door-21,y+hh+7,42,1,'#d9caaa');for(let i=0;i<3;i++){let yy=y+hh+19+i*10;rect(door-9+(i%2)*4,yy,17,6,'#8d9880');rect(door-8+(i%2)*4,yy,14,2,'#b4baa0');}
 }
-function drawPlayer(){let x=Math.round(player.x),y=Math.round(player.y),step=player.moving?[0,2,0,-2][Math.floor(player.walk)%4]:0,side=player.dir%2===1,back=player.dir===2;
- ctx.save();ctx.translate(x,y);if(player.dir===3)ctx.scale(-1,1);oval(0,2,9,3,'#1e302e55');
- // Travel boots, long coat, scarf, satchel, and layered auburn hair.
- for(let [xx,off] of [[-6,step],[2,-step]]){rect(xx,-8+off,5,10,'#343b38');rect(xx+1,-6+off,4,7,'#76533e');rect(xx,-1+off,6,3,'#4d3e32');rect(xx+1,-5+off,2,3,'#a5794b');}
- poly([[-7,-23],[-10,-10],[-7,-5],[8,-5],[10,-9],[6,-23]],'#263d3c');poly([[-5,-22],[-7,-9],[-4,-7],[6,-7],[7,-11],[4,-22]],'#427e80');rect(-4,-21,3,10,'#6caaa0');rect(4,-19,2,11,'#2e5d68');rect(-7,-11,15,3,'#674c3a');rect(-1,-11,3,3,'#dfbc78');
- rect(-11,-21+step,5,10,'#2b4040');rect(-10,-19+step,4,6,'#55888a');rect(-10,-13+step,4,4,'#d7a77e');rect(7,-20-step,5,10,'#2b4040');rect(8,-18-step,3,6,'#639b95');rect(8,-12-step,4,4,'#efc49a');
- rect(-7,-34,14,14,'#493b34');rect(-5,-32,11,12,back?'#79503c':'#edbf94');if(!back){rect(-5,-27,3,4,'#c28a66');if(side){rect(5,-28,4,5,'#efc49a');rect(5,-29,2,3,'#253e42');}else{rect(-3,-28,2,3,'#284047');rect(3,-28,2,3,'#284047');rect(-1,-22,3,1,'#af735c');}}
- poly([[-8,-28],[-9,-34],[-6,-39],[-1,-38],[2,-41],[6,-37],[9,-35],[8,-29],[4,-31],[1,-33],[-3,-30],[-5,-33],[-6,-27]],'#493d35');poly([[-6,-35],[-2,-37],[1,-36],[3,-38],[7,-34],[4,-33],[0,-35],[-3,-32]],'#a16d47');rect(-4,-36,4,2,'#c09059');if(back){rect(-6,-30,13,9,'#79513d');rect(-4,-29,3,7,'#a16d47');}
- rect(-6,-22,13,3,'#ad6953');rect(-5,-22,8,1,'#dc9c73');if(back||side){rect(-8,-15,6,8,'#76533b');rect(-7,-15,5,3,'#ba9564');rect(-6,-12,2,2,'#dfbb7d');}else{rect(5,-21,3,10,'#9a5c4e');rect(7,-17,3,5,'#c58262');}
- if(player.charge>0&&!player.dashing){rect(-14,-47,28,4,'#24392e');rect(-13,-46,26*Math.min(1,player.charge/.32),2,'#eadc8b');}ctx.restore();}
+function drawPlayer(){const x=Math.round(player.x),y=Math.round(player.y),step=player.moving?[0,2,0,-2][Math.floor(player.walk)%4]:0,side=player.dir%2===1,back=player.dir===2,w=windState();
+ ctx.save();ctx.translate(x,y);if(player.dir===3)ctx.scale(-1,1);const flutter=Math.round(w.strength*Math.sin(time*5.4)*2.2),bob=player.moving?Math.abs(step)*.4:0;
+ oval(0,1,11,4,'#1c302d66');
+ // Short, broad 16-bit proportions: oversized face, green tunic, leather boots.
+ for(let [xx,off] of [[-8,step],[2,-step]]){rect(xx,-9+off,7,9,'#3e3c2b');rect(xx+1,-7+off,5,6,'#a47a46');rect(xx,-2+off,8,3,'#58402c');rect(xx+1,-2+off,5,1,'#c19855');}
+ ctx.translate(0,-bob);
+ // Wind lifts the soft pointed cap behind the head, rather than moving the whole sprite.
+ poly([[-6,-34],[-4,-46],[6,-43],[13+flutter,-38],[19+flutter,-33+flutter],[12,-29],[4,-29]],'#253f2b');poly([[-3,-35],[-2,-43],[5,-41],[11,-36],[16+flutter,-33+flutter],[8,-32]],'#538f47');rect(0,-41,4,2,'#91b75c');
+ poly([[-9,-25],[-12,-11],[-8,-5],[9,-5],[12,-10],[8,-25]],'#293f2b');poly([[-6,-25],[-9,-10],[-5,-7],[7,-7],[8,-11],[5,-25]],'#549447');rect(-5,-23,4,11,'#85b256');rect(5,-20,3,10,'#39713b');poly([[-8,-7],[-4,-10],[0,-7],[4,-10],[8,-7],[8,-5],[-8,-5]],'#3c743c');rect(-9,-13,18,3,'#765235');rect(-2,-13,4,4,'#e7be68');rect(-1,-12,2,2,'#7b6135');
+ rect(-13,-23+step,6,11,'#29412d');rect(-12,-22+step,5,6,'#70a650');rect(-12,-16+step,4,5,'#f0bd8d');rect(8,-23-step,6,11,'#29412d');rect(9,-22-step,4,6,'#78a850');rect(10,-16-step,4,5,'#e7af7a');
+ // Ears, warm blond hair, a visible brow and crisp eyes in four facing directions.
+ rect(-10,-35,20,13,'#5d4631');rect(-8,-35,16,12,back?'#c79b50':'#f4c994');poly([[-12,-31],[-8,-33],[-7,-27],[-10,-27]],'#dfb17a');poly([[8,-33],[12,-31],[10,-27],[8,-27]],'#ffdaa1');
+ if(back){rect(-8,-33,16,9,'#bd8745');rect(-6,-33,3,8,'#e5bf68');rect(2,-32,4,7,'#e2b15a');}else if(side){rect(-8,-34,6,12,'#bf8944');rect(-6,-33,3,11,'#e4b65d');rect(8,-31,4,4,'#ffdaa1');rect(6,-32,2,3,'#274b55');rect(5,-33,3,1,'#946236');rect(7,-25,3,1,'#b87955');}else{rect(-6,-30,3,4,'#fff0c7');rect(4,-30,3,4,'#fff0c7');rect(-4,-30,2,3,'#285665');rect(4,-30,2,3,'#285665');rect(-6,-32,5,1,'#805933');rect(3,-32,4,1,'#805933');rect(-1,-25,3,1,'#b97b55');rect(0,-28,2,2,'#ffdda5');}
+ poly([[-10,-34],[-9,-38],[-4,-40],[5,-39],[10,-35],[7,-31],[3,-34],[0,-31],[-3,-34],[-7,-30-flutter]],'#835a31');poly([[-8,-35],[-6,-38],[1,-38],[7,-35],[4,-33],[1,-35],[-2,-33],[-5,-35],[-7,-31-flutter]],'#edc66f');rect(-6,-37,5,1,'#ffe39a');
+ poly([[-10,-37],[-7,-42],[4,-43],[9,-39],[10,-36],[5,-36],[0,-38],[-6,-36]],'#2f6033');poly([[-7,-39],[-3,-42],[4,-41],[7,-39],[1,-39],[-3,-38]],'#8bb75b');rect(-9,-37,18,2,'#547f3c');
+ // Small strapped wooden shield; decorative while this remains a peaceful world.
+ if(!back){let sx=side?-10:-13;poly([[sx-3,-21],[sx+5,-22],[sx+7,-18],[sx+5,-9],[sx+1,-6],[sx-3,-10]],'#413d2d');poly([[sx-1,-19],[sx+4,-20],[sx+5,-17],[sx+3,-10],[sx+1,-9],[sx-1,-11]],'#ba985c');rect(sx+1,-18,1,7,'#e1c27e');rect(sx-1,-15,5,1,'#7d7049');}else{rect(-5,-22,10,11,'#6e613c');rect(-4,-21,8,8,'#b4995c');rect(-1,-21,2,9,'#dfbf74');}
+ if(player.charge>0&&!player.dashing){rect(-14,-51,28,4,'#24392e');rect(-13,-50,26*Math.min(1,player.charge/.32),2,'#eadc8b');}ctx.restore();}
 function paintTerrain(){
  const left=0,top=0;
  for(let y=top;y<MH*T;y+=16)for(let x=left;x<MW*T;x+=16){let n=grain(x,y),path=isPath(x+8,y+8),r=river(y+8),distance=Math.abs(x+8-r);
@@ -77,10 +86,35 @@ let terrainArt;
 function drawTerrain(){
  if(!terrainArt){terrainArt=document.createElement('canvas');terrainArt.width=MW*T;terrainArt.height=MH*T;const main=ctx;ctx=terrainArt.getContext('2d');paintTerrain();ctx=main;}
  ctx.drawImage(terrainArt,Math.floor(camera.x),Math.floor(camera.y),W,H,Math.floor(camera.x),Math.floor(camera.y),W,H);
- for(let y=Math.floor(camera.y/22)*22;y<camera.y+H;y+=22){let x=river(y)+Math.sin(time*.8+y*.15)*32;rect(x,y,12,1,'#86b4a588');rect(x+4,y+3,6,1,'#6a9f9788');}
+ drawRiver();
+ drawWindGrass();
 }
 function drawTree(t){
  if(t.x<camera.x-65||t.x>camera.x+W+65)return;
  if(!t.art){t.art=document.createElement('canvas');t.art.width=120;t.art.height=136;const main=ctx;ctx=t.art.getContext('2d');ctx.translate(60-Math.round(t.x),119-Math.round(t.y));paintTree(t);ctx=main;}
- ctx.drawImage(t.art,Math.round(t.x)-60,Math.round(t.y)-119);
+ // Keep roots planted while the canopy bends gently with passing gusts.
+ const w=windState(),sway=Math.sin(time*1.7+t.x*.013+t.y*.007)*w.strength*2.4;
+ ctx.drawImage(t.art,0,100,120,36,Math.round(t.x)-60,Math.round(t.y)-19,120,36);
+ for(let row=0;row<100;row+=20){let shift=Math.round(sway*(1-row/115));ctx.drawImage(t.art,0,row,120,20,Math.round(t.x)-60+shift,Math.round(t.y)-119+row,120,20);}
+}
+
+// Wind strength follows reported mph. Without weather, use a labeled gentle ambient breeze.
+function windState(){const mph=weather.live&&Number.isFinite(weather.wind)?Math.max(0,Math.min(75,weather.wind)):4;const gust=.72+.18*Math.sin(time*.47)+.1*Math.sin(time*1.13);return {mph,strength:Math.min(1.8,mph/12)*gust};}
+function drawRiver(){
+ const top=Math.max(0,Math.floor(camera.y/4)*4),bottom=Math.min(MH*T,camera.y+H+4);
+ // Deeper center, translucent-looking shallows, irregular pebble banks.
+ for(let y=top;y<bottom;y+=4){const r=river(y);rect(r-56,y,112,4,'#417c80');rect(r-43,y,86,4,'#34717a');rect(r-27,y,54,4,'#306872');
+ for(let side of [-1,1]){let xx=r+side*54;rect(xx,y,4,4,'#72a49a');if(y%12===0){rect(r+side*60,y,4,3,'#889878');rect(r+side*64,y+1,3,2,'#bcc09a');}if(y%24===0){rect(r+side*48,y,5,2,'#81a89b');}}
+ }
+ // Every streak is advected downstream along the meandering centerline.
+ for(let i=0;i<160;i++){const y=(i*37+time*(18+grain(i,13)*16))%(MH*T),lane=(grain(i,44)*2-1)*47,x=river(y)+lane+Math.sin(y*.025+time*.7+i)*2;if(y<camera.y-15||y>camera.y+H+15)continue;const len=5+grain(i,78)*15;rect(x,y,1,len,'#8db9b122');rect(x-4,y+3,7,1,'#a7c7b466');rect(x-2,y+4,4,1,'#6caaa555');rect(x-2,y+len,5,1,'#6caaa566');}
+ // Broken foam ribbons follow bends; shallow rocks disturb the current.
+ for(let i=0;i<55;i++){let y=(i*29+time*16)%(MH*T);if(y<camera.y-10||y>camera.y+H+10)continue;for(let side of [-1,1]){let x=river(y)+side*(51+Math.sin(y*.07)*2);rect(x,y,4,1,'#cee1bf99');rect(x+side*2,y+2,2,3,'#92c0ad77');}}
+ for(let yy of [300,526,844,1070]){if(yy<camera.y-30||yy>camera.y+H+30)continue;let xx=river(yy)+(yy%3?29:-26);oval(xx+2,yy+3,11,4,'#264e5866');poly([[xx-7,yy],[xx-5,yy-7],[xx+3,yy-9],[xx+8,yy-3],[xx+6,yy+2]],'#58796e');rect(xx-3,yy-7,6,2,'#a8b69a');rect(xx+4,yy-4,2,4,'#3d605d');let phase=(time*10)%12;rect(xx-8,yy+4+phase,5,1,'#c2dac299');rect(xx+3,yy+7+phase,5,1,'#b9d8c277');}
+ // Fine wind-driven surface ripples, independent of downstream motion.
+ const w=windState();for(let i=0;i<26;i++){let y=(i*53+time*5)% (MH*T);if(y<camera.y||y>camera.y+H)continue;let x=river(y)+(grain(i,92)-.5)*70;rect(x,y,7+w.strength*5,1,'#a0c1b350');}
+}
+function drawWindGrass(){const w=windState();for(let i=0;i<flowers.length;i+=3){const f=flowers[i];if(f.x<camera.x||f.x>camera.x+W||f.y<camera.y||f.y>camera.y+H||isPath(f.x,f.y)||Math.abs(f.x-river(f.y))<80)continue;let bend=Math.round(Math.sin(time*2.6+f.x*.02+f.y*.01)*w.strength*2);rect(f.x,f.y+4,1,4,'#446c43');rect(f.x+bend,f.y,1,5,'#8da76b');rect(f.x+bend-2,f.y+2,2,1,'#728e54');}
+ // Reeds bend at their tips, with fixed stalk bases.
+ for(let y=Math.floor(camera.y/36)*36;y<camera.y+H;y+=36)for(let side of [-1,1]){let x=river(y)+side*70,bend=Math.round(Math.sin(time*2+y*.02)*w.strength*3);rect(x,y-6,1,7,'#496d4e');rect(x+bend,y-12,1,7,'#94a76c');rect(x+bend-1,y-13,3,3,'#a99c60');}
 }
