@@ -1,7 +1,7 @@
 'use strict';
 // Pixel artwork is loaded from local PNG atlases; Canvas only places tiles and sprite frames.
 const art = {};
-function loadArt(){return Promise.all(['terrain','village','combat','grass','town','traveler'].map(name=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>{art[name]=image;resolve();};image.onerror=()=>reject(new Error(`Could not load assets/${name}.png. Keep the assets folder with index.html.`));image.src=`assets/${name}.png`;})));}
+function loadArt(){return Promise.all(['terrain','village','combat','grass','town','hero-walk','hero-run','hero-attack'].map(name=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>{art[name]=image;resolve();};image.onerror=()=>reject(new Error(`Could not load assets/${name}.png. Keep the assets folder with index.html.`));image.src=`assets/${name}.png`;})));}
 function grain(x,y,s=0){let n=Math.imul(x+173+s*43,374761393)^Math.imul(y+937,668265263);n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967295;}
 const townFrames=[[[23,16,332,293],[400,5,167,303],[641,144,290,164],[958,115,289,198]],[[14,323,287,338],[326,336,321,325],[657,323,267,337],[950,352,300,309]],[[32,686,266,244],[348,686,266,244],[664,686,266,244],[980,686,266,244]],[[48,1049,264,136],[373,954,195,259],[678,968,224,240],[1041,950,129,266]]];
 function sprite(sheet,col,row,x,y,w,h){if(sheet==='town'){const [sx,sy,sw,sh]=townFrames[row][col];ctx.drawImage(art.town,sx,sy,sw,sh,Math.round(x),Math.round(y),w,h);return;}const image=art[sheet],sw=image.width/(sheet==='grass'?2:4),sh=image.height/(sheet==='grass'?2:4);const inset=sheet==='terrain'||sheet==='grass'||sheet==='town'&&row===2?2:0;ctx.drawImage(image,col*sw+inset,row*sh+inset,sw-inset*2,sh-inset*2,Math.round(x),Math.round(y),w,h);}
@@ -19,10 +19,15 @@ function drawTree(t){if(t.x<camera.x-70||t.x>camera.x+W+70)return;const variant=
  // Anchor the lower trunk; bend only the upper sprite strips with the breeze.
  for(let i=0;i<4;i++){let off=Math.round(sway*(1-i/3));ctx.drawImage(image,variant*sw,i*sh/4,sw,sh/4,x+off,y+i*30,114,30);}}
 function drawHouse(h,dark){sprite('town',houses.indexOf(h),1,h.x-14,h.y-33,h.w+28,h.h+47);if(dark>.12){ctx.save();ctx.globalCompositeOperation='screen';let g=ctx.createRadialGradient(h.x+h.w/2,h.y+h.h-20,1,h.x+h.w/2,h.y+h.h-20,28);g.addColorStop(0,'#ffcc7a99');g.addColorStop(1,'#ffb44a00');ctx.fillStyle=g;ctx.fillRect(h.x+h.w/2-28,h.y+h.h-48,56,56);ctx.restore();}}
-const travelerFrames=[[[213,8,127,260],[484,8,129,260],[781,8,132,260],[1070,8,134,260]],[[200,285,133,260],[473,285,146,260],[778,285,142,260],[1064,285,139,260]],[[204,567,133,274],[480,567,138,257],[774,567,136,257],[1069,567,136,253]],[[210,841,138,260],[473,842,151,259],[772,842,149,259],[1058,842,155,259]]];
-function drawPlayer(){const image=art.traveler,frame=player.moving?Math.floor(player.walk)%4:1,[sx,sy,sw,sh]=travelerFrames[player.dir][frame],scale=54/270,dw=Math.round(sw*scale),dh=Math.round(sh*scale),x=Math.round(player.x-dw/2),y=Math.round(player.y-dh),w=windState(),flutter=Math.round(Math.sin(time*5.4)*w.strength);
- const split=Math.floor(sh*.35),top=Math.round(split*scale);ctx.drawImage(image,sx,sy+split,sw,sh-split,x,y+top,dw,dh-top);ctx.drawImage(image,sx,sy,sw,split,x+flutter,y,dw,top);
- if(player.charge>0&&!player.dashing){rect(player.x-14,player.y-53,28,4,'#24392e');rect(player.x-13,player.y-52,26*Math.min(1,player.charge/.32),2,'#eadc8b');}}
+function playerAnimation(){
+ if(battle.swing>0)return {sheet:'hero-attack',dir:battle.dir,frame:Math.min(7,Math.floor((1-battle.swing/ATTACK_DURATION)*8))};
+ return {sheet:player.moving&&player.dashing?'hero-run':'hero-walk',dir:player.dir,frame:player.moving?Math.floor(player.walk)%8:0};
+}
+function drawPlayer(){const action=playerAnimation(),image=art[action.sheet],data=heroFrames[action.sheet][action.dir][action.frame],[sx,sy,sw,sh,anchorX,anchorY]=data,scale=heroScales[action.sheet],dw=sw*scale,dh=sh*scale,x=Math.round(player.x-(anchorX-sx)*scale),y=Math.round(player.y-(anchorY-sy)*scale);
+ // Attack frames already include the held sword, torso rotation and follow-through.
+ if(action.sheet==='hero-attack'){ctx.drawImage(image,sx,sy,sw,sh,x,y,dw,dh);}else{const w=windState(),flutter=Math.round(Math.sin(time*5.4)*w.strength),split=Math.floor(sh*.25),top=split*scale;ctx.drawImage(image,sx,sy+split,sw,sh-split,x,y+top,dw,dh-top);ctx.drawImage(image,sx,sy,sw,split,x+flutter,y,dw,top);}
+ if(player.charge>0&&!player.dashing){rect(player.x-14,player.y-58,28,4,'#24392e');rect(player.x-13,player.y-57,26*Math.min(1,player.charge/.32),2,'#eadc8b');}
+}
 function drawVillageDetails(){
  // Bridge uses an opaque plank tile, painted over the moving river.
  for(let x=1028;x<1210;x+=30)sprite('village',0,3,x,626,30,50);

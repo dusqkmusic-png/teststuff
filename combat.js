@@ -1,13 +1,14 @@
 'use strict';
 const fields=[{name:'Westwind Fields',x:80,y:430,w:320,h:430},{name:'Eastbank Fields',x:1260,y:430,w:270,h:430}];
 function fieldAt(x,y,margin=0){return fields.findIndex(f=>x>=f.x-margin&&x<=f.x+f.w+margin&&y>=f.y-margin&&y<=f.y+f.h+margin);}
+const ATTACK_DURATION=.48,ATTACK_COOLDOWN=.56;
 const battle={hp:5,maxHp:5,kills:0,invulnerable:0,cooldown:0,swing:0,swingId:0,dir:0};
 const enemies=[],sparks=[];
 function spawnEnemy(enemy){const f=fields[enemy.field];for(let n=0;n<80;n++){const x=f.x+25+rand()*(f.w-50),y=f.y+30+rand()*(f.h-60);if(!blocked(x,y)&&Math.hypot(player.x-x,player.y-y)>96){Object.assign(enemy,{x,y,hp:2,active:true,respawn:0,hit:0,lastSwing:-1});return true;}}enemy.respawn=1;return false;}
 function initCombat(){for(let field=0;field<fields.length;field++)for(let i=0;i<4;i++){const e={field,active:false,respawn:0,phase:rand()*6.28};enemies.push(e);spawnEnemy(e);}syncBattleHud();}
-function attack(){if(battle.cooldown>0||!art.combat)return;keys.delete('shift');keys.delete(' ');player.dashing=false;player.charge=0;battle.cooldown=.38;battle.swing=.26;battle.swingId++;battle.dir=player.dir;}
+function attack(){if(battle.cooldown>0||!art.combat)return;keys.delete('shift');keys.delete(' ');player.dashing=false;player.charge=0;battle.cooldown=ATTACK_COOLDOWN;battle.swing=ATTACK_DURATION;battle.swingId++;battle.dir=player.dir;}
 function syncBattleHud(){document.querySelector('#health').textContent='♥'.repeat(battle.hp)+'♡'.repeat(battle.maxHp-battle.hp);document.querySelector('#health').setAttribute('aria-label',`${battle.hp} of ${battle.maxHp} health`);document.querySelector('#kills').textContent=String(battle.kills);document.querySelector('#zone-status').textContent=fieldAt(player.x,player.y)>=0?'ENEMY FIELD · J / Z TO SWING':'VILLAGE · SAFE HAVEN';}
-function updateCombat(dt){battle.cooldown=Math.max(0,battle.cooldown-dt);battle.invulnerable=Math.max(0,battle.invulnerable-dt);const swinging=battle.swing>0;battle.swing=Math.max(0,battle.swing-dt);const facing=[[0,1],[1,0],[0,-1],[-1,0]][battle.dir];
+function updateCombat(dt){battle.cooldown=Math.max(0,battle.cooldown-dt);battle.invulnerable=Math.max(0,battle.invulnerable-dt);const previousProgress=1-battle.swing/ATTACK_DURATION;const wasSwinging=battle.swing>0;battle.swing=Math.max(0,battle.swing-dt);const progress=1-battle.swing/ATTACK_DURATION;const swinging=wasSwinging&&progress>=.25&&previousProgress<=.75;const facing=[[0,1],[1,0],[0,-1],[-1,0]][battle.dir];
  for(const e of enemies){if(!e.active){e.respawn-=dt;if(e.respawn<=0)spawnEnemy(e);continue;}e.hit=Math.max(0,e.hit-dt);
   const dx=e.x-player.x,dy=e.y-player.y,distance=Math.hypot(dx,dy),same=fieldAt(player.x,player.y)===e.field;
   // One hit per target per swing; direction and reach agree with the visible arc.
@@ -23,8 +24,6 @@ function updateCombat(dt){battle.cooldown=Math.max(0,battle.cooldown-dt);battle.
  for(let i=sparks.length-1;i>=0;i--){sparks[i].life-=dt;if(sparks[i].life<=0)sparks.splice(i,1);}syncBattleHud();
 }
 function drawEnemy(e){if(!e.active)return;ctx.save();if(e.hit>0)ctx.globalAlpha=.45+Math.sin(time*50)*.25;sprite('combat',Math.floor(time*5+e.phase)%4,e.field,e.x-19,e.y-29+Math.sin(time*6+e.phase)*2,38,36);ctx.restore();if(e.hp<2){rect(e.x-12,e.y-33,24,3,'#352c31');rect(e.x-11,e.y-32,11*e.hp,1,'#f1c080');}}
-function drawBattlePlayer(){ctx.save();if(battle.invulnerable>0)ctx.globalAlpha=Math.floor(time*12)%2?.45:1;drawPlayer();ctx.restore();drawSword();}
-function drawSword(){if(battle.swing<=0)return;const progress=1-battle.swing/.26,base=[Math.PI/2,0,-Math.PI/2,Math.PI][battle.dir],angle=base-1.15+progress*2.3,x=player.x,y=player.y-13;
- ctx.save();ctx.translate(x,y);ctx.strokeStyle='#eaf8d6b0';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,40,angle-.45,angle+.12);ctx.stroke();ctx.rotate(angle+Math.PI/2);ctx.drawImage(art.combat,140,744,140,252,-10,-51,20,48);ctx.restore();}
+function drawBattlePlayer(){ctx.save();if(battle.invulnerable>0)ctx.globalAlpha=Math.floor(time*12)%2?.45:1;drawPlayer();ctx.restore();}
 function drawBattleEffects(){for(const s of sparks)sprite('combat',Math.min(3,Math.floor((.3-s.life)/.3*4)),2,s.x-22,s.y-30,44,44);}
 function drawFieldSigns(){for(const f of fields){sprite('village',2,2,f.x+f.w/2-21,865,42,38);}}

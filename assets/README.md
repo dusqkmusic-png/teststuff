@@ -1,20 +1,23 @@
 # Willowmere local art
 
-These original PNG atlases were generated for Willowmere with OpenAI image generation. No Nintendo game graphics or third-party asset packs are included. The game loads these files locally without contacting an art CDN.
+The PNG atlases are original art generated for Willowmere with OpenAI image generation. No ripped Nintendo game graphics or third-party art packs are included. They load from this folder without an art CDN.
 
-Each atlas uses four columns and four rows. Terrain and village source cell sizes are derived from image dimensions. Character source rectangles are recorded in `travelerFrames` in art.js to account for padding and align feet across the walk cycle; update that metadata if replacing the character sheet.
+## Character actions
 
-- `terrain.png`: grass variants, dirt variants, four water frames, cliff variants (one row each).
-- `traveler.png`: four walk frames per facing direction, in south/east/north/west row order.
-- `village.png`: trees; cottages and well; rock/bench/sign/reeds; bridge/fence/flowers/stump.
+`hero-walk.png`, `hero-run.png`, and `hero-attack.png` each contain eight columns and four rows, ordered south/east/north/west. This gives 96 distinct source frames. Source bounds, foot pivots, and per-action scales are defined in `hero-frames.js`; update that file if replacing these sheets. The attack sprites include the held sword, body rotation and follow-through. The sheets were generated using Willowmere's previous original traveler as the design reference.
 
-Canvas draws atlas rectangles with smoothing disabled. The terrain cache is built from tile images; moving water uses four image frames and downstream scrolling. Tree sprite strips sway, and the upper portion of the character sprite shifts subtly with wind. These are visual wind effects, rather than separately rigged hair animation.
+## Environment and effects
 
-Keep the complete assets directory when copying or downloading the game. Asset load failures appear in the game rather than silently displaying missing sprites.
+- `grass.png`: 2×2 muted meadow ground atlas.
+- `terrain.png`: 4×4 legacy grass / dirt / water / cliff atlas. Grass now uses the separate grass sheet.
+- `village.png`: 4×4 trees; legacy cottages and well; rock/bench/sign/reeds; bridge/fence/flowers/stump. Buildings and many props now use town.png.
+- `town.png`: reference-inspired bell arch, flags, planters, rails, buildings, fountain, cobblestones and stone details. Its source rectangles are in `townFrames` in art.js to handle uneven padding.
+- `combat.png`: 4×4 green slime frames, purple slime frames, hit effects and legacy sword icons. The separate sword icons are superseded by the character attack sheet.
 
-- `combat.png`: four columns by four rows; green slime frames, purple slime frames, hit-effect frames, and directional sword icons. The sword swing uses a tight source crop around the upward sword, rotated around the player.
+Canvas draws image source rectangles with smoothing disabled. Ground is cached; water scrolls and animates. Tree sprite strips sway, and the upper part of the walk/run sprite shifts subtly with wind. These are visual wind effects, not a separately rigged hair animation.
 
-- `grass.png`: a separate 2×2 atlas of muted, low-detail meadow tiles, introduced in version 7. It replaces the busy grass row in terrain.png; dirt, water, and cliff tiles still use terrain.png.
+## Font
 
-- `town.png`: original town-square art inspired by the supplied screenshot, including arch, flags, flower planters, rails, buildings, fountain, cobblestones and stone details. Its source rectangles are in `townFrames` because generated sheet padding is not uniform.
-- `traveler.png`: a taller auburn-haired traveler in teal, sixteen directional walk frames with coordinates in `travelerFrames`. Replaces the earlier capped character.
+`fonts/VT323-Regular.ttf` is the VT323 typeface from https://github.com/google/fonts/tree/main/ofl/vt323, distributed under the included SIL Open Font License 1.1 in `fonts/OFL.txt`.
+
+Keep this entire folder with the game when downloading. Missing required images produce a visible loading error.

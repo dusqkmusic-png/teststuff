@@ -1,10 +1,10 @@
-# Willowmere — version 8
+# Willowmere — version 9
 
 A peaceful Canvas RPG world with local pixel-art PNG sprite sheets and terrain tiles. No package installation or build step.
 
 ## Play
 
-Extract the entire ZIP, keeping `assets/` beside `index.html`, `game.js`, `combat.js`, `art.js`, and `style.css`. Open `index.html` in a browser.
+Extract the entire ZIP, keeping `assets/` beside `index.html`, `game.js`, `combat.js`, `hero-frames.js`, `art.js`, and `style.css`. Open `index.html` in a browser.
 
 For a local server, run `python3 -m http.server 8000 --bind 0.0.0.0` from this directory and open the server in your browser.
 
@@ -18,16 +18,18 @@ For a local server, run `python3 -m http.server 8000 --bind 0.0.0.0` from this d
 
 ## Pixel art
 
-Six bundled image files supply all terrain, scenery, and character artwork:
+Eight bundled image files supply all terrain, scenery, and character artwork:
 
 - `assets/grass.png`: quiet, muted grass tiles with sparse blade details.
 - `assets/terrain.png`: dirt, water animation tiles, and cliffs.
-- `assets/traveler.png`: sixteen frames for a taller auburn-haired, teal-clad traveler.
+- `assets/hero-walk.png`: eight walking frames in each of four directions.
+- `assets/hero-run.png`: eight running frames in each of four directions.
+- `assets/hero-attack.png`: eight sword-swing frames in each of four directions.
 - `assets/town.png`: cobblestones, bell arch, banners, buildings, flower beds, fountain, and stonework.
 - `assets/village.png`: trees, houses, bridge, well, garden, rocks, and props.
 - `assets/combat.png`: green/purple slimes, hit effects, and swords.
 
-Canvas draws source rectangles with smoothing disabled. Terrain tiles are cached; water tiles animate and scroll downstream. Tree sprite strips sway, and the character's upper sprite moves subtly with wind. Character frame coordinates align the feet across differing source padding. See `assets/README.md` for layout and provenance. The PNGs are original generated art, not ripped game graphics.
+Canvas draws source rectangles with smoothing disabled. Terrain tiles are cached; water tiles animate and scroll downstream. Tree sprite strips sway, and the character's upper sprite moves subtly with wind. Character frame coordinates and foot pivots in hero-frames.js align the action sheets. See `assets/README.md` for layout and provenance. The PNGs are original generated art, not ripped game graphics.
 
 ## Time and weather
 
@@ -44,3 +46,9 @@ Houses are exterior scenery. Wind effects are sprite movement rather than separa
 Version 7 calms the meadow with a separate muted grass atlas and fewer scattered flower patches. Village gardens, trees, weather, nighttime lighting, and field combat remain.
 
 Version 8 uses the supplied Chrono Trigger town-square screenshot as visual inspiration for original art. Willowmere Bell Square has warm cobblestones, cream stonework, scarlet banners that move with wind, flower beds, market buildings, a fountain, and a central bell arch. Larger town objects are sorted by depth with the player. Bell columns, planters, stone rails, fountain, and bench have collision footprints while the main walking routes remain open. The surrounding meadows retain their quiet grass tiles. Town and traveler source rectangles are defined in art.js to align the generated sheets.
+
+## Version 9 — action animation and menu windows
+
+The traveler now has 96 distinct source frames: 8 frames × 4 directions × 3 actions. Walking plays at 10 frames per second; charged running at 20. Attacks play eight frames over 0.48 seconds, hold the character in place, and lock the facing direction. Damage occurs during the middle 25–75% of the swing, once per enemy, followed by recovery before another attack. The sword is drawn into the attack frames, replacing the previous detached rotating sword.
+
+Time and weather use dark textured menu windows, beveled gray borders, white pixel lettering, and explicit LIVE/STALE/OFFLINE weather badges, inspired by the supplied UI reference. The bundled VT323 typeface works offline; its SIL Open Font License is in assets/fonts/OFL.txt. Time continues to follow New York's EST/EDT, and weather continues to use Flushing conditions.
