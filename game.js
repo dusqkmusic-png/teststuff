@@ -5,7 +5,6 @@ canvas.width=960;canvas.height=540;
 ctx.imageSmoothingEnabled=false;
 const W=960,H=540,T=16,MW=100,MH=76;
 let seed=71;function rand(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;}
-const noise=Array.from({length:MH},()=>Array.from({length:MW},()=>rand()));
 const keys=new Set(),player={x:768,y:660,dir:0,walk:0,moving:false,charge:0,dashing:false,dashBlocked:false,dashDir:0},camera={x:0,y:0};
 let weather={code:0,temp:null,wind:0,live:false},last=0,time=0,noticeTimer,muted=true,audio;
 const trees=[],flowers=[],rocks=[];
@@ -26,8 +25,6 @@ function wet(){return weather.live&&weather.code>=51&&!(weather.code>=71&&weathe
 function snowy(){return weather.live&&(weather.code>=71&&weather.code<=77||weather.code>=85&&weather.code<=86);}
 async function updateWeather(){try{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);let r;try{r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=40.7654&longitude=-73.8174&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FNew_York',{signal:controller.signal});}finally{clearTimeout(timer);}if(!r.ok)throw Error('Weather unavailable');const d=await r.json();if(!d.current||!Number.isFinite(d.current.weather_code)||!Number.isFinite(d.current.temperature_2m))throw Error('Invalid weather');weather={code:d.current.weather_code,temp:d.current.temperature_2m,wind:Number.isFinite(d.current.wind_speed_10m)?d.current.wind_speed_10m:0,live:true};document.querySelector('#weather').textContent=`${description(weather.code)} · ${Math.round(weather.temp)}°F`;document.querySelector('#wind-detail').textContent=`Wind ${Math.round(weather.wind)} mph · foliage & hair respond`;document.querySelector('#weather-icon').textContent=snowy()?'❄':wet()?'☂':weather.code===0?'☼':'☁';document.querySelector('#weather-detail').textContent='Flushing · updated '+new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit'}).format(new Date());}catch(e){document.querySelector('#weather').textContent=weather.live?'Weather update delayed':'Live weather unavailable';document.querySelector('#weather-detail').textContent=weather.live?'Showing last received conditions':'Clear visual fallback · retries every 10 min';document.querySelector('#wind-detail').textContent=weather.live?`Last wind: ${Math.round(weather.wind)} mph`:'Gentle ambient breeze · live wind unavailable';}}
 function blocked(x,y){return (x>40&&x<430&&y>282+Math.floor(Math.sin(x/85)*2)*4&&y<354+Math.floor(Math.sin(x/85)*2)*4)||(x>80&&x<660&&y>908+Math.floor(Math.sin(x/90)*2)*4&&y<974+Math.floor(Math.sin(x/90)*2)*4)||x<24||y<24||x>MW*T-24||y>MH*T-24||Math.abs(x-river(y))<47&&Math.abs(y-650)>25||houses.some(h=>x>h.x-6&&x<h.x+h.w+6&&y>h.y+20&&y<h.y+h.h+5)||trees.some(t=>Math.abs(x-t.x)<10&&Math.abs(y-t.y)<9);}
-// Original pixel artwork. All shapes use a shared two-world-unit pixel grid.
-function poly(points,c){ctx.fillStyle=c;ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.fill();}
 const dust=[];
 function movePlayer(dt){
  let ax=(keys.has('d')||keys.has('arrowright')?1:0)-(keys.has('a')||keys.has('arrowleft')?1:0),ay=(keys.has('s')||keys.has('arrowdown')?1:0)-(keys.has('w')||keys.has('arrowup')?1:0);
@@ -67,7 +64,7 @@ document.querySelector('#touch-interact').addEventListener('click',()=>{window.d
 canvas.addEventListener('pointerdown',()=>canvas.focus());
 document.querySelector('#sound').addEventListener('click',async()=>{try{if(!audio){audio=new AudioContext();let buffer=audio.createBuffer(1,audio.sampleRate*3,audio.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.15;let source=audio.createBufferSource();source.buffer=buffer;source.loop=true;let filter=audio.createBiquadFilter();filter.type='lowpass';filter.frequency.value=550;let gain=audio.createGain();gain.gain.value=.16;source.connect(filter).connect(gain).connect(audio.destination);source.start();}muted=!muted;if(muted)await audio.suspend();else await audio.resume();document.querySelector('#sound span').textContent=muted?'Sound off':'Sound on';}catch{msg('Ambient audio isn’t available in this browser.');}});
 camera.x=player.x-W/2;camera.y=player.y-H/2;
-updateClock();setInterval(updateClock,1000);updateWeather();setInterval(updateWeather,600000);requestAnimationFrame(frame);msg('Welcome back. Wander with WASD · Hold Shift to charge a dash.');
+updateClock();setInterval(updateClock,1000);updateWeather();setInterval(updateWeather,600000);msg('Loading pixel-art sprites…');loadArt().then(()=>{last=performance.now();requestAnimationFrame(frame);msg('Welcome back. Wander with WASD · Hold Shift to charge a dash.');}).catch(error=>{msg(error.message);document.querySelector('#message').style.opacity=1;clearTimeout(noticeTimer);});
 
 // Fullscreen retains all in-game overlays. Browsers without the API use a theater view.
 const shell=document.querySelector('.game-shell'),fullscreenButton=document.querySelector('#fullscreen');
