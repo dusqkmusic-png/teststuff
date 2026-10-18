@@ -1,7 +1,7 @@
 'use strict';
 // Pixel artwork is loaded from local PNG atlases; Canvas only places tiles and sprite frames.
 const art = {};
-function loadArt(){return Promise.all(['terrain','adventurer','village'].map(name=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>{art[name]=image;resolve();};image.onerror=()=>reject(new Error(`Could not load assets/${name}.png. Keep the assets folder with index.html.`));image.src=`assets/${name}.png`;})));}
+function loadArt(){return Promise.all(['terrain','adventurer','village','combat'].map(name=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>{art[name]=image;resolve();};image.onerror=()=>reject(new Error(`Could not load assets/${name}.png. Keep the assets folder with index.html.`));image.src=`assets/${name}.png`;})));}
 function grain(x,y,s=0){let n=Math.imul(x+173+s*43,374761393)^Math.imul(y+937,668265263);n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967295;}
 function sprite(sheet,col,row,x,y,w,h){const image=art[sheet],sw=image.width/4,sh=image.height/4;const inset=sheet==='terrain'?2:0;ctx.drawImage(image,col*sw+inset,row*sh+inset,sw-inset*2,sh-inset*2,Math.round(x),Math.round(y),w,h);}
 function windState(){const mph=weather.live&&Number.isFinite(weather.wind)?Math.max(0,Math.min(75,weather.wind)):4;const gust=.72+.18*Math.sin(time*.47)+.1*Math.sin(time*1.13);return {mph,strength:Math.min(1.8,mph/12)*gust};}
@@ -17,7 +17,7 @@ function drawTerrain(){if(!terrainArt)bakeTerrain();ctx.drawImage(terrainArt,0,0
 function drawTree(t){if(t.x<camera.x-70||t.x>camera.x+W+70)return;const variant=Math.floor(grain(Math.round(t.x),Math.round(t.y))*4),w=windState(),sway=Math.round(Math.sin(time*1.7+t.x*.013+t.y*.007)*w.strength*2);const image=art.village,sw=image.width/4,sh=image.height/4,x=Math.round(t.x)-57,y=Math.round(t.y)-112;
  // Anchor the lower trunk; bend only the upper sprite strips with the breeze.
  for(let i=0;i<4;i++){let off=Math.round(sway*(1-i/3));ctx.drawImage(image,variant*sw,i*sh/4,sw,sh/4,x+off,y+i*30,114,30);}}
-function drawHouse(h,dark){sprite('village',houses.indexOf(h),1,h.x-12,h.y-28,h.w+24,h.h+42);}
+function drawHouse(h,dark){sprite('village',houses.indexOf(h),1,h.x-12,h.y-28,h.w+24,h.h+42);if(dark>.12){ctx.save();ctx.globalCompositeOperation='screen';for(const dx of [22,h.w-23]){let g=ctx.createRadialGradient(h.x+dx,h.y+70,1,h.x+dx,h.y+70,19);g.addColorStop(0,'#ffc46eaa');g.addColorStop(1,'#ffb44a00');ctx.fillStyle=g;ctx.fillRect(h.x+dx-19,h.y+51,38,38);}ctx.restore();}}
 const adventurerFrames=[[[135,42,149,249],[421,42,149,249],[713,42,149,249],[1002,43,148,248]],[[128,330,163,247],[413,337,164,243],[704,330,169,250],[999,330,168,250]],[[114,625,162,243],[412,623,158,245],[704,624,157,244],[992,624,162,244]],[[102,906,179,247],[397,906,177,248],[692,904,178,250],[986,905,175,250]]];
 function drawPlayer(){const image=art.adventurer,frame=player.moving?Math.floor(player.walk)%4:1,[sx,sy,sw,sh]=adventurerFrames[player.dir][frame],scale=48/270,dw=Math.round(sw*scale),dh=Math.round(sh*scale),x=Math.round(player.x-dw/2),y=Math.round(player.y-dh),w=windState(),flutter=Math.round(Math.sin(time*5.4)*w.strength);
  const split=Math.floor(sh*.35),top=Math.round(split*scale);ctx.drawImage(image,sx,sy+split,sw,sh-split,x,y+top,dw,dh-top);ctx.drawImage(image,sx,sy,sw,split,x+flutter,y,dw,top);

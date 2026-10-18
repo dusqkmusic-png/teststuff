@@ -11,3 +11,5 @@ Each atlas uses four columns and four rows. Terrain and village source cell size
 Canvas draws atlas rectangles with smoothing disabled. The terrain cache is built from tile images; moving water uses four image frames and downstream scrolling. Tree sprite strips sway, and the upper portion of the character sprite shifts subtly with wind. These are visual wind effects, rather than separately rigged hair animation.
 
 Keep the complete assets directory when copying or downloading the game. Asset load failures appear in the game rather than silently displaying missing sprites.
+
+- `combat.png`: four columns by four rows; green slime frames, purple slime frames, hit-effect frames, and directional sword icons. The sword swing uses a tight source crop around the upward sword, rotated around the player.
