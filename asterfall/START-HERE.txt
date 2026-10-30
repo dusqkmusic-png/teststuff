@@ -1,100 +1,63 @@
-ASTERFALL — THE CROWNED GARDEN
-First playable • 0.2 • Java / actual polygonal 3D
+ASTERFALL 0.3 — LANTERN GARDEN
 
-PLAY ON WINDOWS 10 / 11 (64-bit)
-1. Extract the ENTIRE ZIP into a folder. Do not run from inside the ZIP.
-2. Double-click Asterfall.exe. Java is included; nothing to install.
-3. Choose Enter Lanternhaven. F1 opens the field guide.
+WINDOWS 10/11, 64-bit
+Extract the ENTIRE ZIP into a NEW folder, then run Asterfall.exe.
+Java is included. Keep lib/, assets/, content/, and runtime/ together.
+If launch fails, run Play-with-log.bat and share launch-log.txt.
 
-If launching fails, run Play-with-log.bat and share launch-log.txt.
-The executable is unsigned. Keep runtime, lib, assets, and content together.
-Requires an OpenGL 2.0-capable graphics driver, keyboard, and mouse.
-
-YOUR LOCAL SKY
-Configured for 11355: Flushing, Queens, New York (approximate area center).
-Uses your PC's clock/time zone. Check Windows is set to your actual local time.
-Weather, sunrise, and sunset come from Open-Meteo, refreshed every 15 minutes
-while the game is open. The first request needs an internet connection.
-Settings accepts a city or decimal latitude, longitude. No GPS access.
-If offline, it keeps the last successful conditions and reports that status.
-Before the first successful fetch, weather stays unlinked; the clock still works.
-Rain, snow, fog, storms, and lighting reflect the fetched conditions.
-Precipitation is a visual effect over a real 3D world.
-No API key, account, or subscription is required for this personal-use build.
+THIS BUILD FOCUSES ON PRESENTATION AND PLAYER FEEL
+One compact garden: one sword-and-shield hero, one enemy type, one destructible
+crate, one chest, one building, raised ground and a traversable ramp. No new
+quests, item definitions, classes, enemy types or progression content.
 
 CONTROLS
-WASD / arrows    Move
-Right mouse      Walk toward cursor (direct movement; no obstacle pathfinding)
-Left mouse       Slash toward cursor; hold to keep attacking
-Q                Sword Wave (12 focus)
-E                Whirlwind (30 focus)
-Space            Dodge; briefly invulnerable
-R                Drink health potion
-F                Collect nearby loot / rest at the town shrine
-I                Satchel: equip and salvage
-K                Spend talent points earned when leveling
-B                Buy potion for 15 gold near shrine
-N                Start a new expedition at shrine after defeating boss
-Mouse wheel      Camera zoom
-Esc              Pause / close panel
-F1               Field guide
+WASD / arrows     Direct movement relative to camera
+Left click        Approach / attack
+Shift + LMB       Stand and slash
+Right mouse       Walk toward cursor (direct steering, no navmesh)
+Space             Eased dodge, brief invulnerability
+Q / E             Retained Sword Wave / Whirlwind
+F                 Collect loot / open chest / rest near entrance
+R                 Potion
+I / K             Existing equipment / talents menus
+Esc               Pause and settings
+Mouse wheel       Adjust camera distance
+N                 Reset the practice garden
+F1                Field guide
 
-THE FIRST ADVENTURE
-Calm 24 restless spirits across the three gardens north of Lanternhaven.
-This awakens the Crowned Bloom at Moonbell Ruins. Golden rings warn of attacks.
-Collect equipment, improve your build, and return to the shrine for another
-expedition with stronger enemies and better item power. Death returns you to
-town without deleting progress. You can heal and refill potions at the shrine.
+WHAT CHANGED
+Close perspective camera; larger player; damped camera follow; acceleration,
+braking and turning; blended stride/idle; sword anticipation/contact/recovery;
+attack lunges; hit-stop; recoil/knockback; trails, flashes, particles and sound.
+Toon lighting, rim light, softened sun shadows, screen-space ambient occlusion,
+contact darkening, fog, grading and subtle bloom. Cool nights have warm lights.
+The HUD is compact and garden notes collapse. Loot labels appear nearby, use
+rarity colors and avoid each other and the player. World drops bob and glow.
 
-LOOT AND BUILD CHOICES
-Three equipment slots: weapon, armor, charm; 60-item satchel.
-Common, Enchanted, Rare, and Mythic drops; randomized affixes and power.
-Weapons improve damage, armor improves health, charms improve damage/health.
-Fox affixes grant critical chance; Shelter can grant health.
-One permanent talent point per level: damage, health, or mana regeneration.
-Condition-matching item definitions gain 25% selection WEIGHT. This is not
-25 percentage points of drop chance. Every item can drop in all conditions.
-Mythics are deliberately scarce. The boss drops multiple items.
+YOUR LOCAL SKY
+Weather defaults to approximate ZIP 11355 (Flushing, Queens, NY).
+Your PC's clock/time zone determines local time. Open-Meteo supplies current
+weather and sunrise/sunset; refreshed every 15 minutes while open. Offline uses
+last known conditions with status shown in Settings. No account or API key.
+No precise GPS access. Settings accepts a city or latitude, longitude.
 
-SAVES AND UPDATES
-Stored at %USERPROFILE%\.asterfall\save-v1.json, outside the game folder.
-A previous-save backup is kept alongside it. Saves are written atomically.
-Progress saves every 30 seconds while playing, on equipment changes, and on exit.
-Levels, talents, equipment, bag, gold, and weather settings persist.
-The garden starts fresh when you relaunch; exact enemy positions do not persist.
-Extract future versions to a NEW folder. Your character save remains available.
-Back up the .asterfall folder before installing an update.
+SAVES / UPDATES
+Version-1 saves remain compatible in %USERPROFILE%\.asterfall\save-v1.json.
+A previous-save backup is kept alongside it. Equipment, bag, level, gold,
+talents and location persist. Exact scene positions and prop states reset.
+Back up .asterfall before updates and always extract updates into a new folder.
+The older expedition/boss loop is not the focus of this build; N resets the
+single test area so you can judge movement and combat repeatedly.
 
-MODULAR CONTENT
-content/items.json       Stable item IDs, names, slots, power, weights, conditions.
-content/zones.json       Encounter-area names, centers, enemy counts, colors.
-content/settings.json    Initial location for a NEW character only.
-Restart the game after changing content. New mechanics and different world
-layouts need Java changes; not everything can be added by editing JSON.
-The separate source ZIP contains Java code and build instructions for updates.
-Keep it so you can share the current version in a later conversation.
+VALIDATION / LIMITS
+186 movement/layout checks + 28 existing checks, actual graphics-context combat
+regression (including 60 projectile level-ups), terrain/camera checks, and real
+day/night/motion captures. Windows launcher is cross-built and still needs
+human Windows/GPU playtesting. Requires OpenGL 2.0 with framebuffer objects and
+24-bit depth renderbuffers. The executable is unsigned.
 
-WHAT THIS VERSION IS
-A small, playable foundation: one sword-and-shield character, three abilities, three garden
-encounters, one boss, loot, talents, saving, music, and a real weather connection.
-The characters and scenery use original, simple low-poly geometry. It is not
-a full Diablo-sized game or a finished commercial anime RPG. No multiplayer,
-crafting, quests, multiple classes, or generated dungeon floors yet.
-We can expand the content and improve the artwork/combat in future updates.
-
-VALIDATION
-Compiled to Java 17. Data/equipment/save/weather checks pass. Rendered and ran
-an automated combat/boss/loot/equipment/replay check on Linux with software GL.
-Live weather for 11355 and offline cache loading verified.
-Windows EXE cross-built with Launch4j and bundled Temurin runtime; not executed
-on a Windows machine in this environment.
-
-CREDITS
-Original game code, mesh designs, UI, synthesized sound effects, and ambient music.
-libGDX / LWJGL / JInput / JUtils / gdx-jnigen-loader; see THIRD-PARTY.txt.
-Font derived from DejaVu Sans; full notice under licenses/.
-Weather: Open-Meteo, https://open-meteo.com/ (CC BY 4.0); city search: GeoNames
-through Open-Meteo. Personal non-commercial use, subject to provider terms.
-
-VERSION 0.2
-Combat level-up crash fixed and regression-tested. Rebuilt overhead camera, textured grass/stone, cast shadows, detailed original character mesh, visible sword/shield, sword swing timing, shockwave and whirlwind. WASD is relative to the camera. Existing version-1 saves remain compatible. Extract this update to a fresh folder; do not mix it with the old game files.
+This is a lightweight toon pipeline, not full metallic/roughness PBR.
+Source and architecture notes are in the separate source archive/repository.
+Third-party licenses and runtime notices are included. Weather: Open-Meteo
+(CC BY 4.0) and GeoNames. Character meshes, textures, music and effects are
+original procedural content; no Dragon Quest artwork or models used.

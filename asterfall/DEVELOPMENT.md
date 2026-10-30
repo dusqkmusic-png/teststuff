@@ -91,3 +91,7 @@ Windows launcher has been cross-built but requires Windows playtesting.
 The initial loop needs human feedback on combat feel and difficulty balance.
 
 The combat loop traverses effects by a reverse index over the original count. Damage callbacks may append level-up effects, which are processed on the next update. Never restore an iterator over this mutating list. `--combat-regression` tests the exact projectile-kill/level-up path and timed melee damage, then 60 repetitions with a mesh-ownership check. Run under X11/Xvfb with an isolated user.home.
+
+## 0.3 replacement
+
+See ARCHITECTURE.md and the current README for the presentation study. PlayerMotor, CombatController, Presentation, TestArea, FeelChecks and LootLayout replace the former monolithic paths. The old multi-zone loop and static puppet bobbing are not the active runtime. Use the current README commands and an isolated user.home for regression checks.

@@ -44,11 +44,14 @@ jobs:
           command -v xrandr
           xvfb-run -a -s "-screen 0 1440x900x24" java -Duser.home="$RUNNER_TEMP/asterfall-combat" -cp 'asterfall.jar:lib/*' game.Desktop --combat-regression
           xvfb-run -a -s "-screen 0 1440x900x24" java -Duser.home="$RUNNER_TEMP/asterfall-smoke" -cp 'asterfall.jar:lib/*' game.Desktop --smoke
+          python make_preview.py
       - name: Package game with bundled Windows Java
         working-directory: asterfall
         run: |
           python package_release.py
           cp ../preview-garden.png ../dist/Asterfall-Preview.png
+          cp ../preview-night.png ../dist/Asterfall-Night.png
+          cp ../preview-feel.gif ../dist/Asterfall-Feel.gif
       - uses: actions/upload-artifact@v4
         with:
           name: Asterfall-Windows-and-Source
@@ -59,9 +62,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          TAG=asterfall-v0.2.0
+          TAG=asterfall-v0.3.0
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" dist/* --clobber
           else
-            gh release create "$TAG" dist/* --target "$GITHUB_SHA" --title "Asterfall 0.2 — Sword combat and 3D rebuild" --notes-file asterfall/RELEASE.md --latest=false
+            gh release create "$TAG" dist/* --target "$GITHUB_SHA" --title "Asterfall 0.3 — Lantern Garden presentation study" --notes-file asterfall/RELEASE.md --latest=false
           fi

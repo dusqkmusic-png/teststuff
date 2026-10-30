@@ -4,7 +4,7 @@ import java.util.*;
 public class Checks {
  static int n=0;static void check(boolean ok,String message){n++;if(!ok)throw new AssertionError(message);}
  public static void run()throws Exception{
-  Content c=new Content();c.load();check(c.items.size()>=9,"Item catalog");check(c.zones.size()==3,"Three zones");
+  FeelChecks.run();Content c=new Content();c.load();check(c.items.size()>=9,"Item catalog");check(c.zones.size()==3,"Three zones");
   for(Content.ItemDef d:c.items){check(c.weight(d,true,true)>0,"Every item obtainable");if(d.condition.equals("night"))check(Math.abs(c.weight(d,true,false)/c.weight(d,false,false)-1.25)<.0001,"Night bonus");}
   Random rng=new Random(41);Set<String> found=new HashSet<>();for(int i=0;i<100000;i++)found.add(c.roll(rng,false,false).id);check(found.size()==c.items.size(),"All items drop outside preferred conditions");
   SaveData s=new SaveData();s.level=5;s.gold=123;s.weapon=new SaveData.Item("moonthread","Mythic","of the Fox",25,0,9);s.bag.add(new SaveData.Item("raincoat","Rare","of Shelter",18,54,0));s.city="Test town";s.lat=42.36;s.lon=-71.06;s.save();SaveData r=SaveData.load();check(r.level==5&&r.gold==123,"Progress round trip");check(r.bag.size()==1&&r.bag.get(0).hp==54,"Loot round trip");check(r.weapon.id.equals("moonthread"),"Stable equipped item ID");check(r.damage()==56,"Damage includes equipment");r.gold=124;r.save();check(Files.exists(SaveData.DIR.resolve("save-v1.backup.json")),"Save backup");check(SaveData.load().gold==124,"Atomic save replaces old data");
