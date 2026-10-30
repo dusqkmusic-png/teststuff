@@ -21,7 +21,7 @@ with zipfile.ZipFile(dist/'Asterfall-Windows.zip','w',zipfile.ZIP_DEFLATED,compr
  for f in sorted((root/'lib').glob('*.jar')):
   if f.name not in ['ecj.jar','lwjgl-linux.jar']:z.write(f,'Asterfall/lib/'+f.name)
 with zipfile.ZipFile(dist/'Asterfall-Source.zip','w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
- for n in common+['src','lib','build.py','make_assets.py','fetch_dependencies.py','package_release.py','DEVELOPMENT.md','dependencies.sha256','launch4j.xml','README.md']:add(z,root/n,'Asterfall-Source/'+n)
+ for n in common+['src','lib','build.py','make_assets.py','paint_materials.py','fetch_dependencies.py','package_release.py','DEVELOPMENT.md','dependencies.sha256','launch4j.xml','README.md']:add(z,root/n,'Asterfall-Source/'+n)
 for p in dist.glob('*.zip'):
  with zipfile.ZipFile(p) as z:assert z.testzip() is None
  print(p.name,round(p.stat().st_size/1048576,1),'MiB')

@@ -1,4 +1,4 @@
-# Asterfall 0.1
+# Asterfall 0.2
 
 A Java 17 desktop action RPG built on libGDX 1.13.1 with the LWJGL 2 backend.
 All characters and scenery are actual 3D polygon meshes; no character sprites.
@@ -47,7 +47,9 @@ may need its own CA trust configuration; never disable TLS validation.
 - `Content`: JSON validation, stable item IDs, weighted loot selection.
 - `SaveData`: versioned persistent character, equipment, atomic save + backup.
 - `Weather`: daemon HTTP worker, city or coordinate lookup, cache, local clock.
-- `Models`: procedural 3D geometry and animated character part transforms.
+- `Models`: sculpted 3D geometry, painted materials, articulated character transforms.
+- `WorldBuilder`: original modular textured masonry, village and garden geometry.
+- `paint_materials.py`: reproducible original painted-style texture generation.
 - `Asterfall`: world, combat, enemy attack windups, drops, boss, expeditions.
 - `UI`: desktop HUD, input, equipment, talents, location/settings, menus.
 - `Desktop`: launcher, error reporting, desktop configuration.
@@ -81,9 +83,11 @@ and exercise it against old saves before releasing. Never silently reset saves.
 
 No navmesh, multiplayer, quest system, dungeon generation, or controller support.
 Right-click movement uses direct steering, so WASD is useful around obstacles.
-Simple blob shadows; no shadow-map pass or skeletal animation. Enemy variety
+Directional shadow mapping with receiver bias; articulated mesh-part animation. Enemy variety
 is slime-based with elite modifiers and a larger boss. The source is kept small
 to make future collaborative changes practical.
 
 Windows launcher has been cross-built but requires Windows playtesting.
 The initial loop needs human feedback on combat feel and difficulty balance.
+
+The combat loop traverses effects by a reverse index over the original count. Damage callbacks may append level-up effects, which are processed on the next update. Never restore an iterator over this mutating list. `--combat-regression` tests the exact projectile-kill/level-up path and timed melee damage, then 60 repetitions with a mesh-ownership check. Run under X11/Xvfb with an isolated user.home.

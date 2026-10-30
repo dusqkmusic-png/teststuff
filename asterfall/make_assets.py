@@ -32,3 +32,5 @@ im=Image.new('RGBA',(256,256),(25,43,63,255));d=ImageDraw.Draw(im)
 for j in range(5):
  a=j*math.tau/5-math.pi/2;cx=128+math.cos(a)*45;cy=124+math.sin(a)*45;d.ellipse((cx-39,cy-39,cx+39,cy+39),fill=(227,175,208))
 d.ellipse((104,100,152,148),fill=(246,215,149));im.save(out/'asterfall.ico',sizes=[(16,16),(32,32),(48,48),(128,128),(256,256)])
+# The painted material generator is part of the reproducible build.
+import paint_materials

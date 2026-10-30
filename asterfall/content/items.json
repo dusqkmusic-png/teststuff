@@ -1,5 +1,5 @@
 [
- {"id":"petalblade","name":"Petalblade","slot":"weapon","power":5,"weight":30},
+ {"id":"petalblade","name":"Wayfarer Sword","slot":"weapon","power":5,"weight":30},
  {"id":"glass_sabre","name":"Seaglass Sabre","slot":"weapon","power":7,"weight":20},
  {"id":"wayfarer_coat","name":"Wayfarer Coat","slot":"armor","power":8,"weight":25},
  {"id":"clover_charm","name":"Clover Charm","slot":"charm","power":4,"weight":20},

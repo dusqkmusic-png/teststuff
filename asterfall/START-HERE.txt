@@ -1,5 +1,5 @@
 ASTERFALL — THE CROWNED GARDEN
-First playable • 0.1 • Java / actual polygonal 3D
+First playable • 0.2 • Java / actual polygonal 3D
 
 PLAY ON WINDOWS 10 / 11 (64-bit)
 1. Extract the ENTIRE ZIP into a folder. Do not run from inside the ZIP.
@@ -26,8 +26,8 @@ CONTROLS
 WASD / arrows    Move
 Right mouse      Walk toward cursor (direct movement; no obstacle pathfinding)
 Left mouse       Slash toward cursor; hold to keep attacking
-Q                Petal Bolt (ranged, 12 mana)
-E                Bloom Nova (area attack, 30 mana)
+Q                Sword Wave (12 focus)
+E                Whirlwind (30 focus)
 Space            Dodge; briefly invulnerable
 R                Drink health potion
 F                Collect nearby loot / rest at the town shrine
@@ -75,7 +75,7 @@ The separate source ZIP contains Java code and build instructions for updates.
 Keep it so you can share the current version in a later conversation.
 
 WHAT THIS VERSION IS
-A small, playable foundation: one character, three abilities, three garden
+A small, playable foundation: one sword-and-shield character, three abilities, three garden
 encounters, one boss, loot, talents, saving, music, and a real weather connection.
 The characters and scenery use original, simple low-poly geometry. It is not
 a full Diablo-sized game or a finished commercial anime RPG. No multiplayer,
@@ -95,3 +95,6 @@ libGDX / LWJGL / JInput / JUtils / gdx-jnigen-loader; see THIRD-PARTY.txt.
 Font derived from DejaVu Sans; full notice under licenses/.
 Weather: Open-Meteo, https://open-meteo.com/ (CC BY 4.0); city search: GeoNames
 through Open-Meteo. Personal non-commercial use, subject to provider terms.
+
+VERSION 0.2
+Combat level-up crash fixed and regression-tested. Rebuilt overhead camera, textured grass/stone, cast shadows, detailed original character mesh, visible sword/shield, sword swing timing, shockwave and whirlwind. WASD is relative to the camera. Existing version-1 saves remain compatible. Extract this update to a fresh folder; do not mix it with the old game files.

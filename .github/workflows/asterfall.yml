@@ -33,9 +33,21 @@ jobs:
       - name: Check loot, equipment, talents, saves and weather parsing
         working-directory: asterfall
         run: java -Duser.home="$RUNNER_TEMP/asterfall-checks" -jar asterfall.jar --self-test
+      - name: Install software rendering test tools
+        run: sudo apt-get update && sudo apt-get install -y xvfb libglu1-mesa libgl1-mesa-dri
+      - name: Regress combat crash and render the game
+        working-directory: asterfall
+        env:
+          ALSOFT_DRIVERS: 'null'
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          xvfb-run -a java -Duser.home="$RUNNER_TEMP/asterfall-combat" -cp 'asterfall.jar:lib/*' game.Desktop --combat-regression
+          xvfb-run -a java -Duser.home="$RUNNER_TEMP/asterfall-smoke" -cp 'asterfall.jar:lib/*' game.Desktop --smoke
       - name: Package game with bundled Windows Java
         working-directory: asterfall
-        run: python package_release.py
+        run: |
+          python package_release.py
+          cp ../preview-garden.png ../dist/Asterfall-Preview.png
       - uses: actions/upload-artifact@v4
         with:
           name: Asterfall-Windows-and-Source
@@ -46,9 +58,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          TAG=asterfall-v0.1.0
+          TAG=asterfall-v0.2.0
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" dist/* --clobber
           else
-            gh release create "$TAG" dist/* --target "$GITHUB_SHA" --title "Asterfall 0.1 — First playable" --notes-file asterfall/RELEASE.md --latest=false
+            gh release create "$TAG" dist/* --target "$GITHUB_SHA" --title "Asterfall 0.2 — Sword combat and 3D rebuild" --notes-file asterfall/RELEASE.md --latest=false
           fi
