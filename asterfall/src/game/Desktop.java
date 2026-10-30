@@ -1,0 +1,6 @@
+package game;
+import com.badlogic.gdx.backends.lwjgl.*;
+import javax.swing.*;
+public class Desktop {
+ public static void main(String[] args){Thread.setDefaultUncaughtExceptionHandler((thread,error)->{error.printStackTrace();try{java.io.StringWriter sw=new java.io.StringWriter();error.printStackTrace(new java.io.PrintWriter(sw));java.nio.file.Files.writeString(java.nio.file.Path.of("launch-log.txt"),sw.toString());JOptionPane.showMessageDialog(null,"Asterfall encountered a problem.\n"+error+"\nDetails are in launch-log.txt.","Asterfall",JOptionPane.ERROR_MESSAGE);}catch(Throwable ignored){}System.exit(1);});try{for(String a:args)if(a.equals("--self-test")){Checks.run();return;}for(String a:args)if(a.equals("--smoke"))Asterfall.smoke=true;LwjglApplicationConfiguration c=new LwjglApplicationConfiguration();c.title="Asterfall | A little light, a little adventure";c.width=1440;c.height=900;c.resizable=true;c.vSyncEnabled=true;c.foregroundFPS=60;c.backgroundFPS=15;c.samples=4;c.allowSoftwareMode=true;c.forceExit=false;new LwjglApplication(new Asterfall(),c);}catch(Throwable e){e.printStackTrace();try{JOptionPane.showMessageDialog(null,e.toString()+"\nSee launch-log.txt for details.","Asterfall could not start",JOptionPane.ERROR_MESSAGE);}catch(Throwable ignored){}System.exit(1);}}
+}

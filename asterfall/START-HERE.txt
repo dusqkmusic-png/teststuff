@@ -1,0 +1,97 @@
+ASTERFALL — THE CROWNED GARDEN
+First playable • 0.1 • Java / actual polygonal 3D
+
+PLAY ON WINDOWS 10 / 11 (64-bit)
+1. Extract the ENTIRE ZIP into a folder. Do not run from inside the ZIP.
+2. Double-click Asterfall.exe. Java is included; nothing to install.
+3. Choose Enter Lanternhaven. F1 opens the field guide.
+
+If launching fails, run Play-with-log.bat and share launch-log.txt.
+The executable is unsigned. Keep runtime, lib, assets, and content together.
+Requires an OpenGL 2.0-capable graphics driver, keyboard, and mouse.
+
+YOUR LOCAL SKY
+Configured for 11355: Flushing, Queens, New York (approximate area center).
+Uses your PC's clock/time zone. Check Windows is set to your actual local time.
+Weather, sunrise, and sunset come from Open-Meteo, refreshed every 15 minutes
+while the game is open. The first request needs an internet connection.
+Settings accepts a city or decimal latitude, longitude. No GPS access.
+If offline, it keeps the last successful conditions and reports that status.
+Before the first successful fetch, weather stays unlinked; the clock still works.
+Rain, snow, fog, storms, and lighting reflect the fetched conditions.
+Precipitation is a visual effect over a real 3D world.
+No API key, account, or subscription is required for this personal-use build.
+
+CONTROLS
+WASD / arrows    Move
+Right mouse      Walk toward cursor (direct movement; no obstacle pathfinding)
+Left mouse       Slash toward cursor; hold to keep attacking
+Q                Petal Bolt (ranged, 12 mana)
+E                Bloom Nova (area attack, 30 mana)
+Space            Dodge; briefly invulnerable
+R                Drink health potion
+F                Collect nearby loot / rest at the town shrine
+I                Satchel: equip and salvage
+K                Spend talent points earned when leveling
+B                Buy potion for 15 gold near shrine
+N                Start a new expedition at shrine after defeating boss
+Mouse wheel      Camera zoom
+Esc              Pause / close panel
+F1               Field guide
+
+THE FIRST ADVENTURE
+Calm 24 restless spirits across the three gardens north of Lanternhaven.
+This awakens the Crowned Bloom at Moonbell Ruins. Golden rings warn of attacks.
+Collect equipment, improve your build, and return to the shrine for another
+expedition with stronger enemies and better item power. Death returns you to
+town without deleting progress. You can heal and refill potions at the shrine.
+
+LOOT AND BUILD CHOICES
+Three equipment slots: weapon, armor, charm; 60-item satchel.
+Common, Enchanted, Rare, and Mythic drops; randomized affixes and power.
+Weapons improve damage, armor improves health, charms improve damage/health.
+Fox affixes grant critical chance; Shelter can grant health.
+One permanent talent point per level: damage, health, or mana regeneration.
+Condition-matching item definitions gain 25% selection WEIGHT. This is not
+25 percentage points of drop chance. Every item can drop in all conditions.
+Mythics are deliberately scarce. The boss drops multiple items.
+
+SAVES AND UPDATES
+Stored at %USERPROFILE%\.asterfall\save-v1.json, outside the game folder.
+A previous-save backup is kept alongside it. Saves are written atomically.
+Progress saves every 30 seconds while playing, on equipment changes, and on exit.
+Levels, talents, equipment, bag, gold, and weather settings persist.
+The garden starts fresh when you relaunch; exact enemy positions do not persist.
+Extract future versions to a NEW folder. Your character save remains available.
+Back up the .asterfall folder before installing an update.
+
+MODULAR CONTENT
+content/items.json       Stable item IDs, names, slots, power, weights, conditions.
+content/zones.json       Encounter-area names, centers, enemy counts, colors.
+content/settings.json    Initial location for a NEW character only.
+Restart the game after changing content. New mechanics and different world
+layouts need Java changes; not everything can be added by editing JSON.
+The separate source ZIP contains Java code and build instructions for updates.
+Keep it so you can share the current version in a later conversation.
+
+WHAT THIS VERSION IS
+A small, playable foundation: one character, three abilities, three garden
+encounters, one boss, loot, talents, saving, music, and a real weather connection.
+The characters and scenery use original, simple low-poly geometry. It is not
+a full Diablo-sized game or a finished commercial anime RPG. No multiplayer,
+crafting, quests, multiple classes, or generated dungeon floors yet.
+We can expand the content and improve the artwork/combat in future updates.
+
+VALIDATION
+Compiled to Java 17. Data/equipment/save/weather checks pass. Rendered and ran
+an automated combat/boss/loot/equipment/replay check on Linux with software GL.
+Live weather for 11355 and offline cache loading verified.
+Windows EXE cross-built with Launch4j and bundled Temurin runtime; not executed
+on a Windows machine in this environment.
+
+CREDITS
+Original game code, mesh designs, UI, synthesized sound effects, and ambient music.
+libGDX / LWJGL / JInput / JUtils / gdx-jnigen-loader; see THIRD-PARTY.txt.
+Font derived from DejaVu Sans; full notice under licenses/.
+Weather: Open-Meteo, https://open-meteo.com/ (CC BY 4.0); city search: GeoNames
+through Open-Meteo. Personal non-commercial use, subject to provider terms.

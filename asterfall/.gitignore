@@ -1,0 +1,8 @@
+lib/
+assets/
+classes/
+asterfall.jar
+runtime/
+release-staging/
+windows-runtime.zip
+launch-log.txt

@@ -1,0 +1,54 @@
+name: Build Asterfall Windows game
+on:
+  push:
+    branches: [main]
+    paths: ['asterfall/**', '.github/workflows/asterfall.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: asterfall-release
+  cancel-in-progress: false
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install asset generator
+        run: python -m pip install Pillow==12.0.0
+      - name: Generate assets and build
+        working-directory: asterfall
+        run: |
+          python fetch_dependencies.py
+          python make_assets.py
+          python build.py
+      - name: Check loot, equipment, talents, saves and weather parsing
+        working-directory: asterfall
+        run: java -Duser.home="$RUNNER_TEMP/asterfall-checks" -jar asterfall.jar --self-test
+      - name: Package game with bundled Windows Java
+        working-directory: asterfall
+        run: python package_release.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Asterfall-Windows-and-Source
+          path: dist/*
+          retention-days: 90
+      - name: Publish downloadable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          TAG=asterfall-v0.1.0
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/* --clobber
+          else
+            gh release create "$TAG" dist/* --target "$GITHUB_SHA" --title "Asterfall 0.1 — First playable" --notes-file asterfall/RELEASE.md --latest=false
+          fi

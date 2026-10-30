@@ -1,0 +1,5 @@
+[
+ {"id":"orchard","name":"Petalwood Orchard","subtitle":"Follow the petals. Trouble grows beneath the trees.","x":-13,"z":-12,"enemies":7,"color":"df9cbe"},
+ {"id":"tide","name":"Glasswater Garden","subtitle":"The little spirits have borrowed too much magic.","x":14,"z":-10,"enemies":8,"color":"8bd0d3"},
+ {"id":"ruin","name":"Moonbell Ruins","subtitle":"An ancient promise, covered in clover.","x":0,"z":-32,"enemies":9,"color":"a69bd7"}
+]

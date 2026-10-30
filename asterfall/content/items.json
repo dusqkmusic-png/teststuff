@@ -1,0 +1,11 @@
+[
+ {"id":"petalblade","name":"Petalblade","slot":"weapon","power":5,"weight":30},
+ {"id":"glass_sabre","name":"Seaglass Sabre","slot":"weapon","power":7,"weight":20},
+ {"id":"wayfarer_coat","name":"Wayfarer Coat","slot":"armor","power":8,"weight":25},
+ {"id":"clover_charm","name":"Clover Charm","slot":"charm","power":4,"weight":20},
+ {"id":"dawn_sabre","name":"Dawn's Promise","slot":"weapon","power":11,"weight":3,"condition":"day"},
+ {"id":"moon_bell","name":"Moonbell","slot":"charm","power":9,"weight":3,"condition":"night"},
+ {"id":"raincoat","name":"Stormsilk Mantle","slot":"armor","power":13,"weight":3,"condition":"rain"},
+ {"id":"moonthread","name":"Moonthread Oath","slot":"weapon","power":20,"weight":0.12,"condition":"night"},
+ {"id":"thunderheart","name":"Thunderheart","slot":"charm","power":18,"weight":0.12,"condition":"rain"}
+]
