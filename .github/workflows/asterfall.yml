@@ -34,15 +34,16 @@ jobs:
         working-directory: asterfall
         run: java -Duser.home="$RUNNER_TEMP/asterfall-checks" -jar asterfall.jar --self-test
       - name: Install software rendering test tools
-        run: sudo apt-get update && sudo apt-get install -y xvfb libglu1-mesa libgl1-mesa-dri
+        run: sudo apt-get update && sudo apt-get install -y xvfb x11-xserver-utils libglu1-mesa libgl1-mesa-dri
       - name: Regress combat crash and render the game
         working-directory: asterfall
         env:
           ALSOFT_DRIVERS: 'null'
           LIBGL_ALWAYS_SOFTWARE: '1'
         run: |
-          xvfb-run -a java -Duser.home="$RUNNER_TEMP/asterfall-combat" -cp 'asterfall.jar:lib/*' game.Desktop --combat-regression
-          xvfb-run -a java -Duser.home="$RUNNER_TEMP/asterfall-smoke" -cp 'asterfall.jar:lib/*' game.Desktop --smoke
+          command -v xrandr
+          xvfb-run -a -s "-screen 0 1440x900x24" java -Duser.home="$RUNNER_TEMP/asterfall-combat" -cp 'asterfall.jar:lib/*' game.Desktop --combat-regression
+          xvfb-run -a -s "-screen 0 1440x900x24" java -Duser.home="$RUNNER_TEMP/asterfall-smoke" -cp 'asterfall.jar:lib/*' game.Desktop --smoke
       - name: Package game with bundled Windows Java
         working-directory: asterfall
         run: |
