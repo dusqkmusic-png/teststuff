@@ -1,0 +1,3 @@
+classes/
+*.log
+__pycache__/
